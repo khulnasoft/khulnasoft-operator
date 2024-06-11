@@ -33,8 +33,8 @@ func newKhulnasoftScannerHelper(cr *v1alpha1.KhulnasoftScanner) *KhulnasoftScann
 func (as *KhulnasoftScannerHelper) CreateConfigMap(cr *v1alpha1.KhulnasoftScanner) *corev1.ConfigMap {
 
 	labels := map[string]string{
-		"app":                   "khulnasoft-scanner-config",
-		"deployedby":            "khulnasoft-operator",
+		"app":                "khulnasoft-scanner-config",
+		"deployedby":         "khulnasoft-operator",
 		"khulnasoftoperator_cr": cr.Name,
 	}
 
@@ -64,8 +64,8 @@ func (as *KhulnasoftScannerHelper) CreateConfigMap(cr *v1alpha1.KhulnasoftScanne
 
 func (as *KhulnasoftScannerHelper) CreateTokenSecret(cr *v1alpha1.KhulnasoftScanner) *corev1.Secret {
 	labels := map[string]string{
-		"app":                   cr.Name + "-requirments",
-		"deployedby":            "khulnasoft-operator",
+		"app":                cr.Name + "-requirments",
+		"deployedby":         "khulnasoft-operator",
 		"khulnasoftoperator_cr": cr.Name,
 	}
 	annotations := map[string]string{
@@ -99,6 +99,7 @@ func (as *KhulnasoftScannerHelper) newDeployment(cr *v1alpha1.KhulnasoftScanner)
 	if image == "" {
 		image = fmt.Sprintf("%s/%s:%s", registry, repository, tag)
 	}
+
 	userarg := []string{
 		"--user",
 		"$(KHULNASOFT_SCANNER_USERNAME)",
@@ -111,10 +112,10 @@ func (as *KhulnasoftScannerHelper) newDeployment(cr *v1alpha1.KhulnasoftScanner)
 	}
 
 	labels := map[string]string{
-		"app":                   cr.Name + "-scanner",
-		"deployedby":            "khulnasoft-operator",
+		"app":                cr.Name + "-scanner",
+		"deployedby":         "khulnasoft-operator",
 		"khulnasoftoperator_cr": cr.Name,
-		"khulnasoft.component":  "scanner",
+		"khulnasoft.component":     "scanner",
 	}
 
 	annotations := map[string]string{
@@ -143,8 +144,8 @@ func (as *KhulnasoftScannerHelper) newDeployment(cr *v1alpha1.KhulnasoftScanner)
 			Replicas: extra.Int32Ptr(int32(cr.Spec.ScannerService.Replicas)),
 			Selector: &metav1.LabelSelector{
 				MatchLabels: map[string]string{
-					"app":                   cr.Name + "-scanner",
-					"deployedby":            "khulnasoft-operator",
+					"app":                cr.Name + "-scanner",
+					"deployedby":         "khulnasoft-operator",
 					"khulnasoftoperator_cr": cr.Name,
 				},
 			},
@@ -166,16 +167,19 @@ func (as *KhulnasoftScannerHelper) newDeployment(cr *v1alpha1.KhulnasoftScanner)
 							SecurityContext: &corev1.SecurityContext{
 								Privileged: &privileged,
 							},
-							Env: []corev1.EnvVar{
-								{
-									Name: "KHULNASOFT_SCANNER_LOGICAL_NAME",
-									ValueFrom: &corev1.EnvVarSource{
-										FieldRef: &corev1.ObjectFieldSelector{
-											FieldPath: "metadata.name",
+							/*
+								// In multi replica scanner deployment this env blocking deployment as all the scanner pods getting same name.
+								Env: []corev1.EnvVar{
+									{
+										Name: "KHULNASOFT_SCANNER_LOGICAL_NAME",
+										ValueFrom: &corev1.EnvVarSource{
+											FieldRef: &corev1.ObjectFieldSelector{
+												FieldPath: "metadata.name",
+											},
 										},
 									},
 								},
-							},
+							*/
 							EnvFrom: []corev1.EnvFromSource{
 								{
 									SecretRef: &corev1.SecretEnvSource{

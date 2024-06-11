@@ -46,7 +46,7 @@ func (enf *KhulnasoftStarboardHelper) CreateStarboardClusterRole(name string, na
 				"",
 			},
 			Resources: []string{
-				"pods", "pods/log", "replicationcontrollers", "services",
+				"pods", "pods/log", "replicationcontrollers", "services", "resourcequotas", "limitranges", "configmaps", "serviceaccounts",
 			},
 			Verbs: []string{
 				"get", "list", "watch",
@@ -65,43 +65,21 @@ func (enf *KhulnasoftStarboardHelper) CreateStarboardClusterRole(name string, na
 		},
 		{
 			APIGroups: []string{
-				"",
-			},
-			Resources: []string{
-				"configmaps", "secrets", "serviceaccounts", "resourcequotas", "limitranges",
-			},
-			Verbs: []string{
-				"get", "list", "watch", "create", "update",
-			},
-		},
-		{
-			APIGroups: []string{
-				"",
-			},
-			Resources: []string{
-				"secrets",
-			},
-			Verbs: []string{
-				"delete",
-			},
-		},
-		{
-			APIGroups: []string{
-				"",
-			},
-			Resources: []string{
-				"events",
-			},
-			Verbs: []string{
-				"create",
-			},
-		},
-		{
-			APIGroups: []string{
 				"apps",
 			},
 			Resources: []string{
 				"replicasets", "statefulsets", "daemonsets", "deployments",
+			},
+			Verbs: []string{
+				"get", "list", "watch",
+			},
+		},
+		{
+			APIGroups: []string{
+				"apps.openshift.io",
+			},
+			Resources: []string{
+				"deploymentconfigs",
 			},
 			Verbs: []string{
 				"get", "list", "watch",
@@ -142,17 +120,6 @@ func (enf *KhulnasoftStarboardHelper) CreateStarboardClusterRole(name string, na
 		},
 		{
 			APIGroups: []string{
-				"batch",
-			},
-			Resources: []string{
-				"jobs",
-			},
-			Verbs: []string{
-				"create", "delete",
-			},
-		},
-		{
-			APIGroups: []string{
 				"khulnasoft.github.io",
 			},
 			Resources: []string{
@@ -175,7 +142,7 @@ func (enf *KhulnasoftStarboardHelper) CreateStarboardClusterRole(name string, na
 		},
 		{
 			APIGroups: []string{
-				"networking.k8s.io",
+				"networking.k8s.io", "extensions",
 			},
 			Resources: []string{
 				"networkpolicies", "ingresses",
@@ -197,16 +164,69 @@ func (enf *KhulnasoftStarboardHelper) CreateStarboardClusterRole(name string, na
 		},
 	}
 
-	crole := rbac.CreateClusterRole(name, namespace, "starboard-operator", fmt.Sprintf("%s-rbac", "khulnasoft-sb"), "Deploy Khulnasoft Starboard Cluster Role", rules)
+	crole := rbac.CreateClusterRole(name, namespace, "starboard-operator", fmt.Sprintf("%s-rbac", "khulnasoft-sb"), "Deploy Khulnasoft Starboard Role", rules)
 
 	return crole
+}
+
+func (enf *KhulnasoftStarboardHelper) CreateStarboardRole(name string, namespace string) *rbacv1.Role {
+	rules := []rbacv1.PolicyRule{
+		{
+			APIGroups: []string{
+				"",
+			},
+			Resources: []string{
+				"secrets",
+			},
+			Verbs: []string{
+				"get", "create", "update",
+			},
+		},
+		{
+			APIGroups: []string{
+				"",
+			},
+			Resources: []string{
+				"configmaps", "serviceaccounts",
+			},
+			Verbs: []string{
+				"create", "update",
+			},
+		},
+		{
+			APIGroups: []string{
+				"",
+			},
+			Resources: []string{
+				"events",
+			},
+			Verbs: []string{
+				"create",
+			},
+		},
+		{
+			APIGroups: []string{
+				"batch",
+			},
+			Resources: []string{
+				"jobs",
+			},
+			Verbs: []string{
+				"create", "delete",
+			},
+		},
+	}
+
+	role := rbac.CreateRole(name, namespace, "starboard-operator", fmt.Sprintf("%s-role", "khulnasoft-sb"), "Deploy Khulnasoft Starboard Role", rules)
+
+	return role
 }
 
 // CreateServiceAccount Create new service account
 func (enf *KhulnasoftStarboardHelper) CreateStarboardServiceAccount(cr, namespace, app, name string) *corev1.ServiceAccount {
 	labels := map[string]string{
-		"app":                   app,
-		"deployedby":            "khulnasoft-operator",
+		"app":                app,
+		"deployedby":         "khulnasoft-operator",
 		"khulnasoftoperator_cr": cr,
 	}
 	annotations := map[string]string{
@@ -235,8 +255,8 @@ func (enf *KhulnasoftStarboardHelper) CreateStarboardServiceAccount(cr, namespac
 
 func (enf *KhulnasoftStarboardHelper) CreateClusterRoleBinding(cr, namespace, name, app, sa, clusterrole string) *rbacv1.ClusterRoleBinding {
 	labels := map[string]string{
-		"app":                   app,
-		"deployedby":            "khulnasoft-operator",
+		"app":                app,
+		"deployedby":         "khulnasoft-operator",
 		"khulnasoftoperator_cr": cr,
 	}
 	annotations := map[string]string{
@@ -270,10 +290,47 @@ func (enf *KhulnasoftStarboardHelper) CreateClusterRoleBinding(cr, namespace, na
 	return crb
 }
 
+func (enf *KhulnasoftStarboardHelper) CreateRoleBinding(r, namespace, name, app, sa, role string) *rbacv1.RoleBinding {
+	labels := map[string]string{
+		"app":               app,
+		"deployedby":        "khulnasoft-operator",
+		"khulnasoftoperator_r": r,
+	}
+	annotations := map[string]string{
+		"description": "Deploy Khulnasoft starboard Role Binding",
+	}
+	rb := &rbacv1.RoleBinding{
+		TypeMeta: metav1.TypeMeta{
+			APIVersion: "rbac.authorization.k8s.io/v1",
+			Kind:       "RoleBinding",
+		},
+		ObjectMeta: metav1.ObjectMeta{
+			Name:        name,
+			Namespace:   namespace,
+			Labels:      labels,
+			Annotations: annotations,
+		},
+		Subjects: []rbacv1.Subject{
+			{
+				Kind:      "ServiceAccount",
+				Name:      sa,
+				Namespace: namespace,
+			},
+		},
+		RoleRef: rbacv1.RoleRef{
+			APIGroup: "rbac.authorization.k8s.io",
+			Kind:     "Role",
+			Name:     role,
+		},
+	}
+
+	return rb
+}
+
 func (enf *KhulnasoftStarboardHelper) CreateStarboardSecret(cr, namespace, name, app string) *corev1.Secret {
 	labels := map[string]string{
-		"app":                   app,
-		"deployedby":            "khulnasoft-operator",
+		"app":                app,
+		"deployedby":         "khulnasoft-operator",
 		"khulnasoftoperator_cr": cr,
 	}
 	annotations := map[string]string{
@@ -299,7 +356,7 @@ func (enf *KhulnasoftStarboardHelper) CreateStarboardConftestConfigMap(cr, names
 	labels := map[string]string{
 		"app":                        app,
 		"deployedby":                 "khulnasoft-operator",
-		"khulnasoftoperator_cr":      cr,
+		"khulnasoftoperator_cr":         cr,
 		"app.kubernetes.io/name":     "starboard-operator",
 		"app.kubernetes.io/instance": "starboard-operator",
 		"app.kubernetes.io/version":  consts.StarboardVersion,
@@ -325,8 +382,8 @@ func (enf *KhulnasoftStarboardHelper) CreateStarboardConftestConfigMap(cr, names
 
 func (enf *KhulnasoftStarboardHelper) CreateStarboardConfigMap(cr, namespace, name, app string) *corev1.ConfigMap {
 	labels := map[string]string{
-		"app":                   app,
-		"deployedby":            "khulnasoft-operator",
+		"app":                app,
+		"deployedby":         "khulnasoft-operator",
 		"khulnasoftoperator_cr": cr,
 	}
 	annotations := map[string]string{
@@ -359,8 +416,8 @@ func (enf *KhulnasoftStarboardHelper) CreateStarboardDeployment(cr *khulnasoftv1
 	}
 
 	labels := map[string]string{
-		"app":                   app,
-		"deployedby":            "khulnasoft-operator",
+		"app":                app,
+		"deployedby":         "khulnasoft-operator",
 		"khulnasoftoperator_cr": cr.Name,
 	}
 	annotations := map[string]string{
@@ -527,6 +584,10 @@ func (ebf *KhulnasoftStarboardHelper) getStarboardEnvVars(cr *khulnasoftv1alpha1
 			Name:  "OPERATOR_HEALTH_PROBE_BIND_ADDRESS",
 			Value: consts.OperatorHealthProbeBindAddress,
 		},
+		{
+			Name:  "OPERATOR_CONFIG_AUDIT_SCANNER_SCAN_ONLY_CURRENT_REVISIONS",
+			Value: "true",
+		},
 	}
 	operatorLogDevMode := corev1.EnvVar{
 		Name:  "OPERATOR_LOG_DEV_MODE",
@@ -626,10 +687,24 @@ func (ebf *KhulnasoftStarboardHelper) getStarboardEnvVars(cr *khulnasoftv1alpha1
 
 	if cr.Spec.OperatorClusterComplianceEnabled != "" {
 		operatorClusterComplianceEnabled = corev1.EnvVar{
-			Name:  "OPERATOR_BATCH_DELETE_DELAY",
-			Value: cr.Spec.BatchDeleteDelay}
+			Name:  "OPERATOR_CLUSTER_COMPLIANCE_ENABLED",
+			Value: cr.Spec.OperatorClusterComplianceEnabled}
 	}
 
 	result = append(result, operatorClusterComplianceEnabled)
+
+	operatorConfigAuditScannerScanOnlyCurrentRevisions := corev1.EnvVar{
+		Name:  "OPERATOR_CONFIG_AUDIT_SCANNER_SCAN_ONLY_CURRENT_REVISIONS",
+		Value: consts.OperatorConfigAuditScannerScanOnlyCurrentRevisions,
+	}
+
+	if cr.Spec.OperatorConfigAuditScannerScanOnlyCurrentRevisions != "" {
+		operatorConfigAuditScannerScanOnlyCurrentRevisions = corev1.EnvVar{
+			Name:  "OPERATOR_CONFIG_AUDIT_SCANNER_SCAN_ONLY_CURRENT_REVISIONS",
+			Value: cr.Spec.OperatorConfigAuditScannerScanOnlyCurrentRevisions}
+	}
+
+	result = append(result, operatorConfigAuditScannerScanOnlyCurrentRevisions)
+
 	return result
 }

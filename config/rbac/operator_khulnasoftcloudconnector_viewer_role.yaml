@@ -1,0 +1,27 @@
+# permissions for end users to view khulnasoftcloudconnectors.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    app.kubernetes.io/name: clusterrole
+    app.kubernetes.io/instance: khulnasoftcloudconnector-viewer-role
+    app.kubernetes.io/component: rbac
+    app.kubernetes.io/created-by: khulnasoft-oprator
+    app.kubernetes.io/part-of: khulnasoft-oprator
+    app.kubernetes.io/managed-by: kustomize
+  name: khulnasoftcloudconnector-viewer-role
+rules:
+- apiGroups:
+  - operator.khulnasoft.com
+  resources:
+  - khulnasoftcloudconnectors
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - operator.khulnasoft.com
+  resources:
+  - khulnasoftcloudconnectors/status
+  verbs:
+  - get

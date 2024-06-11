@@ -31,16 +31,16 @@ type KhulnasoftKubeEnforcerSpec struct {
 
 	Infrastructure         *KhulnasoftInfrastructure    `json:"infra,omitempty"`
 	Config                 KhulnasoftKubeEnforcerConfig `json:"config"`
-	Token                  string                       `json:"token,omitempty"`
+	Token                  string                 `json:"token,omitempty"`
 	RegistryData           *KhulnasoftDockerRegistry    `json:"registry,omitempty"`
 	ImageData              *KhulnasoftImage             `json:"image,omitempty"`
-	EnforcerUpdateApproved *bool                        `json:"updateEnforcer,omitempty"`
-	AllowAnyVersion        bool                         `json:"allowAnyVersion,omitempty"`
+	EnforcerUpdateApproved *bool                  `json:"updateEnforcer,omitempty"`
+	AllowAnyVersion        bool                   `json:"allowAnyVersion,omitempty"`
 	KubeEnforcerService    *KhulnasoftService           `json:"deploy,omitempty"`
-	Envs                   []corev1.EnvVar              `json:"env,omitempty"`
-	Mtls                   bool                         `json:"mtls,omitempty"`
+	Envs                   []corev1.EnvVar        `json:"env,omitempty"`
+	Mtls                   bool                   `json:"mtls,omitempty"`
 	DeployStarboard        *KhulnasoftStarboardDetails  `json:"starboard,omitempty"`
-	ConfigMapChecksum      string                       `json:"config_map_checksum,omitempty"`
+	ConfigMapChecksum      string                 `json:"config_map_checksum,omitempty"`
 }
 
 // KhulnasoftKubeEnforcerStatus defines the observed state of KhulnasoftKubeEnforcer

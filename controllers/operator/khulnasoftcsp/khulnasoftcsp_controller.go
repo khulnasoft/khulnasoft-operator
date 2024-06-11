@@ -20,6 +20,9 @@ import (
 	"context"
 	syserrors "errors"
 	"fmt"
+	"reflect"
+	"time"
+
 	"github.com/khulnasoft/khulnasoft-operator/apis/operator/v1alpha1"
 	"github.com/khulnasoft/khulnasoft-operator/controllers/common"
 	"github.com/khulnasoft/khulnasoft-operator/pkg/consts"
@@ -29,12 +32,9 @@ import (
 	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/types"
-	"reflect"
-	"sigs.k8s.io/controller-runtime/pkg/controller"
 	"sigs.k8s.io/controller-runtime/pkg/controller/controllerutil"
 	logf "sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
-	"time"
 
 	operatorv1alpha1 "github.com/khulnasoft/khulnasoft-operator/apis/operator/v1alpha1"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -204,9 +204,9 @@ func (r *KhulnasoftCspReconciler) Reconcile(ctx context.Context, req ctrl.Reques
 		}
 		if instance.Spec.DeployKubeEnforcer != nil {
 			keConfigMapData := map[string]string{
-				"BATCH_INSTALL_GATEWAY":     fmt.Sprintf(consts.GatewayServiceName, instance.Name),
-				"KHULNASOFT_KE_GROUP_NAME":  "operator-default-ke-group",
-				"KHULNASOFT_KE_GROUP_TOKEN": consts.DefaultKubeEnforcerToken,
+				"BATCH_INSTALL_GATEWAY": fmt.Sprintf(consts.GatewayServiceName, instance.Name),
+				"KHULNASOFT_KE_GROUP_NAME":    "operator-default-ke-group",
+				"KHULNASOFT_KE_GROUP_TOKEN":   consts.DefaultKubeEnforcerToken,
 			}
 			if instance.Spec.ServerConfigMapData != nil {
 				for k, v := range keConfigMapData {
@@ -292,7 +292,6 @@ func (r *KhulnasoftCspReconciler) SetupWithManager(mgr ctrl.Manager) error {
 	builder := ctrl.NewControllerManagedBy(mgr).
 		For(&operatorv1alpha1.KhulnasoftCsp{}).
 		Named("khulnasoftcsp-controller").
-		WithOptions(controller.Options{Reconciler: r}).
 		Owns(&corev1.Secret{}).
 		Owns(&corev1.ServiceAccount{}).
 		Owns(&operatorv1alpha1.KhulnasoftDatabase{}).
@@ -301,10 +300,6 @@ func (r *KhulnasoftCspReconciler) SetupWithManager(mgr ctrl.Manager) error {
 		Owns(&operatorv1alpha1.KhulnasoftEnforcer{}).
 		Owns(&operatorv1alpha1.KhulnasoftKubeEnforcer{})
 
-	//isOpenshift, _ := ocp.VerifyRouteAPI()
-	//if isOpenshift {
-	//	builder.Owns(&routev1.Route{})
-	//}
 	return builder.Complete(r)
 }
 
@@ -677,16 +672,36 @@ func (r *KhulnasoftCspReconciler) InstallKhulnasoftKubeEnforcer(cr *v1alpha1.Khu
 
 		reqLogger.Info("Checking for KhulnasoftKubeEnforcer Upgrade", "kube-enforcer", enforcer.Spec, "found", found.Spec, "update bool", update)
 		if update {
-			found.Spec = *(enforcer.Spec.DeepCopy())
-			err = r.Client.Update(context.Background(), found)
-			if err != nil {
-				reqLogger.Error(err, "Khulnasoft CSP: Failed to update KhulnasoftKubeEnforcer.", "Deployment.Namespace", found.Namespace, "Deployment.Name", found.Name)
-				return reconcile.Result{}, err
+			// Retry loop with backoff
+			retryCount := 0
+			maxRetries := 3
+			retryDelay := time.Second * 5
+
+			for {
+				// Increment retry count
+				retryCount++
+
+				// Attempt to update KhulnasoftKubeEnforcer
+				err = r.Client.Update(context.Background(), found)
+				if err == nil {
+					// Update successful, break out of the loop
+					break
+				}
+
+				// Check if maximum retries reached
+				if retryCount >= maxRetries {
+					reqLogger.Error(err, "Max retries reached. Failed to update KhulnasoftKubeEnforcer.")
+					return reconcile.Result{}, err
+				}
+
+				// Log the error and retry after delay
+				reqLogger.Info("Error updating KhulnasoftKubeEnforcer. Retrying...", "RetryCount", retryCount, "MaxRetries", maxRetries)
+				time.Sleep(retryDelay)
 			}
+
 			// Spec updated - return and requeue
 			return reconcile.Result{Requeue: true}, nil
 		}
-
 	}
 
 	reqLogger.Info("Skip reconcile: Khulnasoft KubeEnforcer Exists", "KhulnasoftKubeEnforcer.Namespace", found.Namespace, "KhulnasoftKubeEnforcer.Name", found.Name)

@@ -33,15 +33,15 @@ type KhulnasoftScannerSpec struct {
 
 	ScannerService    *KhulnasoftService `json:"deploy,required"`
 	Login             *KhulnasoftLogin   `json:"login,required"`
-	RunAsNonRoot      bool               `json:"runAsNonRoot,omitempty"`
-	ConfigMapChecksum string             `json:"config_map_checksum,omitempty"`
+	RunAsNonRoot      bool         `json:"runAsNonRoot,omitempty"`
+	ConfigMapChecksum string       `json:"config_map_checksum,omitempty"`
 }
 
 // KhulnasoftScannerStatus defines the observed state of KhulnasoftScanner
 type KhulnasoftScannerStatus struct {
 	// INSERT ADDITIONAL STATUS FIELD - define observed state of cluster
 	// Important: Run "make" to regenerate code after modifying this file
-	Nodes []string                  `json:"nodes"`
+	Nodes []string            `json:"nodes"`
 	State KhulnasoftDeploymentState `json:"state"`
 }
 

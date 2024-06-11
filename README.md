@@ -1,6 +1,6 @@
 <h1 align="center">Khulnasoft Security Operator</h1>
 <p align="center">
-  <img width="150px" height="150px" src="images/logo.png"/>
+  <img width="150px" height="150px" src="images/logo.svg"/>
 </p>
 
 ## About

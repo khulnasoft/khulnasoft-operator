@@ -34,15 +34,15 @@ type KhulnasoftEnforcerSpec struct {
 
 	EnforcerService        *KhulnasoftService            `json:"deploy,required"`
 	Gateway                *KhulnasoftGatewayInformation `json:"gateway,required"`
-	Token                  string                        `json:"token,required"`
-	Secret                 *Khulnasoftret                `json:"secret,omitempty"`
-	Envs                   []corev1.EnvVar               `json:"env,omitempty"`
-	RunAsNonRoot           bool                          `json:"runAsNonRoot,omitempty"`
-	EnforcerUpdateApproved *bool                         `json:"updateEnforcer,omitempty"`
-	Mtls                   bool                          `json:"mtls,omitempty"`
-	ConfigMapChecksum      string                        `json:"config_map_checksum,omitempty"`
-	KhulnasoftExpressMode  bool                          `json:"khulnasoft_express_mode,omitempty"`
-	RhcosVersion           string                        `json:"rhcosVersion,omitempty"`
+	Token                  string                  `json:"token,required"`
+	Secret                 *KhulnasoftSecret             `json:"secret,omitempty"`
+	Envs                   []corev1.EnvVar         `json:"env,omitempty"`
+	RunAsNonRoot           bool                    `json:"runAsNonRoot,omitempty"`
+	EnforcerUpdateApproved *bool                   `json:"updateEnforcer,omitempty"`
+	Mtls                   bool                    `json:"mtls,omitempty"`
+	ConfigMapChecksum      string                  `json:"config_map_checksum,omitempty"`
+	KhulnasoftExpressMode        bool                    `json:"khulnasoft_express_mode,omitempty"`
+	RhcosVersion           string                  `json:"rhcosVersion,omitempty"`
 }
 
 // KhulnasoftEnforcerStatus defines the observed state of KhulnasoftEnforcer

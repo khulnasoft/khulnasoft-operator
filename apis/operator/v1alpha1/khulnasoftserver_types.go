@@ -34,23 +34,23 @@ type KhulnasoftServerSpec struct {
 
 	ServerService     *KhulnasoftService             `json:"deploy,required"`
 	ExternalDb        *KhulnasoftDatabaseInformation `json:"externalDb,omitempty"`
-	AuditDB           *AuditDBInformation            `json:"auditDB,omitempty"`
-	LicenseToken      string                         `json:"licenseToken,omitempty"`
-	AdminPassword     string                         `json:"adminPassword,omitempty"`
+	AuditDB           *AuditDBInformation      `json:"auditDB,omitempty"`
+	LicenseToken      string                   `json:"licenseToken,omitempty"`
+	AdminPassword     string                   `json:"adminPassword,omitempty"`
 	Enforcer          *KhulnasoftEnforcerDetailes    `json:"enforcer,omitempty"`
-	Envs              []corev1.EnvVar                `json:"env,omitempty"`
-	ConfigMapData     map[string]string              `json:"configMapData,omitempty"`
-	RunAsNonRoot      bool                           `json:"runAsNonRoot,omitempty"`
-	Route             bool                           `json:"route,omitempty"`
-	Mtls              bool                           `json:"mtls,omitempty"`
-	ConfigMapChecksum string                         `json:"config_map_checksum,omitempty"`
+	Envs              []corev1.EnvVar          `json:"env,omitempty"`
+	ConfigMapData     map[string]string        `json:"configMapData,omitempty"`
+	RunAsNonRoot      bool                     `json:"runAsNonRoot,omitempty"`
+	Route             bool                     `json:"route,omitempty"`
+	Mtls              bool                     `json:"mtls,omitempty"`
+	ConfigMapChecksum string                   `json:"config_map_checksum,omitempty"`
 }
 
 // KhulnasoftServerStatus defines the observed state of KhulnasoftServer
 type KhulnasoftServerStatus struct {
 	// INSERT ADDITIONAL STATUS FIELD - define observed state of cluster
 	// Important: Run "make" to regenerate code after modifying this file
-	Nodes []string                  `json:"nodes"`
+	Nodes []string            `json:"nodes"`
 	State KhulnasoftDeploymentState `json:"state"`
 }
 

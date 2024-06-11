@@ -13,16 +13,16 @@ type KhulnasoftInfrastructure struct {
 }
 
 type KhulnasoftCommon struct {
-	ActiveActive       bool           `json:"activeActive"`
-	StorageClass       string         `json:"storageclass,omitempty"`
-	CyberCenterAddress string         `json:"cybercenterAddress,omitempty"`
-	ImagePullSecret    string         `json:"imagePullSecret,omitempty"`
-	AdminPassword      *Khulnasoftret `json:"adminPassword,omitempty"`
-	KhulnasoftLicense  *Khulnasoftret `json:"license,omitempty"`
-	DatabaseSecret     *Khulnasoftret `json:"databaseSecret,omitempty"`
-	DbDiskSize         int            `json:"dbDiskSize,omitempty"`
-	SplitDB            bool           `json:"splitDB,omitempty"`
-	AllowAnyVersion    bool           `json:"allowAnyVersion,omitempty"`
+	ActiveActive       bool        `json:"activeActive,omitempty"`
+	StorageClass       string      `json:"storageclass,omitempty"`
+	CyberCenterAddress string      `json:"cybercenterAddress,omitempty"`
+	ImagePullSecret    string      `json:"imagePullSecret,omitempty"`
+	AdminPassword      *KhulnasoftSecret `json:"adminPassword,omitempty"`
+	KhulnasoftLicense        *KhulnasoftSecret `json:"license,omitempty"`
+	DatabaseSecret     *KhulnasoftSecret `json:"databaseSecret,omitempty"`
+	DbDiskSize         int         `json:"dbDiskSize,omitempty"`
+	SplitDB            bool        `json:"splitDB,omitempty"`
+	AllowAnyVersion    bool        `json:"allowAnyVersion,omitempty"`
 }
 
 type KhulnasoftDockerRegistry struct {
@@ -39,7 +39,7 @@ type KhulnasoftDatabaseInformation struct {
 	Password string `json:"password"`
 }
 
-type Khulnasoftret struct {
+type KhulnasoftSecret struct {
 	Name string `json:"name"`
 	Key  string `json:"key"`
 }
@@ -56,7 +56,7 @@ type KhulnasoftService struct {
 	// Number of instances to deploy for a specific khulnasoft deployment.
 	Replicas       int64                        `json:"replicas"`
 	ServiceType    string                       `json:"service,omitempty"`
-	ImageData      *KhulnasoftImage             `json:"image,omitempty"`
+	ImageData      *KhulnasoftImage                   `json:"image,omitempty"`
 	Resources      *corev1.ResourceRequirements `json:"resources,omitempty"`
 	LivenessProbe  *corev1.Probe                `json:"livenessProbe,omitempty"`
 	ReadinessProbe *corev1.Probe                `json:"readinessProbe,omitempty"`
@@ -76,8 +76,8 @@ type KhulnasoftLogin struct {
 	Username string `json:"username"`
 	Password string `json:"password"`
 	Host     string `json:"host"`
-	Token    string `json:"token"`
-	Insecure bool   `json:"tlsNoVerify"`
+	Token    string `json:"token,omitempty"`
+	Insecure bool   `json:"tlsNoVerify,omitempty"`
 }
 
 type KhulnasoftScannerCliScale struct {
@@ -124,6 +124,7 @@ type KhulnasoftKubeEnforcerConfig struct {
 	GatewayAddress  string `json:"gateway_address,omitempty"`
 	ClusterName     string `json:"cluster_name,omitempty"`
 	ImagePullSecret string `json:"imagePullSecret,omitempty"`
+	KubeBenchImage  string `json:"kubebench_image,omitempty"`
 }
 
 type KhulnasoftKubeEnforcerDetails struct {
@@ -136,26 +137,34 @@ type KhulnasoftStarboardConfig struct {
 }
 
 type KhulnasoftStarboardDetails struct {
-	Infrastructure                *KhulnasoftInfrastructure `json:"infra,omitempty"`
-	AllowAnyVersion               bool                      `json:"allowAnyVersion,omitempty"`
-	StarboardService              *KhulnasoftService        `json:"deploy,required"`
-	Config                        KhulnasoftStarboardConfig `json:"config"`
-	RegistryData                  *KhulnasoftDockerRegistry `json:"registry,omitempty"`
-	ImageData                     *KhulnasoftImage          `json:"image,omitempty"`
-	Envs                          []corev1.EnvVar           `json:"env,omitempty"`
-	LogDevMode                    bool                      `json:"logDevMode,omitempty"`
-	ConcurrentScanJobsLimit       string                    `json:"concurrentScanJobsLimit,omitempty"`
-	ScanJobRetryAfter             string                    `json:"scanJobRetryAfter,omitempty"`
-	MetricsBindAddress            string                    `json:"metricsBindAddress,omitempty"`
-	HealthProbeBindAddress        string                    `json:"healthProbeBindAddress,omitempty"`
-	CisKubernetesBenchmarkEnabled string                    `json:"cisKubernetesBenchmarkEnabled,omitempty"`
-	VulnerabilityScannerEnabled   string                    `json:"vulnerabilityScannerEnabled,omitempty"`
-	BatchDeleteLimit              string                    `json:"batchDeleteLimit,omitempty"`
-	BatchDeleteDelay              string                    `json:"batchDeleteDelay,omitempty"`
-	ImageTag                      string                    `json:"tag,omitempty"`
+	Infrastructure                *KhulnasoftInfrastructure          `json:"infra,omitempty"`
+	AllowAnyVersion               bool                         `json:"allowAnyVersion,omitempty"`
+	StarboardService              *KhulnasoftService                 `json:"deploy,required"`
+	Config                        KhulnasoftStarboardConfig          `json:"config"`
+	RegistryData                  *KhulnasoftDockerRegistry          `json:"registry,omitempty"`
+	Resources                     *corev1.ResourceRequirements `json:"resources,omitempty"`
+	ImageData                     *KhulnasoftImage                   `json:"image,omitempty"`
+	Envs                          []corev1.EnvVar              `json:"env,omitempty"`
+	LogDevMode                    bool                         `json:"logDevMode,omitempty"`
+	ConcurrentScanJobsLimit       string                       `json:"concurrentScanJobsLimit,omitempty"`
+	ScanJobRetryAfter             string                       `json:"scanJobRetryAfter,omitempty"`
+	MetricsBindAddress            string                       `json:"metricsBindAddress,omitempty"`
+	HealthProbeBindAddress        string                       `json:"healthProbeBindAddress,omitempty"`
+	CisKubernetesBenchmarkEnabled string                       `json:"cisKubernetesBenchmarkEnabled,omitempty"`
+	VulnerabilityScannerEnabled   string                       `json:"vulnerabilityScannerEnabled,omitempty"`
+	BatchDeleteLimit              string                       `json:"batchDeleteLimit,omitempty"`
+	BatchDeleteDelay              string                       `json:"batchDeleteDelay,omitempty"`
+	ImageTag                      string                       `json:"tag,omitempty"`
 }
 
 type AuditDBInformation struct {
-	AuditDBSecret *Khulnasoftret                 `json:"secret,omitempty"`
+	AuditDBSecret *KhulnasoftSecret              `json:"secret,omitempty"`
 	Data          *KhulnasoftDatabaseInformation `json:"information,omitempty"`
+}
+
+type KhulnasoftCloudConnectorTunnels struct {
+	Host   string `json:"host,omitempty"`
+	Port   string `json:"port,omitempty"`
+	Type   string `json:"type,omitempty"`
+	Region string `json:"region,omitempty"`
 }

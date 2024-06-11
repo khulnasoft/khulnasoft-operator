@@ -34,8 +34,8 @@ func CreateService(cr, namespace, name, app, description, servicetype string,
 	}
 
 	labels := map[string]string{
-		"app":                   app,
-		"deployedby":            "khulnasoft-operator",
+		"app":                app,
+		"deployedby":         "khulnasoft-operator",
 		"khulnasoftoperator_cr": cr,
 	}
 	annotations := map[string]string{

@@ -20,13 +20,13 @@ import (
 	"context"
 	syserrors "errors"
 	"fmt"
-	"github.com/banzaicloud/k8s-objectmatcher/patch"
 	"github.com/khulnasoft/khulnasoft-operator/controllers/common"
 	"github.com/khulnasoft/khulnasoft-operator/controllers/ocp"
 	"github.com/khulnasoft/khulnasoft-operator/pkg/consts"
 	"github.com/khulnasoft/khulnasoft-operator/pkg/utils/extra"
 	"github.com/khulnasoft/khulnasoft-operator/pkg/utils/k8s"
 	"github.com/khulnasoft/khulnasoft-operator/pkg/utils/k8s/secrets"
+	"github.com/banzaicloud/k8s-objectmatcher/patch"
 	routev1 "github.com/openshift/api/route/v1"
 	appsv1 "k8s.io/api/apps/v1"
 	corev1 "k8s.io/api/core/v1"
@@ -35,7 +35,6 @@ import (
 	"k8s.io/apimachinery/pkg/labels"
 	"k8s.io/apimachinery/pkg/types"
 	"reflect"
-	"sigs.k8s.io/controller-runtime/pkg/controller"
 	"sigs.k8s.io/controller-runtime/pkg/controller/controllerutil"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 	"strings"
@@ -200,7 +199,6 @@ func (r *KhulnasoftServerReconciler) Reconcile(ctx context.Context, req ctrl.Req
 func (r *KhulnasoftServerReconciler) SetupWithManager(mgr ctrl.Manager) error {
 	builder := ctrl.NewControllerManagedBy(mgr).
 		Named("khulnasoftserver-controller").
-		WithOptions(controller.Options{Reconciler: r}).
 		Owns(&corev1.Secret{}).
 		Owns(&corev1.ServiceAccount{}).
 		Owns(&appsv1.Deployment{}).

@@ -44,11 +44,11 @@ func (gw *KhulnasoftGatewayHelper) newDeployment(cr *v1alpha1.KhulnasoftGateway)
 	}
 
 	labels := map[string]string{
-		"app":                   cr.Name + "-gateway",
-		"deployedby":            "khulnasoft-operator",
+		"app":                cr.Name + "-gateway",
+		"deployedby":         "khulnasoft-operator",
 		"khulnasoftoperator_cr": cr.Name,
-		"type":                  "khulnasoft-gateway",
-		"khulnasoft.component":  "gateway",
+		"type":               "khulnasoft-gateway",
+		"khulnasoft.component":     "gateway",
 	}
 	annotations := map[string]string{
 		"description": "Deploy the khulnasoft gateway server",
@@ -87,10 +87,10 @@ func (gw *KhulnasoftGatewayHelper) newDeployment(cr *v1alpha1.KhulnasoftGateway)
 			Replicas: extra.Int32Ptr(int32(cr.Spec.GatewayService.Replicas)),
 			Selector: &metav1.LabelSelector{
 				MatchLabels: map[string]string{
-					"app":                   cr.Name + "-gateway",
-					"deployedby":            "khulnasoft-operator",
+					"app":                cr.Name + "-gateway",
+					"deployedby":         "khulnasoft-operator",
 					"khulnasoftoperator_cr": cr.Name,
-					"type":                  "khulnasoft-gateway",
+					"type":               "khulnasoft-gateway",
 				},
 			},
 			Template: corev1.PodTemplateSpec{

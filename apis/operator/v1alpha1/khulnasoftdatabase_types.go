@@ -31,16 +31,16 @@ type KhulnasoftDatabaseSpec struct {
 	Infrastructure *KhulnasoftInfrastructure `json:"infra"`
 	Common         *KhulnasoftCommon         `json:"common"`
 	DbService      *KhulnasoftService        `json:"deploy,required"`
-	AuditDB        *AuditDBInformation       `json:"auditDB,omitempty"`
-	DiskSize       int                       `json:"diskSize,required"`
-	RunAsNonRoot   bool                      `json:"runAsNonRoot,omitempty"`
+	AuditDB        *AuditDBInformation `json:"auditDB,omitempty"`
+	DiskSize       int                 `json:"diskSize,required"`
+	RunAsNonRoot   bool                `json:"runAsNonRoot,omitempty"`
 }
 
 // KhulnasoftDatabaseStatus defines the observed state of KhulnasoftDatabase
 type KhulnasoftDatabaseStatus struct {
 	// INSERT ADDITIONAL STATUS FIELD - define observed state of cluster
 	// Important: Run "make" to regenerate code after modifying this file
-	Nodes []string                  `json:"nodes"`
+	Nodes []string            `json:"nodes"`
 	State KhulnasoftDeploymentState `json:"state"`
 }
 

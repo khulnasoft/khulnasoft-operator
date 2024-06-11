@@ -19,7 +19,6 @@ package khulnasoftstarboard
 import (
 	"context"
 	"fmt"
-	"github.com/banzaicloud/k8s-objectmatcher/patch"
 	"github.com/khulnasoft/khulnasoft-operator/apis/operator/v1alpha1"
 	common2 "github.com/khulnasoft/khulnasoft-operator/controllers/common"
 	"github.com/khulnasoft/khulnasoft-operator/pkg/consts"
@@ -27,6 +26,7 @@ import (
 	"github.com/khulnasoft/khulnasoft-operator/pkg/utils/k8s"
 	"github.com/khulnasoft/khulnasoft-operator/pkg/utils/k8s/rbac"
 	"github.com/khulnasoft/khulnasoft-operator/pkg/utils/k8s/secrets"
+	"github.com/banzaicloud/k8s-objectmatcher/patch"
 	appsv1 "k8s.io/api/apps/v1"
 	corev1 "k8s.io/api/core/v1"
 	rbacv1 "k8s.io/api/rbac/v1"
@@ -35,7 +35,6 @@ import (
 	"k8s.io/apimachinery/pkg/labels"
 	"k8s.io/apimachinery/pkg/types"
 	"reflect"
-	"sigs.k8s.io/controller-runtime/pkg/controller"
 	"sigs.k8s.io/controller-runtime/pkg/controller/controllerutil"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 	"strings"
@@ -56,17 +55,6 @@ type KhulnasoftStarboardReconciler struct {
 	Scheme *runtime.Scheme
 }
 
-//+kubebuilder:rbac:groups=khulnasoft.khulnasoft.com,resources=khulnasoftstarboards,verbs=get;list;watch;create;update;patch;delete
-//+kubebuilder:rbac:groups=khulnasoft.khulnasoft.com,resources=khulnasoftstarboards/status,verbs=get;update;patch
-//+kubebuilder:rbac:groups=khulnasoft.khulnasoft.com,resources=khulnasoftstarboards/finalizers,verbs=update
-//+kubebuilder:rbac:groups=core,resources=secrets,verbs=get;list;watch;create;update;patch;delete
-//+kubebuilder:rbac:groups=core,resources=serviceaccounts,verbs=get;list;watch;create;update;patch;delete
-//+kubebuilder:rbac:groups=apps,resources=deployments,verbs=get;list;watch;create;update;patch;delete
-//+kubebuilder:rbac:groups=core,resources=pods,verbs=get;list;
-//+kubebuilder:rbac:groups=core,resources=configmaps,verbs=get;list;watch;create;update;patch;delete
-//+kubebuilder:rbac:groups=authorization.k8s.io,resources=clusterroles,verbs=get;list;watch;create;update;patch;delete
-//+kubebuilder:rbac:groups=authorization.k8s.io,resources=clusterrolebindings,verbs=get;list;watch;create;update;patch;delete
-
 // Reconcile is part of the main kubernetes reconciliation loop which aims to
 // move the current state of the cluster closer to the desired state.
 // the KhulnasoftStarboard object against the actual cluster state, and then
@@ -76,6 +64,7 @@ type KhulnasoftStarboardReconciler struct {
 // For more details, check Reconcile and its Result here:
 // - https://pkg.go.dev/sigs.k8s.io/controller-runtime@v0.11.0/pkg/reconcile
 func (r *KhulnasoftStarboardReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
+	req.NamespacedName.Namespace = extra.GetCurrentNameSpace()
 	reqLogger := log.WithValues("Request.Namespace", req.Namespace, "req.Name", req.Name)
 	reqLogger.Info("Reconciling KhulnasoftStarboard")
 
@@ -106,6 +95,11 @@ func (r *KhulnasoftStarboardReconciler) Reconcile(ctx context.Context, req ctrl.
 		return reconcile.Result{}, err
 	}
 
+	_, err = r.addStarboardRole(instance)
+	if err != nil {
+		return reconcile.Result{}, err
+	}
+
 	_, err = r.createKhulnasoftStarboardServiceAccount(instance)
 	if err != nil {
 		return reconcile.Result{}, err
@@ -123,6 +117,11 @@ func (r *KhulnasoftStarboardReconciler) Reconcile(ctx context.Context, req ctrl.
 	instance.Spec.StarboardService = r.updateStarboardServerObject(instance.Spec.StarboardService, instance.Spec.ImageData)
 
 	_, err = r.addStarboardClusterRoleBinding(instance)
+	if err != nil {
+		return reconcile.Result{}, err
+	}
+
+	_, err = r.addStarboardRoleBinding(instance)
 	if err != nil {
 		return reconcile.Result{}, err
 	}
@@ -149,7 +148,6 @@ func (r *KhulnasoftStarboardReconciler) Reconcile(ctx context.Context, req ctrl.
 func (r *KhulnasoftStarboardReconciler) SetupWithManager(mgr ctrl.Manager) error {
 	return ctrl.NewControllerManagedBy(mgr).
 		Named("KhulnasoftStarboard-controller").
-		WithOptions(controller.Options{Reconciler: r}).
 		Owns(&corev1.Secret{}).
 		Owns(&corev1.ServiceAccount{}).
 		Owns(&appsv1.Deployment{}).
@@ -335,6 +333,55 @@ func (r *KhulnasoftStarboardReconciler) addStarboardClusterRole(cr *khulnasoftv1
 	return reconcile.Result{Requeue: true}, nil
 }
 
+func (r *KhulnasoftStarboardReconciler) addStarboardRole(ro *khulnasoftv1alpha1.KhulnasoftStarboard) (reconcile.Result, error) {
+	reqLogger := log.WithValues("Starboard Requirements Phase", "Create Khulnasoft Starboard Role")
+	reqLogger.Info("Start creating starboard role")
+
+	starboardHelper := newKhulnasoftStarboardHelper(ro)
+	role := starboardHelper.CreateStarboardRole(ro.Name, ro.Namespace)
+
+	// Set KhulnasoftStarboard instance as the owner and controller
+	if err := controllerutil.SetControllerReference(ro, role, r.Scheme); err != nil {
+		return reconcile.Result{}, err
+	}
+
+	// Check if this Role already exists
+	found := &rbacv1.Role{}
+	err := r.Client.Get(context.TODO(), types.NamespacedName{Name: role.Name, Namespace: ro.Namespace}, found)
+	if err != nil && errors.IsNotFound(err) {
+		reqLogger.Info("Khulnasoft Starboard: Creating a New Role", "Role.Namespace", role.Namespace, "Role.Name", role.Name)
+		err = r.Client.Create(context.TODO(), role)
+		if err != nil {
+			return reconcile.Result{Requeue: true}, err
+		}
+		return reconcile.Result{}, nil
+	} else if err != nil {
+		return reconcile.Result{}, err
+	}
+
+	// Check if the Role Rules, matches the found Rules
+	equal, err := k8s.CompareByHash(role.Rules, found.Rules)
+
+	if err != nil {
+		return reconcile.Result{}, err
+	}
+
+	if !equal {
+		found.Rules = role.Rules // Update the existing Role's rules
+		reqLogger.Info("Khulnasoft Starboard: Updating Role", "Role.Namespace", found.Namespace, "Role.Name", found.Name)
+		err := r.Client.Update(context.TODO(), found)
+		if err != nil {
+			reqLogger.Error(err, "Failed to update Role", "Role.Namespace", found.Namespace, "Role.Name", found.Name)
+			return reconcile.Result{}, err
+		}
+		return reconcile.Result{Requeue: true}, nil
+	}
+
+	// Role already exists and is up-to-date - don't requeue
+	reqLogger.Info("Skip reconcile: Khulnasoft Role Exists", "Role.Namespace", found.Namespace, "Role.Name", found.Name)
+	return reconcile.Result{}, nil
+}
+
 func (r *KhulnasoftStarboardReconciler) createKhulnasoftStarboardServiceAccount(cr *khulnasoftv1alpha1.KhulnasoftStarboard) (reconcile.Result, error) {
 	reqLogger := log.WithValues("Starboard Requirements Phase", "Create Khulnasoft Starboard Service Account")
 	reqLogger.Info("Start creating khulnasoft starboard service account")
@@ -406,6 +453,44 @@ func (r *KhulnasoftStarboardReconciler) addStarboardClusterRoleBinding(cr *khuln
 
 	// ClusterRoleBinding already exists - don't requeue
 	reqLogger.Info("Skip reconcile: Khulnasoft ClusterRoleBinding Exists", "ClusterRoleBinding.Namespace", found.Namespace, "ClusterRole.Name", found.Name)
+	return reconcile.Result{Requeue: true}, nil
+}
+
+func (r *KhulnasoftStarboardReconciler) addStarboardRoleBinding(cr *khulnasoftv1alpha1.KhulnasoftStarboard) (reconcile.Result, error) {
+	reqLogger := log.WithValues("Starboard Requirements Phase", "Create RoleBinding")
+	reqLogger.Info("Start creating Role")
+
+	// Define a new RoleBinding object
+	starboardHelper := newKhulnasoftStarboardHelper(cr)
+	rb := starboardHelper.CreateRoleBinding(cr.Name,
+		cr.Namespace,
+		"starboard-operator",
+		"ke-rb",
+		cr.Spec.Infrastructure.ServiceAccount,
+		"starboard-operator")
+
+	// Set KhulnasoftStarboard instance as the owner and controller
+	if err := controllerutil.SetControllerReference(cr, rb, r.Scheme); err != nil {
+		return reconcile.Result{}, err
+	}
+
+	// Check if this RoleBinding already exists
+	found := &rbacv1.RoleBinding{}
+	err := r.Client.Get(context.TODO(), types.NamespacedName{Name: rb.Name, Namespace: rb.Namespace}, found)
+	if err != nil && errors.IsNotFound(err) {
+		reqLogger.Info("Khulnasoft Starboard: Creating a New RoleBinding", "RoleBinding.Namespace", rb.Namespace, "RoleBinding.Name", rb.Name)
+		err = r.Client.Create(context.TODO(), rb)
+		if err != nil {
+			return reconcile.Result{Requeue: true}, nil
+		}
+
+		return reconcile.Result{}, nil
+	} else if err != nil {
+		return reconcile.Result{}, err
+	}
+
+	// RoleBinding already exists - don't requeue
+	reqLogger.Info("Skip reconcile: Khulnasoft RoleBinding Exists", "RoleBinding.Namespace", found.Namespace, "Role.Name", found.Name)
 	return reconcile.Result{Requeue: true}, nil
 }
 
