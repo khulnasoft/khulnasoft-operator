@@ -1,6 +1,13 @@
 name: validation
 on:
-  workflow_dispatch:
+  pull_request_target:
+    types: [labeled]
+    paths-ignore:
+      - 'README.md'
+      - 'docs/**'
+      - 'images/**'
+      - 'licenses/**'
+      - 'hack/**'
 env:
   GO111MODULE: "on"
   PROJECTNAME: "khulnasoft-operator"
