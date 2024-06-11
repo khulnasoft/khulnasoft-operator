@@ -27,8 +27,8 @@ func CheckIfRoleBindingExists(k8sclient client.Client, name string) bool {
 // CreateRoleBinding Create role binding
 func CreateRoleBinding(cr, namespace, name, app, description, sa, role string) *rbacv1.RoleBinding {
 	labels := map[string]string{
-		"app":                app,
-		"deployedby":         "khulnasoft-operator",
+		"app":                   app,
+		"deployedby":            "khulnasoft-operator",
 		"khulnasoftoperator_cr": cr,
 	}
 	annotations := map[string]string{

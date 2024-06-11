@@ -36,8 +36,8 @@ func newKhulnasoftEnforcerHelper(cr *v1alpha1.KhulnasoftEnforcer) *KhulnasoftEnf
 // CreateTokenSecret : Create Enforcer Token Secret For The Enforcer connection to the khulnasoft csp environment
 func (enf *KhulnasoftEnforcerHelper) CreateTokenSecret(cr *v1alpha1.KhulnasoftEnforcer) *corev1.Secret {
 	labels := map[string]string{
-		"app":                cr.Name + "-requirments",
-		"deployedby":         "khulnasoft-operator",
+		"app":                   cr.Name + "-requirments",
+		"deployedby":            "khulnasoft-operator",
 		"khulnasoftoperator_cr": cr.Name,
 	}
 	annotations := map[string]string{
@@ -66,8 +66,8 @@ func (enf *KhulnasoftEnforcerHelper) CreateTokenSecret(cr *v1alpha1.KhulnasoftEn
 func (enf *KhulnasoftEnforcerHelper) CreateConfigMap(cr *v1alpha1.KhulnasoftEnforcer) *corev1.ConfigMap {
 
 	labels := map[string]string{
-		"app":                "khulnasoft-csp-enforcer",
-		"deployedby":         "khulnasoft-operator",
+		"app":                   "khulnasoft-csp-enforcer",
+		"deployedby":            "khulnasoft-operator",
 		"khulnasoftoperator_cr": cr.Name,
 	}
 
@@ -80,7 +80,7 @@ func (enf *KhulnasoftEnforcerHelper) CreateConfigMap(cr *v1alpha1.KhulnasoftEnfo
 		"KHULNASOFT_INSTALL_PATH":           "/var/lib/khulnasoft",
 		"KHULNASOFT_LOGICAL_NAME":           "",
 		"KHULNASOFT_SERVER":                 fmt.Sprintf("%s:%d", cr.Spec.Gateway.Host, cr.Spec.Gateway.Port),
-		"RESTART_CONTAINERS":          "no",
+		"RESTART_CONTAINERS":                "no",
 		"KHULNASOFT_EXPRESS_MODE":           "false",
 	}
 
@@ -118,10 +118,10 @@ func (enf *KhulnasoftEnforcerHelper) CreateDaemonSet(cr *v1alpha1.KhulnasoftEnfo
 	}
 
 	labels := map[string]string{
-		"app":                cr.Name + "-requirments",
-		"deployedby":         "khulnasoft-operator",
+		"app":                   cr.Name + "-requirments",
+		"deployedby":            "khulnasoft-operator",
 		"khulnasoftoperator_cr": cr.Name,
-		"khulnasoft.component":     "enforcer",
+		"khulnasoft.component":  "enforcer",
 	}
 	annotations := map[string]string{
 		"description":       "Deploy khulnasoft Enforcer",
@@ -164,8 +164,8 @@ func (enf *KhulnasoftEnforcerHelper) CreateDaemonSet(cr *v1alpha1.KhulnasoftEnfo
 		Spec: appsv1.DaemonSetSpec{
 			Selector: &metav1.LabelSelector{
 				MatchLabels: map[string]string{
-					"app":                cr.Name + "-requirments",
-					"deployedby":         "khulnasoft-operator",
+					"app":                   cr.Name + "-requirments",
+					"deployedby":            "khulnasoft-operator",
 					"khulnasoftoperator_cr": cr.Name,
 				},
 			},

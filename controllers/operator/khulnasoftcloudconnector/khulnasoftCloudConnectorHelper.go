@@ -41,8 +41,8 @@ func newKhulnasoftCloudConnectorHelper(cr *v1alpha1.KhulnasoftCloudConnector) *K
 func (as *KhulnasoftCloudConnectorHelper) CreateConfigMap(cr *v1alpha1.KhulnasoftCloudConnector) *corev1.ConfigMap {
 
 	labels := map[string]string{
-		"app":                "khulnasoft-cloud-connector-conf",
-		"deployedby":         "khulnasoft-operator",
+		"app":                   "khulnasoft-cloud-connector-conf",
+		"deployedby":            "khulnasoft-operator",
 		"khulnasoftoperator_cr": cr.Name,
 	}
 
@@ -82,8 +82,8 @@ func (as *KhulnasoftCloudConnectorHelper) CreateConfigMap(cr *v1alpha1.Khulnasof
 func (as *KhulnasoftCloudConnectorHelper) CreateTokenSecret(cr *v1alpha1.KhulnasoftCloudConnector) *corev1.Secret {
 
 	labels := map[string]string{
-		"app":                cr.Name + "-requirments",
-		"deployedby":         "khulnasoft-operator",
+		"app":                   cr.Name + "-requirments",
+		"deployedby":            "khulnasoft-operator",
 		"khulnasoftoperator_cr": cr.Name,
 	}
 	annotations := map[string]string{
@@ -122,10 +122,10 @@ func (as *KhulnasoftCloudConnectorHelper) newDeployment(cr *v1alpha1.KhulnasoftC
 	}
 
 	labels := map[string]string{
-		"app":                cr.Name + "-cloud-connector",
-		"deployedby":         "khulnasoft-operator",
+		"app":                   cr.Name + "-cloud-connector",
+		"deployedby":            "khulnasoft-operator",
 		"khulnasoftoperator_cr": cr.Name,
-		"khulnasoft.component":     "cloud-connector",
+		"khulnasoft.component":  "cloud-connector",
 	}
 
 	annotations := map[string]string{
@@ -154,8 +154,8 @@ func (as *KhulnasoftCloudConnectorHelper) newDeployment(cr *v1alpha1.KhulnasoftC
 			Replicas: extra.Int32Ptr(int32(cr.Spec.CloudConnectorService.Replicas)),
 			Selector: &metav1.LabelSelector{
 				MatchLabels: map[string]string{
-					"app":                cr.Name + "-cloud-connector",
-					"deployedby":         "khulnasoft-operator",
+					"app":                   cr.Name + "-cloud-connector",
+					"deployedby":            "khulnasoft-operator",
 					"khulnasoftoperator_cr": cr.Name,
 				},
 			},

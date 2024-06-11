@@ -204,9 +204,9 @@ func (r *KhulnasoftCspReconciler) Reconcile(ctx context.Context, req ctrl.Reques
 		}
 		if instance.Spec.DeployKubeEnforcer != nil {
 			keConfigMapData := map[string]string{
-				"BATCH_INSTALL_GATEWAY": fmt.Sprintf(consts.GatewayServiceName, instance.Name),
-				"KHULNASOFT_KE_GROUP_NAME":    "operator-default-ke-group",
-				"KHULNASOFT_KE_GROUP_TOKEN":   consts.DefaultKubeEnforcerToken,
+				"BATCH_INSTALL_GATEWAY":     fmt.Sprintf(consts.GatewayServiceName, instance.Name),
+				"KHULNASOFT_KE_GROUP_NAME":  "operator-default-ke-group",
+				"KHULNASOFT_KE_GROUP_TOKEN": consts.DefaultKubeEnforcerToken,
 			}
 			if instance.Spec.ServerConfigMapData != nil {
 				for k, v := range keConfigMapData {

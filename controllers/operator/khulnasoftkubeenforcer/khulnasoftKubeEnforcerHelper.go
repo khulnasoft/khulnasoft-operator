@@ -19,12 +19,12 @@ import (
 )
 
 const (
-	WebhookTimeout     int32 = 5
-	khulnasoftOperatorLabel        = "khulnasoft-operator"
-	kubeEnforcerLabel        = "khulnasoft-kube-enforcer"
-	apiVersion               = "rbac.authorization.k8s.io/v1"
-	kubeEnforcerVolume       = "khulnasoft-grpc-kube-enforcer"
-	kubeEnforcerSsl          = "kube-enforcer-ssl"
+	WebhookTimeout          int32 = 5
+	khulnasoftOperatorLabel       = "khulnasoft-operator"
+	kubeEnforcerLabel             = "khulnasoft-kube-enforcer"
+	apiVersion                    = "rbac.authorization.k8s.io/v1"
+	kubeEnforcerVolume            = "khulnasoft-grpc-kube-enforcer"
+	kubeEnforcerSsl               = "kube-enforcer-ssl"
 )
 
 // EnforcerParameters :
@@ -230,8 +230,8 @@ func (enf *KhulnasoftKubeEnforcerHelper) CreateKubeEnforcerClusterRole(name stri
 // CreateServiceAccount Create new service account
 func (enf *KhulnasoftKubeEnforcerHelper) CreateKEServiceAccount(cr, namespace, app, name string) *corev1.ServiceAccount {
 	labels := map[string]string{
-		"app":                app,
-		"deployedby":         khulnasoftOperatorLabel,
+		"app":                   app,
+		"deployedby":            khulnasoftOperatorLabel,
 		"khulnasoftoperator_cr": cr,
 	}
 	annotations := map[string]string{
@@ -255,8 +255,8 @@ func (enf *KhulnasoftKubeEnforcerHelper) CreateKEServiceAccount(cr, namespace, a
 
 func (enf *KhulnasoftKubeEnforcerHelper) CreateClusterRoleBinding(cr, namespace, name, app, sa, clusterrole string) *rbacv1.ClusterRoleBinding {
 	labels := map[string]string{
-		"app":                app,
-		"deployedby":         khulnasoftOperatorLabel,
+		"app":                   app,
+		"deployedby":            khulnasoftOperatorLabel,
 		"khulnasoftoperator_cr": cr,
 	}
 	annotations := map[string]string{
@@ -360,8 +360,8 @@ func (enf *KhulnasoftKubeEnforcerHelper) CreateKubeEnforcerRole(cr, namespace, n
 		},
 	}
 	labels := map[string]string{
-		"app":                app,
-		"deployedby":         khulnasoftOperatorLabel,
+		"app":                   app,
+		"deployedby":            khulnasoftOperatorLabel,
 		"khulnasoftoperator_cr": cr,
 	}
 	annotations := map[string]string{
@@ -387,8 +387,8 @@ func (enf *KhulnasoftKubeEnforcerHelper) CreateKubeEnforcerRole(cr, namespace, n
 
 func (enf *KhulnasoftKubeEnforcerHelper) CreateRoleBinding(cr, namespace, name, app, sa, role string) *rbacv1.RoleBinding {
 	labels := map[string]string{
-		"app":                app,
-		"deployedby":         khulnasoftOperatorLabel,
+		"app":                   app,
+		"deployedby":            khulnasoftOperatorLabel,
 		"khulnasoftoperator_cr": cr,
 	}
 	annotations := map[string]string{
@@ -424,8 +424,8 @@ func (enf *KhulnasoftKubeEnforcerHelper) CreateRoleBinding(cr, namespace, name, 
 
 func (enf *KhulnasoftKubeEnforcerHelper) CreateValidatingWebhook(cr, namespace, name, app, keService string, caBundle []byte) *admissionv1.ValidatingWebhookConfiguration {
 	labels := map[string]string{
-		"app":                app,
-		"deployedby":         khulnasoftOperatorLabel,
+		"app":                   app,
+		"deployedby":            khulnasoftOperatorLabel,
 		"khulnasoftoperator_cr": cr,
 	}
 	annotations := map[string]string{
@@ -504,8 +504,8 @@ func (enf *KhulnasoftKubeEnforcerHelper) CreateValidatingWebhook(cr, namespace, 
 
 func (enf *KhulnasoftKubeEnforcerHelper) CreateMutatingWebhook(cr, namespace, name, app, keService string, caBundle []byte) *admissionv1.MutatingWebhookConfiguration {
 	labels := map[string]string{
-		"app":                app,
-		"deployedby":         khulnasoftOperatorLabel,
+		"app":                   app,
+		"deployedby":            khulnasoftOperatorLabel,
 		"khulnasoftoperator_cr": cr,
 	}
 	annotations := map[string]string{
@@ -583,11 +583,11 @@ func (enf *KhulnasoftKubeEnforcerHelper) CreateKEConfigMap(cr, namespace, name, 
 	configMapData := map[string]string{
 		"KHULNASOFT_ENABLE_CACHE":            "yes",
 		"KHULNASOFT_CACHE_EXPIRATION_PERIOD": "60",
-		"TLS_SERVER_CERT_FILEPATH":     "/certs/khulnasoft_ke.crt",
-		"TLS_SERVER_KEY_FILEPATH":      "/certs/khulnasoft_ke.key",
+		"TLS_SERVER_CERT_FILEPATH":           "/certs/khulnasoft_ke.crt",
+		"TLS_SERVER_KEY_FILEPATH":            "/certs/khulnasoft_ke.key",
 		"KHULNASOFT_GATEWAY_SECURE_ADDRESS":  gwAddress,
 		"KHULNASOFT_TLS_PORT":                "8443",
-		"CLUSTER_NAME":                 clusterName,
+		"CLUSTER_NAME":                       clusterName,
 		"KHULNASOFT_KB_SCAN_TAINTED_NODES":   "true",
 		"KHULNASOFT_KB_IMAGE_NAME":           kbImage,
 	}
@@ -597,8 +597,8 @@ func (enf *KhulnasoftKubeEnforcerHelper) CreateKEConfigMap(cr, namespace, name, 
 	}
 
 	labels := map[string]string{
-		"app":                app,
-		"deployedby":         khulnasoftOperatorLabel,
+		"app":                   app,
+		"deployedby":            khulnasoftOperatorLabel,
 		"khulnasoftoperator_cr": cr,
 	}
 	annotations := map[string]string{
@@ -623,8 +623,8 @@ func (enf *KhulnasoftKubeEnforcerHelper) CreateKEConfigMap(cr, namespace, name, 
 
 func (enf *KhulnasoftKubeEnforcerHelper) CreateKETokenSecret(cr, namespace, name, app, token string) *corev1.Secret {
 	labels := map[string]string{
-		"app":                app,
-		"deployedby":         khulnasoftOperatorLabel,
+		"app":                   app,
+		"deployedby":            khulnasoftOperatorLabel,
 		"khulnasoftoperator_cr": cr,
 	}
 	annotations := map[string]string{
@@ -651,8 +651,8 @@ func (enf *KhulnasoftKubeEnforcerHelper) CreateKETokenSecret(cr, namespace, name
 
 func (enf *KhulnasoftKubeEnforcerHelper) CreateKESSLSecret(cr, namespace, name, app string, secretKey, secretCert []byte) *corev1.Secret {
 	labels := map[string]string{
-		"app":                app,
-		"deployedby":         khulnasoftOperatorLabel,
+		"app":                   app,
+		"deployedby":            khulnasoftOperatorLabel,
 		"khulnasoftoperator_cr": cr,
 	}
 	annotations := map[string]string{
@@ -680,8 +680,8 @@ func (enf *KhulnasoftKubeEnforcerHelper) CreateKESSLSecret(cr, namespace, name, 
 
 func (enf *KhulnasoftKubeEnforcerHelper) CreateKEService(cr, namespace, name, app string) *corev1.Service {
 	labels := map[string]string{
-		"app":                app,
-		"deployedby":         khulnasoftOperatorLabel,
+		"app":                   app,
+		"deployedby":            khulnasoftOperatorLabel,
 		"khulnasoftoperator_cr": cr,
 	}
 	annotations := map[string]string{
@@ -726,10 +726,10 @@ func (enf *KhulnasoftKubeEnforcerHelper) CreateKEDeployment(cr *operatorv1alpha1
 	}
 
 	labels := map[string]string{
-		"app":                app,
-		"deployedby":         khulnasoftOperatorLabel,
+		"app":                   app,
+		"deployedby":            khulnasoftOperatorLabel,
 		"khulnasoftoperator_cr": cr.Name,
-		"khulnasoft.component":     "kubeenforcer",
+		"khulnasoft.component":  "kubeenforcer",
 	}
 	annotations := map[string]string{
 		"description":       "Deploy Kube Enforcer Deployment",
@@ -989,8 +989,8 @@ func (ebf *KhulnasoftKubeEnforcerHelper) newStarboard(cr *operatorv1alpha1.Khuln
 	log.Info("Retrieved image data")
 
 	labels := map[string]string{
-		"app":                cr.Name + "-kube-enforcer",
-		"deployedby":         khulnasoftOperatorLabel,
+		"app":                   cr.Name + "-kube-enforcer",
+		"deployedby":            khulnasoftOperatorLabel,
 		"khulnasoftoperator_cr": cr.Name,
 	}
 	annotations := map[string]string{

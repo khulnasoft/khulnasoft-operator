@@ -71,10 +71,10 @@ func (lightning *KhulnasoftLightningHelper) newKhulnasoftKubeEnforcer(cr *v1alph
 	}
 
 	labels := map[string]string{
-		"app":                cr.Name + "-lightning",
-		"deployedby":         "khulnasoft-operator",
+		"app":                   cr.Name + "-lightning",
+		"deployedby":            "khulnasoft-operator",
 		"khulnasoftoperator_cr": cr.Name,
-		"khulnasoft.component":     "kubeenforcer",
+		"khulnasoft.component":  "kubeenforcer",
 	}
 	annotations := map[string]string{
 		"description": "Deploy Khulnasoft KubeEnforcer",
@@ -173,10 +173,10 @@ func (lightning *KhulnasoftLightningHelper) newKhulnasoftEnforcer(cr *v1alpha1.K
 	}
 
 	labels := map[string]string{
-		"app":                cr.Name + "-enforcer",
-		"deployedby":         "khulnasoft-operator",
+		"app":                   cr.Name + "-enforcer",
+		"deployedby":            "khulnasoft-operator",
 		"khulnasoftoperator_cr": cr.Name,
-		"khulnasoft.component":     "enforcer",
+		"khulnasoft.component":  "enforcer",
 	}
 	annotations := map[string]string{
 		"description": "Deploy Khulnasoft Enforcer",

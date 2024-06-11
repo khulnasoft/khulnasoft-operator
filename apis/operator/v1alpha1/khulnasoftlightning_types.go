@@ -41,30 +41,30 @@ type KhulnasoftLightningGlobal struct {
 
 type KhulnasoftLightningKubeEnforcer struct {
 	Infrastructure         *KhulnasoftInfrastructure   `json:"infra,omitempty"`
-	Token                  string                `json:"token,omitempty"`
+	Token                  string                      `json:"token,omitempty"`
 	RegistryData           *KhulnasoftDockerRegistry   `json:"registry,omitempty"`
 	ImageData              *KhulnasoftImage            `json:"image,omitempty"`
-	EnforcerUpdateApproved *bool                 `json:"updateEnforcer,omitempty"`
-	AllowAnyVersion        bool                  `json:"allowAnyVersion,omitempty"`
+	EnforcerUpdateApproved *bool                       `json:"updateEnforcer,omitempty"`
+	AllowAnyVersion        bool                        `json:"allowAnyVersion,omitempty"`
 	KubeEnforcerService    *KhulnasoftService          `json:"deploy,omitempty"`
-	Envs                   []corev1.EnvVar       `json:"env,omitempty"`
-	Mtls                   bool                  `json:"mtls,omitempty"`
+	Envs                   []corev1.EnvVar             `json:"env,omitempty"`
+	Mtls                   bool                        `json:"mtls,omitempty"`
 	DeployStarboard        *KhulnasoftStarboardDetails `json:"starboard,omitempty"`
-	ConfigMapChecksum      string                `json:"config_map_checksum,omitempty"`
+	ConfigMapChecksum      string                      `json:"config_map_checksum,omitempty"`
 }
 
 type KhulnasoftLightningEnforcer struct {
 	Infrastructure         *KhulnasoftInfrastructure `json:"infra"`
 	EnforcerService        *KhulnasoftService        `json:"deploy,required"`
-	Token                  string              `json:"token,omitempty"`
+	Token                  string                    `json:"token,omitempty"`
 	Secret                 *KhulnasoftSecret         `json:"secret,omitempty"`
-	Envs                   []corev1.EnvVar     `json:"env,omitempty"`
-	RunAsNonRoot           bool                `json:"runAsNonRoot,omitempty"`
-	EnforcerUpdateApproved *bool               `json:"updateEnforcer,omitempty"`
-	Mtls                   bool                `json:"mtls,omitempty"`
-	ConfigMapChecksum      string              `json:"config_map_checksum,omitempty"`
-	KhulnasoftExpressMode        bool                `json:"khulnasoft_express_mode,omitempty"`
-	RhcosVersion           string              `json:"rhcosVersion,omitempty"`
+	Envs                   []corev1.EnvVar           `json:"env,omitempty"`
+	RunAsNonRoot           bool                      `json:"runAsNonRoot,omitempty"`
+	EnforcerUpdateApproved *bool                     `json:"updateEnforcer,omitempty"`
+	Mtls                   bool                      `json:"mtls,omitempty"`
+	ConfigMapChecksum      string                    `json:"config_map_checksum,omitempty"`
+	KhulnasoftExpressMode  bool                      `json:"khulnasoft_express_mode,omitempty"`
+	RhcosVersion           string                    `json:"rhcosVersion,omitempty"`
 }
 
 // KhulnasoftLightningStatus defines the observed state of KhulnasoftLightning

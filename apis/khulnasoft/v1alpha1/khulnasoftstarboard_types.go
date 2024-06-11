@@ -31,32 +31,32 @@ type KhulnasoftStarboardSpec struct {
 	// Important: Run "make" to regenerate code after modifying this file
 
 	Infrastructure                                     *v1alpha1.KhulnasoftInfrastructure `json:"infra,omitempty"`
-	AllowAnyVersion                                    bool                         `json:"allowAnyVersion,omitempty"`
+	AllowAnyVersion                                    bool                               `json:"allowAnyVersion,omitempty"`
 	StarboardService                                   *v1alpha1.KhulnasoftService        `json:"deploy,required"`
 	Config                                             v1alpha1.KhulnasoftStarboardConfig `json:"config"`
 	RegistryData                                       *v1alpha1.KhulnasoftDockerRegistry `json:"registry,omitempty"`
 	ImageData                                          *v1alpha1.KhulnasoftImage          `json:"image,omitempty"`
-	Envs                                               []corev1.EnvVar              `json:"env,omitempty"`
-	KubeEnforcerVersion                                string                       `json:"kube_enforcer_version,omitempty"`
-	LogDevMode                                         bool                         `json:"logDevMode,omitempty"`
-	ConcurrentScanJobsLimit                            string                       `json:"concurrentScanJobsLimit,omitempty"`
-	ScanJobRetryAfter                                  string                       `json:"scanJobRetryAfter,omitempty"`
-	MetricsBindAddress                                 string                       `json:"metricsBindAddress,omitempty"`
-	HealthProbeBindAddress                             string                       `json:"healthProbeBindAddress,omitempty"`
-	CisKubernetesBenchmarkEnabled                      string                       `json:"cisKubernetesBenchmarkEnabled,omitempty"`
-	VulnerabilityScannerEnabled                        string                       `json:"vulnerabilityScannerEnabled,omitempty"`
-	BatchDeleteLimit                                   string                       `json:"batchDeleteLimit,omitempty"`
-	BatchDeleteDelay                                   string                       `json:"batchDeleteDelay,omitempty"`
-	OperatorClusterComplianceEnabled                   string                       `json:"operator_cluster_compliance_enabled"`
-	OperatorConfigAuditScannerScanOnlyCurrentRevisions string                       `json:"operator_config_audit_scanner_scan_only_current_revisions"`
-	ConfigMapChecksum                                  string                       `json:"config_map_checksum,omitempty"`
+	Envs                                               []corev1.EnvVar                    `json:"env,omitempty"`
+	KubeEnforcerVersion                                string                             `json:"kube_enforcer_version,omitempty"`
+	LogDevMode                                         bool                               `json:"logDevMode,omitempty"`
+	ConcurrentScanJobsLimit                            string                             `json:"concurrentScanJobsLimit,omitempty"`
+	ScanJobRetryAfter                                  string                             `json:"scanJobRetryAfter,omitempty"`
+	MetricsBindAddress                                 string                             `json:"metricsBindAddress,omitempty"`
+	HealthProbeBindAddress                             string                             `json:"healthProbeBindAddress,omitempty"`
+	CisKubernetesBenchmarkEnabled                      string                             `json:"cisKubernetesBenchmarkEnabled,omitempty"`
+	VulnerabilityScannerEnabled                        string                             `json:"vulnerabilityScannerEnabled,omitempty"`
+	BatchDeleteLimit                                   string                             `json:"batchDeleteLimit,omitempty"`
+	BatchDeleteDelay                                   string                             `json:"batchDeleteDelay,omitempty"`
+	OperatorClusterComplianceEnabled                   string                             `json:"operator_cluster_compliance_enabled"`
+	OperatorConfigAuditScannerScanOnlyCurrentRevisions string                             `json:"operator_config_audit_scanner_scan_only_current_revisions"`
+	ConfigMapChecksum                                  string                             `json:"config_map_checksum,omitempty"`
 }
 
 // KhulnasoftStarboardStatus defines the observed state of KhulnasoftStarboard
 type KhulnasoftStarboardStatus struct {
 	// INSERT ADDITIONAL STATUS FIELD - define observed state of cluster
 	// Important: Run "make" to regenerate code after modifying this file
-	Nodes []string                     `json:"nodes"`
+	Nodes []string                           `json:"nodes"`
 	State v1alpha1.KhulnasoftDeploymentState `json:"state"`
 }
 

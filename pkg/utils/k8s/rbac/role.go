@@ -27,8 +27,8 @@ func CheckIfRoleExists(k8sclient client.Client, name string) bool {
 // CreateRole Create role
 func CreateRole(r, namespace, name, app, description string, rules []rbacv1.PolicyRule) *rbacv1.Role {
 	labels := map[string]string{
-		"app":               app,
-		"deployedby":        "khulnasoft-operator",
+		"app":                  app,
+		"deployedby":           "khulnasoft-operator",
 		"khulnasoftoperator_r": r,
 	}
 	annotations := map[string]string{

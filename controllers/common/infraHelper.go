@@ -118,7 +118,7 @@ func UpdateKhulnasoftCommon(common *operatorv1alpha1.KhulnasoftCommon, name stri
 			CyberCenterAddress: consts.CyberCenterAddress,
 			ImagePullSecret:    fmt.Sprintf(consts.PullImageSecretName, name),
 			AdminPassword:      adminPassword,
-			KhulnasoftLicense:        khulnasoftLicense,
+			KhulnasoftLicense:  khulnasoftLicense,
 			DatabaseSecret: &operatorv1alpha1.KhulnasoftSecret{
 				Name: fmt.Sprintf(consts.ScalockDbPasswordSecretName, name),
 				Key:  consts.ScalockDbPasswordSecretKey,

@@ -33,16 +33,16 @@ type KhulnasoftCloudConnectorSpec struct {
 
 	CloudConnectorService *KhulnasoftService                 `json:"deploy,required"`
 	Login                 *KhulnasoftLogin                   `json:"login,required"`
-	RunAsNonRoot          bool                         `json:"runAsNonRoot,omitempty"`
+	RunAsNonRoot          bool                               `json:"runAsNonRoot,omitempty"`
 	Tunnels               []*KhulnasoftCloudConnectorTunnels `json:"tunnels,required"`
-	ConfigMapChecksum     string                       `json:"config_map_checksum,omitempty"`
+	ConfigMapChecksum     string                             `json:"config_map_checksum,omitempty"`
 }
 
 // KhulnasoftCloudConnectorStatus defines the observed state of KhulnasoftCloudConnector
 type KhulnasoftCloudConnectorStatus struct {
 	// INSERT ADDITIONAL STATUS FIELD - define observed state of cluster
 	// Important: Run "make" to regenerate code after modifying this file
-	Nodes []string            `json:"nodes"`
+	Nodes []string                  `json:"nodes"`
 	State KhulnasoftDeploymentState `json:"state"`
 }
 

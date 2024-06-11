@@ -13,16 +13,16 @@ type KhulnasoftInfrastructure struct {
 }
 
 type KhulnasoftCommon struct {
-	ActiveActive       bool        `json:"activeActive,omitempty"`
-	StorageClass       string      `json:"storageclass,omitempty"`
-	CyberCenterAddress string      `json:"cybercenterAddress,omitempty"`
-	ImagePullSecret    string      `json:"imagePullSecret,omitempty"`
+	ActiveActive       bool              `json:"activeActive,omitempty"`
+	StorageClass       string            `json:"storageclass,omitempty"`
+	CyberCenterAddress string            `json:"cybercenterAddress,omitempty"`
+	ImagePullSecret    string            `json:"imagePullSecret,omitempty"`
 	AdminPassword      *KhulnasoftSecret `json:"adminPassword,omitempty"`
-	KhulnasoftLicense        *KhulnasoftSecret `json:"license,omitempty"`
+	KhulnasoftLicense  *KhulnasoftSecret `json:"license,omitempty"`
 	DatabaseSecret     *KhulnasoftSecret `json:"databaseSecret,omitempty"`
-	DbDiskSize         int         `json:"dbDiskSize,omitempty"`
-	SplitDB            bool        `json:"splitDB,omitempty"`
-	AllowAnyVersion    bool        `json:"allowAnyVersion,omitempty"`
+	DbDiskSize         int               `json:"dbDiskSize,omitempty"`
+	SplitDB            bool              `json:"splitDB,omitempty"`
+	AllowAnyVersion    bool              `json:"allowAnyVersion,omitempty"`
 }
 
 type KhulnasoftDockerRegistry struct {
@@ -56,7 +56,7 @@ type KhulnasoftService struct {
 	// Number of instances to deploy for a specific khulnasoft deployment.
 	Replicas       int64                        `json:"replicas"`
 	ServiceType    string                       `json:"service,omitempty"`
-	ImageData      *KhulnasoftImage                   `json:"image,omitempty"`
+	ImageData      *KhulnasoftImage             `json:"image,omitempty"`
 	Resources      *corev1.ResourceRequirements `json:"resources,omitempty"`
 	LivenessProbe  *corev1.Probe                `json:"livenessProbe,omitempty"`
 	ReadinessProbe *corev1.Probe                `json:"readinessProbe,omitempty"`
@@ -137,13 +137,13 @@ type KhulnasoftStarboardConfig struct {
 }
 
 type KhulnasoftStarboardDetails struct {
-	Infrastructure                *KhulnasoftInfrastructure          `json:"infra,omitempty"`
+	Infrastructure                *KhulnasoftInfrastructure    `json:"infra,omitempty"`
 	AllowAnyVersion               bool                         `json:"allowAnyVersion,omitempty"`
-	StarboardService              *KhulnasoftService                 `json:"deploy,required"`
-	Config                        KhulnasoftStarboardConfig          `json:"config"`
-	RegistryData                  *KhulnasoftDockerRegistry          `json:"registry,omitempty"`
+	StarboardService              *KhulnasoftService           `json:"deploy,required"`
+	Config                        KhulnasoftStarboardConfig    `json:"config"`
+	RegistryData                  *KhulnasoftDockerRegistry    `json:"registry,omitempty"`
 	Resources                     *corev1.ResourceRequirements `json:"resources,omitempty"`
-	ImageData                     *KhulnasoftImage                   `json:"image,omitempty"`
+	ImageData                     *KhulnasoftImage             `json:"image,omitempty"`
 	Envs                          []corev1.EnvVar              `json:"env,omitempty"`
 	LogDevMode                    bool                         `json:"logDevMode,omitempty"`
 	ConcurrentScanJobsLimit       string                       `json:"concurrentScanJobsLimit,omitempty"`

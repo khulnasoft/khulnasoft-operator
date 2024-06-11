@@ -41,10 +41,10 @@ func (db *KhulnasoftDatabaseHelper) newDeployment(cr *v1alpha1.KhulnasoftDatabas
 	}
 
 	labels := map[string]string{
-		"app":                app,
-		"deployedby":         "khulnasoft-operator",
+		"app":                   app,
+		"deployedby":            "khulnasoft-operator",
 		"khulnasoftoperator_cr": cr.Name,
-		"khulnasoft.component":     "database",
+		"khulnasoft.component":  "database",
 	}
 	annotations := map[string]string{
 		"description": "Deploy the khulnasoft database server",
@@ -107,8 +107,8 @@ func (db *KhulnasoftDatabaseHelper) newDeployment(cr *v1alpha1.KhulnasoftDatabas
 			Replicas: extra.Int32Ptr(int32(cr.Spec.DbService.Replicas)),
 			Selector: &metav1.LabelSelector{
 				MatchLabels: map[string]string{
-					"app":                app,
-					"deployedby":         "khulnasoft-operator",
+					"app":                   app,
+					"deployedby":            "khulnasoft-operator",
 					"khulnasoftoperator_cr": cr.Name,
 				},
 			},

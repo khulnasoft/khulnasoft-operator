@@ -29,10 +29,10 @@ func newKhulnasoftCspHelper(cr *v1alpha1.KhulnasoftCsp) *KhulnasoftCspHelper {
 
 func (csp *KhulnasoftCspHelper) newKhulnasoftDatabase(cr *v1alpha1.KhulnasoftCsp) *v1alpha1.KhulnasoftDatabase {
 	labels := map[string]string{
-		"app":                cr.Name + "-csp",
-		"deployedby":         "khulnasoft-operator",
+		"app":                   cr.Name + "-csp",
+		"deployedby":            "khulnasoft-operator",
 		"khulnasoftoperator_cr": cr.Name,
-		"khulnasoft.component":     "database",
+		"khulnasoft.component":  "database",
 	}
 	annotations := map[string]string{
 		"description": "Deploy Khulnasoft Database (not for production environments)",
@@ -63,10 +63,10 @@ func (csp *KhulnasoftCspHelper) newKhulnasoftDatabase(cr *v1alpha1.KhulnasoftCsp
 
 func (csp *KhulnasoftCspHelper) newKhulnasoftGateway(cr *v1alpha1.KhulnasoftCsp) *v1alpha1.KhulnasoftGateway {
 	labels := map[string]string{
-		"app":                cr.Name + "-csp",
-		"deployedby":         "khulnasoft-operator",
+		"app":                   cr.Name + "-csp",
+		"deployedby":            "khulnasoft-operator",
 		"khulnasoftoperator_cr": cr.Name,
-		"khulnasoft.component":     "gateway",
+		"khulnasoft.component":  "gateway",
 	}
 	annotations := map[string]string{
 		"description": "Deploy Khulnasoft Gateway",
@@ -99,10 +99,10 @@ func (csp *KhulnasoftCspHelper) newKhulnasoftGateway(cr *v1alpha1.KhulnasoftCsp)
 
 func (csp *KhulnasoftCspHelper) newKhulnasoftServer(cr *v1alpha1.KhulnasoftCsp) *v1alpha1.KhulnasoftServer {
 	labels := map[string]string{
-		"app":                cr.Name + "-csp",
-		"deployedby":         "khulnasoft-operator",
+		"app":                   cr.Name + "-csp",
+		"deployedby":            "khulnasoft-operator",
 		"khulnasoftoperator_cr": cr.Name,
-		"khulnasoft.component":     "server",
+		"khulnasoft.component":  "server",
 	}
 	annotations := map[string]string{
 		"description": "Deploy Khulnasoft Server",
@@ -146,10 +146,10 @@ func (csp *KhulnasoftCspHelper) newKhulnasoftEnforcer(cr *v1alpha1.KhulnasoftCsp
 	}
 
 	labels := map[string]string{
-		"app":                cr.Name + "-csp",
-		"deployedby":         "khulnasoft-operator",
+		"app":                   cr.Name + "-csp",
+		"deployedby":            "khulnasoft-operator",
 		"khulnasoftoperator_cr": cr.Name,
-		"khulnasoft.component":     "enforcer",
+		"khulnasoft.component":  "enforcer",
 	}
 	annotations := map[string]string{
 		"description": "Deploy Khulnasoft Enforcer",
@@ -209,10 +209,10 @@ func (csp *KhulnasoftCspHelper) newKhulnasoftKubeEnforcer(cr *v1alpha1.Khulnasof
 	}
 
 	labels := map[string]string{
-		"app":                cr.Name + "-csp",
-		"deployedby":         "khulnasoft-operator",
+		"app":                   cr.Name + "-csp",
+		"deployedby":            "khulnasoft-operator",
 		"khulnasoftoperator_cr": cr.Name,
-		"khulnasoft.component":     "kubeenforcer",
+		"khulnasoft.component":  "kubeenforcer",
 	}
 	annotations := map[string]string{
 		"description": "Deploy Khulnasoft KubeEnforcer",
