@@ -50,20 +50,20 @@ type KhulnasoftCspReconciler struct {
 	Scheme *runtime.Scheme
 }
 
-//+kubebuilder:rbac:groups=operator.khulnasoftsec.com,resources=khulnasoftcsps,verbs=get;list;watch;create;update;patch;delete
-//+kubebuilder:rbac:groups=operator.khulnasoftsec.com,resources=khulnasoftcsps/status,verbs=get;update;patch
-//+kubebuilder:rbac:groups=operator.khulnasoftsec.com,resources=khulnasoftcsps/finalizers,verbs=update
+//+kubebuilder:rbac:groups=operator.khulnasoft.com,resources=khulnasoftcsps,verbs=get;list;watch;create;update;patch;delete
+//+kubebuilder:rbac:groups=operator.khulnasoft.com,resources=khulnasoftcsps/status,verbs=get;update;patch
+//+kubebuilder:rbac:groups=operator.khulnasoft.com,resources=khulnasoftcsps/finalizers,verbs=update
 //+kubebuilder:rbac:groups=core,resources=secrets,verbs=get;list;watch;create;update;patch;delete
 //+kubebuilder:rbac:groups=core,resources=serviceaccounts,verbs=get;list;watch;create;update;patch;delete
 //+kubebuilder:rbac:groups=apps,resources=deployments,verbs=get;list;watch;create;update;patch;delete
 //+kubebuilder:rbac:groups=core,resources=pods,verbs=get;list;
-//+kubebuilder:rbac:groups=operator.khulnasoftsec.com,resources=khulnasoftgateways,verbs=get;list;watch;create;update;patch;delete
-//+kubebuilder:rbac:groups=operator.khulnasoftsec.com,resources=khulnasoftservers,verbs=get;list;watch;create;update;patch;delete
-//+kubebuilder:rbac:groups=operator.khulnasoftsec.com,resources=khulnasoftenforcers,verbs=get;list;watch;create;update;patch;delete
-//+kubebuilder:rbac:groups=operator.khulnasoftsec.com,resources=khulnasoftkubeenforcers,verbs=get;list;watch;create;update;patch;delete
-//+kubebuilder:rbac:groups=operator.khulnasoftsec.com,resources=khulnasoftdatabases,verbs=get;list;watch;create;update;patch;delete
-//+kubebuilder:rbac:groups=operator.khulnasoftsec.com,resources=khulnasoftservers,verbs=get;list;watch;create;update;patch;delete
-//+kubebuilder:rbac:groups=operator.khulnasoftsec.com,resources=khulnasoftservers,verbs=get;list;watch;create;update;patch;delete
+//+kubebuilder:rbac:groups=operator.khulnasoft.com,resources=khulnasoftgateways,verbs=get;list;watch;create;update;patch;delete
+//+kubebuilder:rbac:groups=operator.khulnasoft.com,resources=khulnasoftservers,verbs=get;list;watch;create;update;patch;delete
+//+kubebuilder:rbac:groups=operator.khulnasoft.com,resources=khulnasoftenforcers,verbs=get;list;watch;create;update;patch;delete
+//+kubebuilder:rbac:groups=operator.khulnasoft.com,resources=khulnasoftkubeenforcers,verbs=get;list;watch;create;update;patch;delete
+//+kubebuilder:rbac:groups=operator.khulnasoft.com,resources=khulnasoftdatabases,verbs=get;list;watch;create;update;patch;delete
+//+kubebuilder:rbac:groups=operator.khulnasoft.com,resources=khulnasoftservers,verbs=get;list;watch;create;update;patch;delete
+//+kubebuilder:rbac:groups=operator.khulnasoft.com,resources=khulnasoftservers,verbs=get;list;watch;create;update;patch;delete
 
 // Reconcile is part of the main kubernetes reconciliation loop which aims to
 // move the current state of the cluster closer to the desired state.
@@ -204,9 +204,9 @@ func (r *KhulnasoftCspReconciler) Reconcile(ctx context.Context, req ctrl.Reques
 		}
 		if instance.Spec.DeployKubeEnforcer != nil {
 			keConfigMapData := map[string]string{
-				"BATCH_INSTALL_GATEWAY": fmt.Sprintf(consts.GatewayServiceName, instance.Name),
-				"KHULNASOFT_KE_GROUP_NAME":    "operator-default-ke-group",
-				"KHULNASOFT_KE_GROUP_TOKEN":   consts.DefaultKubeEnforcerToken,
+				"BATCH_INSTALL_GATEWAY":     fmt.Sprintf(consts.GatewayServiceName, instance.Name),
+				"KHULNASOFT_KE_GROUP_NAME":  "operator-default-ke-group",
+				"KHULNASOFT_KE_GROUP_TOKEN": consts.DefaultKubeEnforcerToken,
 			}
 			if instance.Spec.ServerConfigMapData != nil {
 				for k, v := range keConfigMapData {

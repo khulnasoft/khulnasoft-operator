@@ -33,9 +33,9 @@ func newKhulnasoftScannerHelper(cr *v1alpha1.KhulnasoftScanner) *KhulnasoftScann
 func (as *KhulnasoftScannerHelper) CreateConfigMap(cr *v1alpha1.KhulnasoftScanner) *corev1.ConfigMap {
 
 	labels := map[string]string{
-		"app":                "khulnasoft-scanner-config",
-		"deployedby":         "khulnasoft-operator",
-		"khulnasoftsecoperator_cr": cr.Name,
+		"app":                      "khulnasoft-scanner-config",
+		"deployedby":               "khulnasoft-operator",
+		"khulnasoftoperator_cr": cr.Name,
 	}
 
 	annotations := map[string]string{
@@ -64,9 +64,9 @@ func (as *KhulnasoftScannerHelper) CreateConfigMap(cr *v1alpha1.KhulnasoftScanne
 
 func (as *KhulnasoftScannerHelper) CreateTokenSecret(cr *v1alpha1.KhulnasoftScanner) *corev1.Secret {
 	labels := map[string]string{
-		"app":                cr.Name + "-requirments",
-		"deployedby":         "khulnasoft-operator",
-		"khulnasoftsecoperator_cr": cr.Name,
+		"app":                      cr.Name + "-requirments",
+		"deployedby":               "khulnasoft-operator",
+		"khulnasoftoperator_cr": cr.Name,
 	}
 	annotations := map[string]string{
 		"description": "Khulnasoft Scanner username and password",
@@ -111,9 +111,9 @@ func (as *KhulnasoftScannerHelper) newDeployment(cr *v1alpha1.KhulnasoftScanner)
 	}
 
 	labels := map[string]string{
-		"app":                cr.Name + "-scanner",
-		"deployedby":         "khulnasoft-operator",
-		"khulnasoftsecoperator_cr": cr.Name,
+		"app":                      cr.Name + "-scanner",
+		"deployedby":               "khulnasoft-operator",
+		"khulnasoftoperator_cr": cr.Name,
 		"khulnasoft.component":     "scanner",
 	}
 
@@ -143,9 +143,9 @@ func (as *KhulnasoftScannerHelper) newDeployment(cr *v1alpha1.KhulnasoftScanner)
 			Replicas: extra.Int32Ptr(int32(cr.Spec.ScannerService.Replicas)),
 			Selector: &metav1.LabelSelector{
 				MatchLabels: map[string]string{
-					"app":                cr.Name + "-scanner",
-					"deployedby":         "khulnasoft-operator",
-					"khulnasoftsecoperator_cr": cr.Name,
+					"app":                      cr.Name + "-scanner",
+					"deployedby":               "khulnasoft-operator",
+					"khulnasoftoperator_cr": cr.Name,
 				},
 			},
 			Template: corev1.PodTemplateSpec{

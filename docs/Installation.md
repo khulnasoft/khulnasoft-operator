@@ -14,13 +14,13 @@ kubectl create namespace khulnasoft
 Install Custom CRDs
 
 ```shell
-kubectl create -f  config/crd/operator.khulnasoftsec.com_khulnasoftdatabases_crd.yaml 
-kubectl create -f  config/crd/operator.khulnasoftsec.com_khulnasoftgateways_crd.yaml 
-kubectl create -f  config/crd/operator.khulnasoftsec.com_khulnasoftservers_crd.yaml 
-kubectl create -f  config/crd/operator.khulnasoftsec.com_khulnasoftenforcers_crd.yaml
-kubectl create -f  config/crd/operator.khulnasoftsec.com_khulnasoftcsps_crd.yaml
-kubectl create -f  config/crd/operator.khulnasoftsec.com_khulnasoftscanners_crd.yaml
-kubectl create -f  config/crd/operator.khulnasoftsec.com_khulnasoftkubeenforcers_crd.yaml
+kubectl create -f  config/crd/operator.khulnasoft.com_khulnasoftdatabases_crd.yaml 
+kubectl create -f  config/crd/operator.khulnasoft.com_khulnasoftgateways_crd.yaml 
+kubectl create -f  config/crd/operator.khulnasoft.com_khulnasoftservers_crd.yaml 
+kubectl create -f  config/crd/operator.khulnasoft.com_khulnasoftenforcers_crd.yaml
+kubectl create -f  config/crd/operator.khulnasoft.com_khulnasoftcsps_crd.yaml
+kubectl create -f  config/crd/operator.khulnasoft.com_khulnasoftscanners_crd.yaml
+kubectl create -f  config/crd/operator.khulnasoft.com_khulnasoftkubeenforcers_crd.yaml
 ```
 
 Install operator with version in the [Operator YAML](../config/manifests/operator.yaml)

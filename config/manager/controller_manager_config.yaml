@@ -8,4 +8,4 @@ webhook:
   port: 9443
 leaderElection:
   leaderElect: true
-  resourceName: 8c942d04.khulnasoftsec.com
+  resourceName: 8c942d04.khulnasoft.com

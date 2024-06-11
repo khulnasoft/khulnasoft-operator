@@ -44,7 +44,7 @@ func CreatePullingSecret(namespace string) *corev1.Secret {
 		panic("missing 'REGISTRY_PASSWORD' environment variable, please set it")
 	}
 	base64Password := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%s:%s", username, password)))
-	dockerCfg := map[string]map[string]map[string]string{"auths": {"registry.khulnasoftsec.com": {"username": username, "password": password, "auth": base64Password}}}
+	dockerCfg := map[string]map[string]map[string]string{"auths": {"registry.khulnasoft.com": {"username": username, "password": password, "auth": base64Password}}}
 
 	json, _ := json.Marshal(dockerCfg)
 

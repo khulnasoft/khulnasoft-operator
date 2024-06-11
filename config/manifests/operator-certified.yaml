@@ -16,7 +16,7 @@ spec:
       containers:
         # Set the operator image with digest
         - name: khulnasoft-operator
-          image: "registry.connect.redhat.com/khulnasoftsec/operator@<digest>"
+          image: "registry.connect.redhat.com/khulnasoft/operator@<digest>"
           command:
           - khulnasoft-operator
           imagePullPolicy: Always
@@ -37,12 +37,12 @@ spec:
               value: "true"
               # Set the related images name with digest
             - name: RELATED_IMAGE_DATABASE
-              value: "registry.connect.redhat.com/khulnasoftsec/database@<digest>"
+              value: "registry.connect.redhat.com/khulnasoft/database@<digest>"
             - name: RELATED_IMAGE_GATEWAY
-              value: "registry.connect.redhat.com/khulnasoftsec/gateway@<digest>"
+              value: "registry.connect.redhat.com/khulnasoft/gateway@<digest>"
             - name: RELATED_IMAGE_SERVER
-              value: "registry.connect.redhat.com/khulnasoftsec/console@<digest>"
+              value: "registry.connect.redhat.com/khulnasoft/console@<digest>"
             - name: RELATED_IMAGE_SCANNER
-              value: "registry.connect.redhat.com/khulnasoftsec/scanner@<digest>"
+              value: "registry.connect.redhat.com/khulnasoft/scanner@<digest>"
             - name: RELATED_IMAGE_ENFORCER
-              value: "registry.connect.redhat.com/khulnasoftsec/enforcer@<digest>"
+              value: "registry.connect.redhat.com/khulnasoft/enforcer@<digest>"

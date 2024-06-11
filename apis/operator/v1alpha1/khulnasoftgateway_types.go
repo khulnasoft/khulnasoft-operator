@@ -34,18 +34,18 @@ type KhulnasoftGatewaySpec struct {
 
 	GatewayService *KhulnasoftService             `json:"deploy,required"`
 	ExternalDb     *KhulnasoftDatabaseInformation `json:"externalDb,omitempty"`
-	AuditDB        *AuditDBInformation      `json:"auditDB,omitempty"`
-	Envs           []corev1.EnvVar          `json:"env,omitempty"`
-	RunAsNonRoot   bool                     `json:"runAsNonRoot,omitempty"`
-	Route          bool                     `json:"route,omitempty"`
-	Mtls           bool                     `json:"mtls,omitempty"`
+	AuditDB        *AuditDBInformation            `json:"auditDB,omitempty"`
+	Envs           []corev1.EnvVar                `json:"env,omitempty"`
+	RunAsNonRoot   bool                           `json:"runAsNonRoot,omitempty"`
+	Route          bool                           `json:"route,omitempty"`
+	Mtls           bool                           `json:"mtls,omitempty"`
 }
 
 // KhulnasoftGatewayStatus defines the observed state of KhulnasoftGateway
 type KhulnasoftGatewayStatus struct {
 	// INSERT ADDITIONAL STATUS FIELD - define observed state of cluster
 	// Important: Run "make" to regenerate code after modifying this file
-	Nodes []string            `json:"nodes"`
+	Nodes []string                  `json:"nodes"`
 	State KhulnasoftDeploymentState `json:"state"`
 }
 

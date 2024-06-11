@@ -5,7 +5,7 @@ metadata:
   name: khulnasoftgateway-viewer-role
 rules:
 - apiGroups:
-  - operator.khulnasoftsec.com
+  - operator.khulnasoft.com
   resources:
   - khulnasoftgateways
   verbs:
@@ -13,7 +13,7 @@ rules:
   - list
   - watch
 - apiGroups:
-  - operator.khulnasoftsec.com
+  - operator.khulnasoft.com
   resources:
   - khulnasoftgateways/status
   verbs:

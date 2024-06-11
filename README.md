@@ -29,7 +29,7 @@ The Operator is designed for OpenShift clusters.
 The following documentation is available:
 
 - [OpenShift installation and examples](docs/DeployOpenShiftOperator.md)
-- [Khulnasoft Enterprise documentation portal](https://docs.khulnasoftsec.com/)
+- [Khulnasoft Enterprise documentation portal](https://docs.khulnasoft.com/)
 - [Khulnasoft Security Operator page on OperatorHub.io](https://operatorhub.io/operator/khulnasoft)
 
 ## Issues and feedback

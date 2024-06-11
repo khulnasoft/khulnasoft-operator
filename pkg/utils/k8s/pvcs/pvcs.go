@@ -10,9 +10,9 @@ import (
 
 func CreatePersistentVolumeClaim(cr, namespace, app, description, name, storageclass string, size int) *corev1.PersistentVolumeClaim {
 	labels := map[string]string{
-		"app":                app,
-		"deployedby":         "khulnasoft-operator",
-		"khulnasoftsecoperator_cr": cr,
+		"app":                      app,
+		"deployedby":               "khulnasoft-operator",
+		"khulnasoftoperator_cr": cr,
 	}
 	annotations := map[string]string{
 		"description": description,

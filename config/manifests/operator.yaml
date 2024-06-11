@@ -15,7 +15,7 @@ spec:
       serviceAccountName: khulnasoft-operator
       containers:
         - name: khulnasoft-operator
-          image: "khulnasoftsec/khulnasoft-operator:2022.4.1"
+          image: "khulnasoft/khulnasoft-operator:2022.4.1"
           command:
           - khulnasoft-operator
           imagePullPolicy: Always

@@ -5,7 +5,7 @@ metadata:
   name: khulnasoftscanner-viewer-role
 rules:
 - apiGroups:
-  - operator.khulnasoftsec.com
+  - operator.khulnasoft.com
   resources:
   - khulnasoftscanners
   verbs:
@@ -13,7 +13,7 @@ rules:
   - list
   - watch
 - apiGroups:
-  - operator.khulnasoftsec.com
+  - operator.khulnasoft.com
   resources:
   - khulnasoftscanners/status
   verbs:

@@ -28,9 +28,9 @@ func newKhulnasoftCspHelper(cr *v1alpha1.KhulnasoftCsp) *KhulnasoftCspHelper {
 
 func (csp *KhulnasoftCspHelper) newKhulnasoftDatabase(cr *v1alpha1.KhulnasoftCsp) *v1alpha1.KhulnasoftDatabase {
 	labels := map[string]string{
-		"app":                cr.Name + "-csp",
-		"deployedby":         "khulnasoft-operator",
-		"khulnasoftsecoperator_cr": cr.Name,
+		"app":                      cr.Name + "-csp",
+		"deployedby":               "khulnasoft-operator",
+		"khulnasoftoperator_cr": cr.Name,
 		"khulnasoft.component":     "database",
 	}
 	annotations := map[string]string{
@@ -38,7 +38,7 @@ func (csp *KhulnasoftCspHelper) newKhulnasoftDatabase(cr *v1alpha1.KhulnasoftCsp
 	}
 	khulnasoftdb := &v1alpha1.KhulnasoftDatabase{
 		TypeMeta: metav1.TypeMeta{
-			APIVersion: "operator.khulnasoftsec.com/v1alpha1",
+			APIVersion: "operator.khulnasoft.com/v1alpha1",
 			Kind:       "KhulnasoftDatabase",
 		},
 		ObjectMeta: metav1.ObjectMeta{
@@ -62,9 +62,9 @@ func (csp *KhulnasoftCspHelper) newKhulnasoftDatabase(cr *v1alpha1.KhulnasoftCsp
 
 func (csp *KhulnasoftCspHelper) newKhulnasoftGateway(cr *v1alpha1.KhulnasoftCsp) *v1alpha1.KhulnasoftGateway {
 	labels := map[string]string{
-		"app":                cr.Name + "-csp",
-		"deployedby":         "khulnasoft-operator",
-		"khulnasoftsecoperator_cr": cr.Name,
+		"app":                      cr.Name + "-csp",
+		"deployedby":               "khulnasoft-operator",
+		"khulnasoftoperator_cr": cr.Name,
 		"khulnasoft.component":     "gateway",
 	}
 	annotations := map[string]string{
@@ -72,7 +72,7 @@ func (csp *KhulnasoftCspHelper) newKhulnasoftGateway(cr *v1alpha1.KhulnasoftCsp)
 	}
 	khulnasoftgateway := &v1alpha1.KhulnasoftGateway{
 		TypeMeta: metav1.TypeMeta{
-			APIVersion: "operator.khulnasoftsec.com/v1alpha1",
+			APIVersion: "operator.khulnasoft.com/v1alpha1",
 			Kind:       "KhulnasoftGateway",
 		},
 		ObjectMeta: metav1.ObjectMeta{
@@ -98,9 +98,9 @@ func (csp *KhulnasoftCspHelper) newKhulnasoftGateway(cr *v1alpha1.KhulnasoftCsp)
 
 func (csp *KhulnasoftCspHelper) newKhulnasoftServer(cr *v1alpha1.KhulnasoftCsp) *v1alpha1.KhulnasoftServer {
 	labels := map[string]string{
-		"app":                cr.Name + "-csp",
-		"deployedby":         "khulnasoft-operator",
-		"khulnasoftsecoperator_cr": cr.Name,
+		"app":                      cr.Name + "-csp",
+		"deployedby":               "khulnasoft-operator",
+		"khulnasoftoperator_cr": cr.Name,
 		"khulnasoft.component":     "server",
 	}
 	annotations := map[string]string{
@@ -108,7 +108,7 @@ func (csp *KhulnasoftCspHelper) newKhulnasoftServer(cr *v1alpha1.KhulnasoftCsp) 
 	}
 	khulnasoftServer := &v1alpha1.KhulnasoftServer{
 		TypeMeta: metav1.TypeMeta{
-			APIVersion: "operator.khulnasoftsec.com/v1alpha1",
+			APIVersion: "operator.khulnasoft.com/v1alpha1",
 			Kind:       "KhulnasoftServer",
 		},
 		ObjectMeta: metav1.ObjectMeta{
@@ -145,9 +145,9 @@ func (csp *KhulnasoftCspHelper) newKhulnasoftEnforcer(cr *v1alpha1.KhulnasoftCsp
 	}
 
 	labels := map[string]string{
-		"app":                cr.Name + "-csp",
-		"deployedby":         "khulnasoft-operator",
-		"khulnasoftsecoperator_cr": cr.Name,
+		"app":                      cr.Name + "-csp",
+		"deployedby":               "khulnasoft-operator",
+		"khulnasoftoperator_cr": cr.Name,
 		"khulnasoft.component":     "enforcer",
 	}
 	annotations := map[string]string{
@@ -155,7 +155,7 @@ func (csp *KhulnasoftCspHelper) newKhulnasoftEnforcer(cr *v1alpha1.KhulnasoftCsp
 	}
 	khulnasoftenf := &v1alpha1.KhulnasoftEnforcer{
 		TypeMeta: metav1.TypeMeta{
-			APIVersion: "operator.khulnasoftsec.com/v1alpha1",
+			APIVersion: "operator.khulnasoft.com/v1alpha1",
 			Kind:       "KhulnasoftEnforcer",
 		},
 		ObjectMeta: metav1.ObjectMeta{
@@ -171,7 +171,7 @@ func (csp *KhulnasoftCspHelper) newKhulnasoftEnforcer(cr *v1alpha1.KhulnasoftCsp
 				Host: fmt.Sprintf("%s-gateway", cr.Name),
 				Port: 8443,
 			},
-			Secret: &v1alpha1.KhulnasoftSecret{
+			Secret: &v1alpha1.Khulnasoftret{
 				Name: fmt.Sprintf("%s-enforcer-token", cr.Name),
 				Key:  "token",
 			},
@@ -208,9 +208,9 @@ func (csp *KhulnasoftCspHelper) newKhulnasoftKubeEnforcer(cr *v1alpha1.Khulnasof
 	}
 
 	labels := map[string]string{
-		"app":                cr.Name + "-csp",
-		"deployedby":         "khulnasoft-operator",
-		"khulnasoftsecoperator_cr": cr.Name,
+		"app":                      cr.Name + "-csp",
+		"deployedby":               "khulnasoft-operator",
+		"khulnasoftoperator_cr": cr.Name,
 		"khulnasoft.component":     "kubeenforcer",
 	}
 	annotations := map[string]string{
@@ -229,7 +229,7 @@ func (csp *KhulnasoftCspHelper) newKhulnasoftKubeEnforcer(cr *v1alpha1.Khulnasof
 		StarboardService: &v1alpha1.KhulnasoftService{
 			Replicas: 1,
 			ImageData: &v1alpha1.KhulnasoftImage{
-				Registry:   "docker.io/khulnasoftsec",
+				Registry:   "docker.io/khulnasoft",
 				Repository: "starboard-operator",
 				PullPolicy: "IfNotPresent",
 			},
@@ -237,7 +237,7 @@ func (csp *KhulnasoftCspHelper) newKhulnasoftKubeEnforcer(cr *v1alpha1.Khulnasof
 	}
 	khulnasoftKubeEnf := &v1alpha1.KhulnasoftKubeEnforcer{
 		TypeMeta: metav1.TypeMeta{
-			APIVersion: "operator.khulnasoftsec.com/v1alpha1",
+			APIVersion: "operator.khulnasoft.com/v1alpha1",
 			Kind:       "KhulnasoftKubeEnforcer",
 		},
 		ObjectMeta: metav1.ObjectMeta{
@@ -272,14 +272,14 @@ func (csp *KhulnasoftCspHelper) newKhulnasoftKubeEnforcer(cr *v1alpha1.Khulnasof
 	labels := map[string]string{
 		"app":                cr.Name + "-csp",
 		"deployedby":         "khulnasoft-operator",
-		"khulnasoftsecoperator_cr": cr.Name,
+		"khulnasoftoperator_cr": cr.Name,
 	}
 	annotations := map[string]string{
 		"description": "Deploy Khulnasoft Scanner",
 	}
 	scanner := &operatorv1alpha1.KhulnasoftScanner{
 		TypeMeta: metav1.TypeMeta{
-			APIVersion: "operator.khulnasoftsec.com/v1alpha1",
+			APIVersion: "operator.khulnasoft.com/v1alpha1",
 			Kind:       "KhulnasoftScanner",
 		},
 		ObjectMeta: metav1.ObjectMeta{

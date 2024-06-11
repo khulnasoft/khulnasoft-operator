@@ -16,8 +16,8 @@ const (
 	DbDiskSize                 = 10
 	DataBaseSecretKey          = "db-password"
 	DatabaseSecretName         = "khulnasoft-database-password"
-	Registry                   = "registry.khulnasoftsec.com"
-	StarboardRegistry          = "docker.io/khulnasoftsec"
+	Registry                   = "registry.khulnasoft.com"
+	StarboardRegistry          = "docker.io/khulnasoft"
 	DatabaseRepo               = "database"
 	GatewayRepo                = "gateway"
 	ServerRepo                 = "console"

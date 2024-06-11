@@ -1,4 +1,4 @@
-domain: khulnasoftsec.com
+domain: khulnasoft.com
 layout:
 - go.kubebuilder.io/v3
 multigroup: true
@@ -12,7 +12,7 @@ resources:
     crdVersion: v1
     namespaced: true
   controller: true
-  domain: khulnasoftsec.com
+  domain: khulnasoft.com
   group: operator
   kind: KhulnasoftCsp
   path: github.com/khulnasoft/khulnasoft-operator/apis/operator/v1alpha1
@@ -21,7 +21,7 @@ resources:
     crdVersion: v1
     namespaced: true
   controller: true
-  domain: khulnasoftsec.com
+  domain: khulnasoft.com
   group: operator
   kind: KhulnasoftDatabase
   path: github.com/khulnasoft/khulnasoft-operator/apis/operator/v1alpha1
@@ -30,7 +30,7 @@ resources:
     crdVersion: v1
     namespaced: true
   controller: true
-  domain: khulnasoftsec.com
+  domain: khulnasoft.com
   group: operator
   kind: KhulnasoftEnforcer
   path: github.com/khulnasoft/khulnasoft-operator/apis/operator/v1alpha1
@@ -39,7 +39,7 @@ resources:
     crdVersion: v1
     namespaced: true
   controller: true
-  domain: khulnasoftsec.com
+  domain: khulnasoft.com
   group: operator
   kind: KhulnasoftGateway
   path: github.com/khulnasoft/khulnasoft-operator/apis/operator/v1alpha1
@@ -48,7 +48,7 @@ resources:
     crdVersion: v1
     namespaced: true
   controller: true
-  domain: khulnasoftsec.com
+  domain: khulnasoft.com
   group: operator
   kind: KhulnasoftKubeEnforcer
   path: github.com/khulnasoft/khulnasoft-operator/apis/operator/v1alpha1
@@ -57,7 +57,7 @@ resources:
     crdVersion: v1
     namespaced: true
   controller: true
-  domain: khulnasoftsec.com
+  domain: khulnasoft.com
   group: operator
   kind: KhulnasoftScanner
   path: github.com/khulnasoft/khulnasoft-operator/apis/operator/v1alpha1
@@ -66,7 +66,7 @@ resources:
     crdVersion: v1
     namespaced: true
   controller: true
-  domain: khulnasoftsec.com
+  domain: khulnasoft.com
   group: operator
   kind: KhulnasoftServer
   path: github.com/khulnasoft/khulnasoft-operator/apis/operator/v1alpha1
@@ -75,7 +75,7 @@ resources:
     crdVersion: v1
     namespaced: true
   controller: true
-  domain: khulnasoftsec.com
+  domain: khulnasoft.com
   group: khulnasoft
   kind: KhulnasoftStarboard
   path: github.com/khulnasoft/khulnasoft-operator/apis/khulnasoft/v1alpha1

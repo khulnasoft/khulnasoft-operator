@@ -26,9 +26,9 @@ func CheckIfServiceAccountExists(k8sclient client.Client, name, namespace string
 // CreateServiceAccount Create new service account
 func CreateServiceAccount(cr, namespace, app, name, pullImageSecret string) *corev1.ServiceAccount {
 	labels := map[string]string{
-		"app":                app,
-		"deployedby":         "khulnasoft-operator",
-		"khulnasoftsecoperator_cr": cr,
+		"app":                      app,
+		"deployedby":               "khulnasoft-operator",
+		"khulnasoftoperator_cr": cr,
 	}
 	annotations := map[string]string{
 		"description": "Service account for khulnasoft",

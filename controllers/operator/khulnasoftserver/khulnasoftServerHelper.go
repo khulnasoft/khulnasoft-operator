@@ -60,9 +60,9 @@ func (sr *KhulnasoftServerHelper) CreateConfigMap(cr *operatorv1alpha1.Khulnasof
 	}
 
 	labels := map[string]string{
-		"app":                "khulnasoft-csp-server-config",
-		"deployedby":         "khulnasoft-operator",
-		"khulnasoftsecoperator_cr": cr.Name,
+		"app":                      "khulnasoft-csp-server-config",
+		"deployedby":               "khulnasoft-operator",
+		"khulnasoftoperator_cr": cr.Name,
 	}
 	annotations := map[string]string{
 		"description": "Deploy Khulnasoft khulnasoft-csp-server-config ConfigMap",
@@ -81,9 +81,9 @@ func (sr *KhulnasoftServerHelper) CreateConfigMap(cr *operatorv1alpha1.Khulnasof
 		"SCALOCK_DBSSL":        "require",
 		"SCALOCK_AUDIT_DBSSL":  "require",
 		//	gw
-		"HEALTH_MONITOR":              "0.0.0.0:8082",
+		"HEALTH_MONITOR":                    "0.0.0.0:8082",
 		"KHULNASOFT_CONSOLE_SECURE_ADDRESS": fmt.Sprintf("%s:443", fmt.Sprintf(consts.ServerServiceName, cr.Name)),
-		"SCALOCK_GATEWAY_PUBLIC_IP":   fmt.Sprintf(consts.GatewayServiceName, cr.Name),
+		"SCALOCK_GATEWAY_PUBLIC_IP":         fmt.Sprintf(consts.GatewayServiceName, cr.Name),
 		"KHULNASOFT_GRPC_MODE":              "1",
 	}
 
@@ -95,9 +95,9 @@ func (sr *KhulnasoftServerHelper) CreateConfigMap(cr *operatorv1alpha1.Khulnasof
 	}
 
 	if cr.Spec.Mtls {
-		data["KHULNASOFT_PRIVATE_KEY"] = "/opt/khulnasoftsec/ssl/key.pem"
-		data["KHULNASOFT_PUBLIC_KEY"] = "/opt/khulnasoftsec/ssl/cert.pem"
-		data["KHULNASOFT_ROOT_CA"] = "/opt/khulnasoftsec/ssl/ca.pem"
+		data["KHULNASOFT_PRIVATE_KEY"] = "/opt/khulnasoft/ssl/key.pem"
+		data["KHULNASOFT_PUBLIC_KEY"] = "/opt/khulnasoft/ssl/cert.pem"
+		data["KHULNASOFT_ROOT_CA"] = "/opt/khulnasoft/ssl/ca.pem"
 		data["KHULNASOFT_VERIFY_ENFORCER"] = "1"
 	}
 
@@ -151,10 +151,10 @@ func (sr *KhulnasoftServerHelper) newDeployment(cr *operatorv1alpha1.KhulnasoftS
 	}
 
 	labels := map[string]string{
-		"app":                cr.Name + "-server",
-		"deployedby":         "khulnasoft-operator",
-		"khulnasoftsecoperator_cr": cr.Name,
-		"type":               "khulnasoft-server",
+		"app":                      cr.Name + "-server",
+		"deployedby":               "khulnasoft-operator",
+		"khulnasoftoperator_cr": cr.Name,
+		"type":                     "khulnasoft-server",
 		"khulnasoft.component":     "server",
 	}
 	annotations := map[string]string{
@@ -194,10 +194,10 @@ func (sr *KhulnasoftServerHelper) newDeployment(cr *operatorv1alpha1.KhulnasoftS
 			Replicas: extra.Int32Ptr(int32(cr.Spec.ServerService.Replicas)),
 			Selector: &metav1.LabelSelector{
 				MatchLabels: map[string]string{
-					"app":                cr.Name + "-server",
-					"deployedby":         "khulnasoft-operator",
-					"khulnasoftsecoperator_cr": cr.Name,
-					"type":               "khulnasoft-server",
+					"app":                      cr.Name + "-server",
+					"deployedby":               "khulnasoft-operator",
+					"khulnasoftoperator_cr": cr.Name,
+					"type":                     "khulnasoft-server",
 				},
 			},
 			Template: corev1.PodTemplateSpec{
@@ -332,7 +332,7 @@ func (sr *KhulnasoftServerHelper) newDeployment(cr *operatorv1alpha1.KhulnasoftS
 		mtlsKhulnasoftWebVolumeMount := []corev1.VolumeMount{
 			{
 				Name:      "khulnasoft-grpc-web",
-				MountPath: "/opt/khulnasoftsec/ssl",
+				MountPath: "/opt/khulnasoft/ssl",
 				ReadOnly:  true,
 			},
 		}
@@ -418,15 +418,15 @@ func (sr *KhulnasoftServerHelper) getEnvVars(cr *operatorv1alpha1.KhulnasoftServ
 		mtlsServerEnv := []corev1.EnvVar{
 			{
 				Name:  "KHULNASOFT_PRIVATE_KEY",
-				Value: "/opt/khulnasoftsec/ssl/key.pem",
+				Value: "/opt/khulnasoft/ssl/key.pem",
 			},
 			{
 				Name:  "KHULNASOFT_PUBLIC_KEY",
-				Value: "/opt/khulnasoftsec/ssl/cert.pem",
+				Value: "/opt/khulnasoft/ssl/cert.pem",
 			},
 			{
 				Name:  "KHULNASOFT_ROOT_CA",
-				Value: "/opt/khulnasoftsec/ssl/ca.pem",
+				Value: "/opt/khulnasoft/ssl/ca.pem",
 			},
 			{
 				Name:  "KHULNASOFT_VERIFY_ENFORCER",

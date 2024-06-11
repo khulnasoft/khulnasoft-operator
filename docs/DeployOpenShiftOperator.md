@@ -19,9 +19,9 @@ You can find all Khulnasoft's Operator CRs and their properties at [Custom Resou
 	   
 ## Prerequisites 
 
-Make sure you have a license and access to the Khulnasoft registry. To obtain a license, please contact Khulnasoft Security at https://www.khulnasoftsec.com/about-us/contact-us/.
+Make sure you have a license and access to the Khulnasoft registry. To obtain a license, please contact Khulnasoft Security at https://www.khulnasoft.com/about-us/contact-us/.
 
-It is advised that you read about the [Khulnasoft Environment and Configuration](https://docs.khulnasoftsec.com/docs/purpose-of-this-section) and [Khulnasoft's sizing guide](https://docs.khulnasoftsec.com/docs/sizing-guide) before deploying and using the Operator. 
+It is advised that you read about the [Khulnasoft Environment and Configuration](https://docs.khulnasoft.com/docs/purpose-of-this-section) and [Khulnasoft's sizing guide](https://docs.khulnasoft.com/docs/sizing-guide) before deploying and using the Operator. 
 
 ## Types of Khulnasoft Operator
 Khulnasoft Security maintains three types of Operators:
@@ -39,9 +39,9 @@ Khulnasoft Security maintains three types of Operators:
 oc create secret generic khulnasoft-database-password --from-literal=db-password=<password> -n khulnasoft
 ```
 
-4. To work with the community Operator, you need to create a registry secret to Khulnasoft's images registry. Khulnasoft's registry credentials are identical to the username and password for Khulnasoft's support portal (https://success.khulnasoftsec.com.) -
+4. To work with the community Operator, you need to create a registry secret to Khulnasoft's images registry. Khulnasoft's registry credentials are identical to the username and password for Khulnasoft's support portal (https://success.khulnasoft.com.) -
 ```bash
-oc create secret docker-registry khulnasoft-registry --docker-server=registry.khulnasoftsec.com --docker-username=<KHULNASOFT_USERNAME> --docker-password=<KHULNASOFT_PASSWORD> --docker-email=<user email> -n khulnasoft
+oc create secret docker-registry khulnasoft-registry --docker-server=registry.khulnasoft.com --docker-username=<KHULNASOFT_USERNAME> --docker-password=<KHULNASOFT_PASSWORD> --docker-email=<user email> -n khulnasoft
 ```
 
 
@@ -49,7 +49,7 @@ oc create secret docker-registry khulnasoft-registry --docker-server=registry.kh
 The Khulnasoft Operator includes a few CRDs to allow you to deploy Khulnasoft in different configurations. Before you create your deployment CR, please review commons CR examples in the section *CR Examples* below.
 
 
-**[KhulnasoftCSP CRD](../config/crd/bases/operator.khulnasoftsec.com_khulnasoftcsps.yaml)** provides the fastest methods to deploy Khulnasoft Enterprise in a single cluster. KhulnasoftCSP defines how to deploy the Server, Gateway, Khulnasoft Enforcer, and KubeEnforcer in the target cluster. Please see the [example CR](../config/samples/operator_v1alpha1_khulnasoftcsp.yaml) for the listing of all fields and configurations.
+**[KhulnasoftCSP CRD](../config/crd/bases/operator.khulnasoft.com_khulnasoftcsps.yaml)** provides the fastest methods to deploy Khulnasoft Enterprise in a single cluster. KhulnasoftCSP defines how to deploy the Server, Gateway, Khulnasoft Enforcer, and KubeEnforcer in the target cluster. Please see the [example CR](../config/samples/operator_v1alpha1_khulnasoftcsp.yaml) for the listing of all fields and configurations.
 * You can set the enforcement mode using the ```.spec.enforcer.enforceMode``` property in the CR file.
 * You can deploy a Route by setting the  ```.spec.route``` property to "true".
 * The default service type for the Console and Gateway is ClusterIP. You can change the service type in the CR.
@@ -66,7 +66,7 @@ The Khulnasoft Operator includes a few CRDs to allow you to deploy Khulnasoft in
 * You can define the server/gateway toleration with
    ```.spec.<<server/gateway>>.tolerations```
 
-The **[KhulnasoftServer CRD](../config/crd/bases/operator.khulnasoftsec.com_khulnasoftservers.yaml)**, **[KhulnasoftDatabase CRD](../config/samples/operator_v1alpha1_khulnasoftdatabase.yaml)**, and **[KhulnasoftGateway CRD](../config/samples/operator_v1alpha1_khulnasoftgateway.yaml)** are used for advanced configurations where the server components are deployed across multiple clusters.
+The **[KhulnasoftServer CRD](../config/crd/bases/operator.khulnasoft.com_khulnasoftservers.yaml)**, **[KhulnasoftDatabase CRD](../config/samples/operator_v1alpha1_khulnasoftdatabase.yaml)**, and **[KhulnasoftGateway CRD](../config/samples/operator_v1alpha1_khulnasoftgateway.yaml)** are used for advanced configurations where the server components are deployed across multiple clusters.
 
 **[KhulnasoftEnforcer CRD](../config/samples/operator_v1alpha1_khulnasoftenforcer.yaml)** is used to deploy the Khulnasoft Enforcer in any cluster. Please see the [example CR](../config/samples/operator_v1alpha1_khulnasoftenforcer.yaml) for the listing of all fields and configurations.
 * You need to provide a token to identify the Khulnasoft Enforcer.
@@ -82,7 +82,7 @@ The **[KhulnasoftServer CRD](../config/crd/bases/operator.khulnasoftsec.com_khul
 * You can define the enforcer toleration with
   ```.spec.deploy.tolerations```
 
-**[KhulnasoftKubeEnforcer CRD](../config/crd/bases/operator.khulnasoftsec.com_khulnasoftkubeenforcers.yaml)** is used to deploy the KubeEnforcer in your target cluster. Please see the [example CR](../config/samples/operator_v1alpha1_khulnasoftkubeenforcer.yaml) for the listing of all fields and configurations.
+**[KhulnasoftKubeEnforcer CRD](../config/crd/bases/operator.khulnasoft.com_khulnasoftkubeenforcers.yaml)** is used to deploy the KubeEnforcer in your target cluster. Please see the [example CR](../config/samples/operator_v1alpha1_khulnasoftkubeenforcer.yaml) for the listing of all fields and configurations.
 * You need to provide a token to identify the KubeEnforcer to the Khulnasoft Server.
 * You can set the target Gateway using the ```.spec.config.gateway_address```  property.
 * You can choose to deploy a different version of the KubeEnforcer by setting the ```.spec.deploy.image.tag``` property.
@@ -102,7 +102,7 @@ The **[KhulnasoftServer CRD](../config/crd/bases/operator.khulnasoftsec.com_khul
 
 **[ConfigAuditReports CRD](../config/crd/bases/khulnasoft.github.io_configauditreports.yaml)** is used to deploy the ConfigAuditReports in your target cluster by starboard.
 
-**[KhulnasoftScanner CRD](../config/crd/bases/operator.khulnasoftsec.com_khulnasoftscanners.yaml)** is used to deploy the Khulnasoft Scanner in any cluster. Please see the [example CR](../config/samples/operator_v1alpha1_khulnasoftscanner.yaml) for the listing of all fields and configurations.
+**[KhulnasoftScanner CRD](../config/crd/bases/operator.khulnasoft.com_khulnasoftscanners.yaml)** is used to deploy the Khulnasoft Scanner in any cluster. Please see the [example CR](../config/samples/operator_v1alpha1_khulnasoftscanner.yaml) for the listing of all fields and configurations.
 * You need to set the target Khulnasoft Server using the ```.spec.login.host```  property.
 * You need to provide the ```.spec.login.username``` and ```.spec.login.password``` to authenticate with the Khulnasoft Server.
 * You can choose to provide  ```.spec.login.token``` to enable token based authentication with the khulnasoft server, If  the ```.spec.login.token``` is defined in spec username and password are not considered. Token authentication takes higher precedence over a username and password authentication.
@@ -386,7 +386,7 @@ For community operator, you can upgrade minor version by changing the relevant C
 
 ```yaml
 ---
-apiVersion: operator.khulnasoftsec.com/v1alpha1
+apiVersion: operator.khulnasoft.com/v1alpha1
 kind: KhulnasoftCsp
 metadata:
   name: khulnasoft
@@ -407,7 +407,7 @@ spec:
     replicas: 1                            
     service: "ClusterIP"
     image:
-      registry: "registry.khulnasoftsec.com"
+      registry: "registry.khulnasoft.com"
       repository: "database"
       tag: "<<IMAGE TAG>>"
       pullPolicy: Always                    
@@ -415,7 +415,7 @@ spec:
     replicas: 1                             
     service: "ClusterIP"
     image:
-      registry: "registry.khulnasoftsec.com"
+      registry: "registry.khulnasoft.com"
       repository: "gateway"
       tag: "<<IMAGE TAG>>"
       pullPolicy: Always                     
@@ -423,14 +423,14 @@ spec:
     replicas: 1                             
     service: "LoadBalancer" 
     image:
-      registry: "registry.khulnasoftsec.com"
+      registry: "registry.khulnasoft.com"
       repository: "console"
       tag: "<<IMAGE TAG>>"
       pullPolicy: Always 
   enforcer:                                 # Optional: If defined, the Operator will create the default Khulnasoft Enforcer 
     enforcerMode: false                     # Defines whether the default Enforcer will work in "Enforce" (true) or "Audit Only" (false) mode
   kubeEnforcer:                             # Optional: If defined, the Operator will create a KubeEnforcer
-    registry: "registry.khulnasoftsec.com"        
+    registry: "registry.khulnasoft.com"        
     tag: "<<IMAGE TAG>>" 
   route: true                               # Optional: If defined and set to true, the Operator will create a Route to enable access to the console
   runAsNonRoot: false                       # Optional: If defined and set to true, the Operator will create the pods with unprivileged user.
@@ -442,7 +442,7 @@ If you haven't used the "route" option in the Khulnasoft CSP CR, you should defi
 
 ```yaml
 ---
-apiVersion: operator.khulnasoftsec.com/v1alpha1
+apiVersion: operator.khulnasoft.com/v1alpha1
 kind: KhulnasoftCsp
 metadata:
   name: khulnasoft
@@ -463,7 +463,7 @@ spec:
     replicas: 1                            
     service: "ClusterIP"
     image:
-      registry: "registry.khulnasoftsec.com"
+      registry: "registry.khulnasoft.com"
       repository: "database"
       tag: "<<IMAGE TAG>>"
       pullPolicy: Always                    
@@ -471,7 +471,7 @@ spec:
     replicas: 1                             
     service: "ClusterIP"
     image:
-      registry: "registry.khulnasoftsec.com"
+      registry: "registry.khulnasoft.com"
       repository: "gateway"
       tag: "<<IMAGE TAG>>"
       pullPolicy: Always                     
@@ -479,7 +479,7 @@ spec:
     replicas: 1                             
     service: "LoadBalancer" 
     image:
-      registry: "registry.khulnasoftsec.com"
+      registry: "registry.khulnasoft.com"
       repository: "console"
       tag: "<<IMAGE TAG>>"
       pullPolicy: Always  
@@ -494,7 +494,7 @@ If you haven't used the "route" option in the Khulnasoft CSP CR, you should defi
 "Split database" means there is a separate database for audit-related data: 
 ```yaml
 ---
-apiVersion: operator.khulnasoftsec.com/v1alpha1
+apiVersion: operator.khulnasoft.com/v1alpha1
 kind: KhulnasoftCsp
 metadata:
   name: khulnasoft
@@ -516,7 +516,7 @@ spec:
     replicas: 1                            
     service: "ClusterIP"
     image:
-      registry: "registry.khulnasoftsec.com"
+      registry: "registry.khulnasoft.com"
       repository: "database"
       tag: "<<IMAGE TAG>>"
       pullPolicy: Always                    
@@ -524,7 +524,7 @@ spec:
     replicas: 1                             
     service: "ClusterIP"
     image:
-      registry: "registry.khulnasoftsec.com"
+      registry: "registry.khulnasoft.com"
       repository: "gateway"
       tag: "<<IMAGE TAG>>"
       pullPolicy: Always                     
@@ -532,7 +532,7 @@ spec:
     replicas: 1                             
     service: "LoadBalancer" 
     image:
-      registry: "registry.khulnasoftsec.com"
+      registry: "registry.khulnasoft.com"
       repository: "console"
       tag: "<<IMAGE TAG>>"
       pullPolicy: Always  
@@ -544,7 +544,7 @@ spec:
 
 ```yaml
 ---
-apiVersion: operator.khulnasoftsec.com/v1alpha1
+apiVersion: operator.khulnasoft.com/v1alpha1
 kind: KhulnasoftCsp
 metadata:
   name: khulnasoft
@@ -567,7 +567,7 @@ spec:
     replicas: 1                             
     service: "ClusterIP"
     image:
-      registry: "registry.khulnasoftsec.com"
+      registry: "registry.khulnasoft.com"
       repository: "gateway"
       tag: "<<IMAGE TAG>>"
       pullPolicy: Always                     
@@ -575,7 +575,7 @@ spec:
     replicas: 1                             
     service: "LoadBalancer" 
     image:
-      registry: "registry.khulnasoftsec.com"
+      registry: "registry.khulnasoft.com"
       repository: "console"
       tag: "<<IMAGE TAG>>"
       pullPolicy: Always  
@@ -587,7 +587,7 @@ spec:
 
 ```yaml
 ---
-apiVersion: operator.khulnasoftsec.com/v1alpha1
+apiVersion: operator.khulnasoft.com/v1alpha1
 kind: KhulnasoftCsp
 metadata:
   name: khulnasoft
@@ -620,7 +620,7 @@ spec:
     replicas: 1                             
     service: "ClusterIP"
     image:
-      registry: "registry.khulnasoftsec.com"
+      registry: "registry.khulnasoft.com"
       repository: "gateway"
       tag: "<<IMAGE TAG>>"
       pullPolicy: Always                     
@@ -628,7 +628,7 @@ spec:
     replicas: 1                             
     service: "LoadBalancer" 
     image:
-      registry: "registry.khulnasoftsec.com"
+      registry: "registry.khulnasoft.com"
       repository: "console"
       tag: "<<IMAGE TAG>>"
       pullPolicy: Always  
@@ -643,7 +643,7 @@ If you haven't deployed any Khulnasoft Enforcers, or if you want to deploy addit
 This is an example of a simple Enforcer deployment:
 ```yaml
 ---
-apiVersion: operator.khulnasoftsec.com/v1alpha1
+apiVersion: operator.khulnasoft.com/v1alpha1
 kind: KhulnasoftEnforcer
 metadata:
   name: khulnasoft
@@ -656,7 +656,7 @@ spec:
   deploy:                                   # Optional: information about Khulnasoft Enforcer deployment
     image:                                  # Optional: take the default value and version from infra.version
       repository: "enforcer"                # Optional: default = enforcer
-      registry: "registry.khulnasoftsec.com"      # Optional: default = registry.khulnasoftsec.com
+      registry: "registry.khulnasoft.com"      # Optional: default = registry.khulnasoft.com
       tag: "<<IMAGE TAG>>"                  # Optional: default = 5.3
       pullPolicy: "IfNotPresent"            # Optional: default = IfNotPresent
   gateway:                                  # Required: data about the gateway address
@@ -673,7 +673,7 @@ spec:
 
 Here is an example of a KubeEnforcer deployment:
 ```yaml
-apiVersion: operator.khulnasoftsec.com/v1alpha1
+apiVersion: operator.khulnasoft.com/v1alpha1
 kind: KhulnasoftKubeEnforcer
 metadata:
   name: khulnasoft
@@ -689,7 +689,7 @@ spec:
   deploy:
     service: ClusterIP
     image:
-      registry: registry.khulnasoftsec.com
+      registry: registry.khulnasoft.com
       tag: <<KUBE_ENFORCER_TAG>>
       repository: kube-enforcer
       pullPolicy: Always
@@ -707,7 +707,7 @@ spec:
 
 You can deploy more Scanners; here is an example:
 ```yaml
-apiVersion: operator.khulnasoftsec.com/v1alpha1
+apiVersion: operator.khulnasoft.com/v1alpha1
 kind: KhulnasoftScanner
 metadata:
   name: khulnasoft
@@ -721,7 +721,7 @@ spec:
   deploy:
     replicas: 1
     image:
-      registry: "registry.khulnasoftsec.com"
+      registry: "registry.khulnasoft.com"
       repository: "scanner"
       tag: "<<IMAGE TAG>>"
   runAsNonRoot: false                           # Optional: If defined and set to true, the Operator will create the pods with unprivileged user.

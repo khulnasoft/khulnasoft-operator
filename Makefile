@@ -28,8 +28,8 @@ BUNDLE_METADATA_OPTS ?= $(BUNDLE_CHANNELS) $(BUNDLE_DEFAULT_CHANNEL)
 # This variable is used to construct full image tags for bundle and catalog images.
 #
 # For example, running 'make bundle-build bundle-push catalog-build catalog-push' will build and push both
-# khulnasoftsec.com/khulnasoft-oprator-bundle:$VERSION and khulnasoftsec.com/khulnasoft-oprator-catalog:$VERSION.
-IMAGE_TAG_BASE ?= khulnasoftsec/khulnasoft-operator
+# khulnasoft.com/khulnasoft-oprator-bundle:$VERSION and khulnasoft.com/khulnasoft-oprator-catalog:$VERSION.
+IMAGE_TAG_BASE ?= khulnasoft/khulnasoft-operator
 # Image URL to use all building/pushing image targets
 # IMG ?= gcr.io/datadoghq/operator:$(IMG_VERSION)
 IMG ?= $(IMAGE_TAG_BASE):$(VERSION)

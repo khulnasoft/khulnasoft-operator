@@ -14,7 +14,7 @@ You can create before using the operator but in Kubernetes the operator able to 
 ```shell
 kubectl create namespace khulnasoft
 
-kubectl create secret docker-registry khulnasoft-registry-secret --docker-server=registry.khulnasoftsec.com --docker-username=<user name> --docker-password=<password> --docker-email=<user email> -n khulnasoft
+kubectl create secret docker-registry khulnasoft-registry-secret --docker-server=registry.khulnasoft.com --docker-username=<user name> --docker-password=<password> --docker-email=<user email> -n khulnasoft
 
 kubectl create secret generic khulnasoft-database-password --from-literal=db-password=123456 -n khulnasoft
 
