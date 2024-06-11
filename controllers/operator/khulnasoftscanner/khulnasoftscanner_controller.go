@@ -21,11 +21,11 @@ import (
 	"github.com/khulnasoft/khulnasoft-operator/pkg/utils/extra"
 	"reflect"
 
+	"github.com/banzaicloud/k8s-objectmatcher/patch"
 	"github.com/khulnasoft/khulnasoft-operator/controllers/common"
 	"github.com/khulnasoft/khulnasoft-operator/pkg/consts"
 	"github.com/khulnasoft/khulnasoft-operator/pkg/utils/k8s"
 	"github.com/khulnasoft/khulnasoft-operator/pkg/utils/k8s/secrets"
-	"github.com/banzaicloud/k8s-objectmatcher/patch"
 	appsv1 "k8s.io/api/apps/v1"
 	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/equality"
@@ -52,9 +52,9 @@ type KhulnasoftScannerReconciler struct {
 	Scheme *runtime.Scheme
 }
 
-//+kubebuilder:rbac:groups=operator.khulnasoftsec.com,resources=khulnasoftscanners,verbs=get;list;watch;create;update;patch;delete
-//+kubebuilder:rbac:groups=operator.khulnasoftsec.com,resources=khulnasoftscanners/status,verbs=get;update;patch
-//+kubebuilder:rbac:groups=operator.khulnasoftsec.com,resources=khulnasoftscanners/finalizers,verbs=update
+//+kubebuilder:rbac:groups=operator.khulnasoft.com,resources=khulnasoftscanners,verbs=get;list;watch;create;update;patch;delete
+//+kubebuilder:rbac:groups=operator.khulnasoft.com,resources=khulnasoftscanners/status,verbs=get;update;patch
+//+kubebuilder:rbac:groups=operator.khulnasoft.com,resources=khulnasoftscanners/finalizers,verbs=update
 //+kubebuilder:rbac:groups=core,resources=secrets,verbs=get;list;watch;create;update;patch;delete
 //+kubebuilder:rbac:groups=apps,resources=deployments,verbs=get;list;watch;create;update;patch;delete
 //+kubebuilder:rbac:groups=core,resources=pods,verbs=get;list;

@@ -27,9 +27,9 @@ func CheckIfClusterRoleExists(k8sclient client.Client, name string) bool {
 // CreateClusterRole Create cluster rule
 func CreateClusterRole(cr, namespace, name, app, description string, rules []rbacv1.PolicyRule) *rbacv1.ClusterRole {
 	labels := map[string]string{
-		"app":                app,
-		"deployedby":         "khulnasoft-operator",
-		"khulnasoftsecoperator_cr": cr,
+		"app":                      app,
+		"deployedby":               "khulnasoft-operator",
+		"khulnasoftoperator_cr": cr,
 	}
 	annotations := map[string]string{
 		"description":              description,

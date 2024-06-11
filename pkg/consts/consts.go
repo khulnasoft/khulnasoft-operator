@@ -7,10 +7,10 @@ const (
 	// StarboardServiceAccount Service Account
 	StarboardServiceAccount = "starboard-operator"
 	// Registry URL
-	Registry = "registry.khulnasoftsec.com"
+	Registry = "registry.khulnasoft.com"
 
 	// StarboardRegistry URL
-	StarboardRegistry = "docker.io/khulnasoftsec"
+	StarboardRegistry = "docker.io/khulnasoft"
 
 	// PullPolicy Image Pull Policy
 	PullPolicy = "IfNotPresent"
@@ -51,7 +51,7 @@ const (
 	// KhulnasoftKubeEnforcerSAClusterReaderRoleBind is Openshift cluster role binding between khulnasoft-kube-enforcer-sa and ClusterReaderRole
 	KhulnasoftKubeEnforcerSAClusterReaderRoleBind = "khulnasoft-kube-enforcer-sa-cluster-reader-crb"
 
-	KhulnasoftKubeEnforcerFinalizer                          = "khulnasoftkubeenforcers.operator.khulnasoftsec.com/finalizer"
+	KhulnasoftKubeEnforcerFinalizer                          = "khulnasoftkubeenforcers.operator.khulnasoft.com/finalizer"
 	KhulnasoftKubeEnforcerMutantingWebhookConfigurationName  = "kube-enforcer-me-injection-hook-config"
 	KhulnasoftKubeEnforcerValidatingWebhookConfigurationName = "kube-enforcer-admission-hook-config"
 	KhulnasoftKubeEnforcerClusterRoleName                    = "khulnasoft-kube-enforcer"
@@ -88,7 +88,7 @@ const (
 	StarboardVersion = "0.15.10"
 
 	// CyberCenterAddress Khulnasoft Cybercenter Address
-	CyberCenterAddress = "https://cybercenter5.khulnasoftsec.com"
+	CyberCenterAddress = "https://cybercenter5.khulnasoft.com"
 
 	// Deployments
 

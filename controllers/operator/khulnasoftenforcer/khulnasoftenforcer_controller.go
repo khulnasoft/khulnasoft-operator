@@ -20,12 +20,12 @@ import (
 	"context"
 	syserrors "errors"
 	"fmt"
+	"github.com/banzaicloud/k8s-objectmatcher/patch"
 	"github.com/khulnasoft/khulnasoft-operator/controllers/common"
 	"github.com/khulnasoft/khulnasoft-operator/pkg/consts"
 	"github.com/khulnasoft/khulnasoft-operator/pkg/utils/extra"
 	"github.com/khulnasoft/khulnasoft-operator/pkg/utils/k8s"
 	"github.com/khulnasoft/khulnasoft-operator/pkg/utils/k8s/secrets"
-	"github.com/banzaicloud/k8s-objectmatcher/patch"
 	appsv1 "k8s.io/api/apps/v1"
 	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/equality"
@@ -52,9 +52,9 @@ type KhulnasoftEnforcerReconciler struct {
 	Scheme *runtime.Scheme
 }
 
-//+kubebuilder:rbac:groups=operator.khulnasoftsec.com,resources=khulnasoftenforcers,verbs=get;list;watch;create;update;patch;delete
-//+kubebuilder:rbac:groups=operator.khulnasoftsec.com,resources=khulnasoftenforcers/status,verbs=get;update;patch
-//+kubebuilder:rbac:groups=operator.khulnasoftsec.com,resources=khulnasoftenforcers/finalizers,verbs=update
+//+kubebuilder:rbac:groups=operator.khulnasoft.com,resources=khulnasoftenforcers,verbs=get;list;watch;create;update;patch;delete
+//+kubebuilder:rbac:groups=operator.khulnasoft.com,resources=khulnasoftenforcers/status,verbs=get;update;patch
+//+kubebuilder:rbac:groups=operator.khulnasoft.com,resources=khulnasoftenforcers/finalizers,verbs=update
 //+kubebuilder:rbac:groups=core,resources=secrets,verbs=get;list;watch;create;update;patch;delete
 //+kubebuilder:rbac:groups=core,resources=serviceaccounts,verbs=get;list;watch;create;update;patch;delete
 //+kubebuilder:rbac:groups=apps,resources=daemonsets,verbs=get;list;watch;create;update;patch;delete
@@ -114,7 +114,7 @@ func (r *KhulnasoftEnforcerReconciler) Reconcile(ctx context.Context, req ctrl.R
 
 	if instance.Spec.EnforcerService != nil {
 		if len(instance.Spec.Token) != 0 {
-			instance.Spec.Secret = &operatorv1alpha1.KhulnasoftSecret{
+			instance.Spec.Secret = &operatorv1alpha1.Khulnasoftret{
 				Name: fmt.Sprintf(consts.EnforcerTokenSecretName, instance.Name),
 				Key:  consts.EnforcerTokenSecretKey,
 			}

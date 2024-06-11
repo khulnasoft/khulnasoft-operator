@@ -72,21 +72,21 @@ func UpdateKhulnasoftCommon(common *operatorv1alpha1.KhulnasoftCommon, name stri
 		}
 
 		if common.AdminPassword == nil && admin {
-			common.AdminPassword = &operatorv1alpha1.KhulnasoftSecret{
+			common.AdminPassword = &operatorv1alpha1.Khulnasoftret{
 				Name: fmt.Sprintf(consts.AdminPasswordSecretName, name),
 				Key:  consts.AdminPasswordSecretKey,
 			}
 		}
 
 		if common.KhulnasoftLicense == nil && license {
-			common.KhulnasoftLicense = &operatorv1alpha1.KhulnasoftSecret{
+			common.KhulnasoftLicense = &operatorv1alpha1.Khulnasoftret{
 				Name: fmt.Sprintf(consts.LicenseTokenSecretName, name),
 				Key:  consts.LicenseTokenSecretKey,
 			}
 		}
 
 		if common.DatabaseSecret == nil {
-			common.DatabaseSecret = &operatorv1alpha1.KhulnasoftSecret{
+			common.DatabaseSecret = &operatorv1alpha1.Khulnasoftret{
 				Name: fmt.Sprintf(consts.ScalockDbPasswordSecretName, name),
 				Key:  consts.ScalockDbPasswordSecretKey,
 			}
@@ -96,18 +96,18 @@ func UpdateKhulnasoftCommon(common *operatorv1alpha1.KhulnasoftCommon, name stri
 			common.DbDiskSize = consts.DbPvcSize
 		}
 	} else {
-		adminPassword := (*operatorv1alpha1.KhulnasoftSecret)(nil)
-		khulnasoftLicense := (*operatorv1alpha1.KhulnasoftSecret)(nil)
+		adminPassword := (*operatorv1alpha1.Khulnasoftret)(nil)
+		khulnasoftLicense := (*operatorv1alpha1.Khulnasoftret)(nil)
 
 		if admin {
-			adminPassword = &operatorv1alpha1.KhulnasoftSecret{
+			adminPassword = &operatorv1alpha1.Khulnasoftret{
 				Name: fmt.Sprintf(consts.AdminPasswordSecretName, name),
 				Key:  consts.AdminPasswordSecretKey,
 			}
 		}
 
 		if license {
-			khulnasoftLicense = &operatorv1alpha1.KhulnasoftSecret{
+			khulnasoftLicense = &operatorv1alpha1.Khulnasoftret{
 				Name: fmt.Sprintf(consts.LicenseTokenSecretName, name),
 				Key:  consts.LicenseTokenSecretKey,
 			}
@@ -118,8 +118,8 @@ func UpdateKhulnasoftCommon(common *operatorv1alpha1.KhulnasoftCommon, name stri
 			CyberCenterAddress: consts.CyberCenterAddress,
 			ImagePullSecret:    fmt.Sprintf(consts.PullImageSecretName, name),
 			AdminPassword:      adminPassword,
-			KhulnasoftLicense:        khulnasoftLicense,
-			DatabaseSecret: &operatorv1alpha1.KhulnasoftSecret{
+			KhulnasoftLicense:  khulnasoftLicense,
+			DatabaseSecret: &operatorv1alpha1.Khulnasoftret{
 				Name: fmt.Sprintf(consts.ScalockDbPasswordSecretName, name),
 				Key:  consts.ScalockDbPasswordSecretKey,
 			},
@@ -137,7 +137,7 @@ func UpdateKhulnasoftAuditDB(auditDb *operatorv1alpha1.AuditDBInformation, name 
 
 	if auditDb != nil {
 		if auditDb.AuditDBSecret == nil {
-			auditDb.AuditDBSecret = &operatorv1alpha1.KhulnasoftSecret{
+			auditDb.AuditDBSecret = &operatorv1alpha1.Khulnasoftret{
 				Name: fmt.Sprintf(consts.AuditDbPasswordSecretName, name),
 				Key:  consts.ScalockDbPasswordSecretKey,
 			}
@@ -153,7 +153,7 @@ func UpdateKhulnasoftAuditDB(auditDb *operatorv1alpha1.AuditDBInformation, name 
 		}
 	} else {
 		auditDb = &operatorv1alpha1.AuditDBInformation{
-			AuditDBSecret: &operatorv1alpha1.KhulnasoftSecret{
+			AuditDBSecret: &operatorv1alpha1.Khulnasoftret{
 				Name: fmt.Sprintf(consts.AuditDbPasswordSecretName, name),
 				Key:  consts.ScalockDbPasswordSecretKey,
 			},

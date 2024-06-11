@@ -13,7 +13,7 @@ Use the Khulnasoft-Operator to:
 * Automatically scale the number of Khulnasoft scanners based on the number of images in the scan queue
 	
 The Khulnasoft Operator provides a few [Custom Resources](https://github.com/khulnasoft/khulnasoft-operator/tree/master/config/crd) to manage the Khulnasoft platform. 
-Please make sure to read the Khulnasoft installation manual (https://docs.khulnasoftsec.com/docs) before using the Operator. 
+Please make sure to read the Khulnasoft installation manual (https://docs.khulnasoft.com/docs) before using the Operator. 
 For advance configurations please consult with Khulnasoft's support team.
     
 How to deploy Khulnasoft using the Operator -
@@ -25,7 +25,7 @@ How to deploy Khulnasoft using the Operator -
 	
 
 ## Before You Begin Using the Operator CRDs
-Install the Khulnasoft Operator and obtain access to the Khulnasoft registry - https://www.khulnasoftsec.com/about-us/contact-us/
+Install the Khulnasoft Operator and obtain access to the Khulnasoft registry - https://www.khulnasoft.com/about-us/contact-us/
 You will need to supply two secrets during the installation - 
 * A secret for the Docker registry
 * A secret for the database
@@ -33,7 +33,7 @@ You will need to supply two secrets during the installation -
 You can list the secrets in the YAML files or, you can define secrets in the OpenShift project (see example below) -
 ```bash
 oc create project khulnasoft 
-oc create secret docker-registry khulnasoft-registry --docker-server=registry.khulnasoftsec.com --docker-username=<KHULNASOFT_USERNAME> --docker-password=<KHULNASOFT_PASSWORD> --docker-email=<user email> -n khulnasoft
+oc create secret docker-registry khulnasoft-registry --docker-server=registry.khulnasoft.com --docker-username=<KHULNASOFT_USERNAME> --docker-password=<KHULNASOFT_PASSWORD> --docker-email=<user email> -n khulnasoft
 oc create secret generic khulnasoft-database-password --from-literal=db-password=<password> -n khulnasoft
 oc secrets add khulnasoft-sa khulnasoft-registry --for=pull -n khulnasoft
 ```
@@ -44,7 +44,7 @@ There are multiple options to deploy the KhulnasoftCSP CR. You can review the di
 Here is an example of a simple deployment  - 
 ```yaml
 ---
-apiVersion: operator.khulnasoftsec.com/v1alpha1
+apiVersion: operator.khulnasoft.com/v1alpha1
 kind: KhulnasoftCsp
 metadata:
   name: khulnasoft
@@ -81,7 +81,7 @@ You can review the different options to implement KhulnasoftEnforcer in the foll
 Here is an example of a simple deployment  - 
 ```yaml
 ---
-apiVersion: operator.khulnasoftsec.com/v1alpha1
+apiVersion: operator.khulnasoft.com/v1alpha1
 kind: KhulnasoftEnforcer
 metadata:
   name: khulnasoft
@@ -94,7 +94,7 @@ spec:
   deploy:                                   # Optional: information about khulnasoft enforcer deployment
     image:                                  # Optional: if not given take the default value and version from infra.version
       repository: "enforcer"                # Optional: if not given take the default value - enforcer
-      registry: "registry.khulnasoftsec.com"      # Optional: if not given take the default value - registry.khulnasoftsec.com
+      registry: "registry.khulnasoft.com"      # Optional: if not given take the default value - registry.khulnasoft.com
       tag: "2022.4"                            # Optional: if not given take the default value - 4.5 (latest tested version for this operator version)
       pullPolicy: "IfNotPresent"            # Optional: if not given take the default value - IfNotPresent
   gateway:                                  # Required: data about the gateway address

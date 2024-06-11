@@ -54,7 +54,7 @@ rules:
   - update
   - watch
 - apiGroups:
-  - khulnasoft.khulnasoftsec.com
+  - khulnasoft.khulnasoft.com
   resources:
   - khulnasoftstarboards
   verbs:
@@ -66,13 +66,13 @@ rules:
   - update
   - watch
 - apiGroups:
-  - khulnasoft.khulnasoftsec.com
+  - khulnasoft.khulnasoft.com
   resources:
   - khulnasoftstarboards/finalizers
   verbs:
   - update
 - apiGroups:
-  - khulnasoft.khulnasoftsec.com
+  - khulnasoft.khulnasoft.com
   resources:
   - khulnasoftstarboards/status
   verbs:
@@ -195,7 +195,7 @@ rules:
   - update
   - watch
 - apiGroups:
-  - operator.khulnasoftsec.com
+  - operator.khulnasoft.com
   resources:
   - khulnasoftcsps
   verbs:
@@ -207,13 +207,13 @@ rules:
   - update
   - watch
 - apiGroups:
-  - operator.khulnasoftsec.com
+  - operator.khulnasoft.com
   resources:
   - khulnasoftcsps/finalizers
   verbs:
   - update
 - apiGroups:
-  - operator.khulnasoftsec.com
+  - operator.khulnasoft.com
   resources:
   - khulnasoftcsps/status
   verbs:
@@ -221,7 +221,7 @@ rules:
   - patch
   - update
 - apiGroups:
-  - operator.khulnasoftsec.com
+  - operator.khulnasoft.com
   resources:
   - khulnasoftdatabases
   verbs:
@@ -233,13 +233,13 @@ rules:
   - update
   - watch
 - apiGroups:
-  - operator.khulnasoftsec.com
+  - operator.khulnasoft.com
   resources:
   - khulnasoftdatabases/finalizers
   verbs:
   - update
 - apiGroups:
-  - operator.khulnasoftsec.com
+  - operator.khulnasoft.com
   resources:
   - khulnasoftdatabases/status
   verbs:
@@ -247,7 +247,7 @@ rules:
   - patch
   - update
 - apiGroups:
-  - operator.khulnasoftsec.com
+  - operator.khulnasoft.com
   resources:
   - khulnasoftenforcers
   verbs:
@@ -259,13 +259,13 @@ rules:
   - update
   - watch
 - apiGroups:
-  - operator.khulnasoftsec.com
+  - operator.khulnasoft.com
   resources:
   - khulnasoftenforcers/finalizers
   verbs:
   - update
 - apiGroups:
-  - operator.khulnasoftsec.com
+  - operator.khulnasoft.com
   resources:
   - khulnasoftenforcers/status
   verbs:
@@ -273,7 +273,7 @@ rules:
   - patch
   - update
 - apiGroups:
-  - operator.khulnasoftsec.com
+  - operator.khulnasoft.com
   resources:
   - khulnasoftgateways
   verbs:
@@ -285,13 +285,13 @@ rules:
   - update
   - watch
 - apiGroups:
-  - operator.khulnasoftsec.com
+  - operator.khulnasoft.com
   resources:
   - khulnasoftgateways/finalizers
   verbs:
   - update
 - apiGroups:
-  - operator.khulnasoftsec.com
+  - operator.khulnasoft.com
   resources:
   - khulnasoftgateways/status
   verbs:
@@ -299,7 +299,7 @@ rules:
   - patch
   - update
 - apiGroups:
-  - operator.khulnasoftsec.com
+  - operator.khulnasoft.com
   resources:
   - khulnasoftkubeenforcers
   verbs:
@@ -311,13 +311,13 @@ rules:
   - update
   - watch
 - apiGroups:
-  - operator.khulnasoftsec.com
+  - operator.khulnasoft.com
   resources:
   - khulnasoftkubeenforcers/finalizers
   verbs:
   - update
 - apiGroups:
-  - operator.khulnasoftsec.com
+  - operator.khulnasoft.com
   resources:
   - khulnasoftkubeenforcers/status
   verbs:
@@ -325,7 +325,7 @@ rules:
   - patch
   - update
 - apiGroups:
-  - operator.khulnasoftsec.com
+  - operator.khulnasoft.com
   resources:
   - khulnasoftscanners
   verbs:
@@ -337,13 +337,13 @@ rules:
   - update
   - watch
 - apiGroups:
-  - operator.khulnasoftsec.com
+  - operator.khulnasoft.com
   resources:
   - khulnasoftscanners/finalizers
   verbs:
   - update
 - apiGroups:
-  - operator.khulnasoftsec.com
+  - operator.khulnasoft.com
   resources:
   - khulnasoftscanners/status
   verbs:
@@ -351,7 +351,7 @@ rules:
   - patch
   - update
 - apiGroups:
-  - operator.khulnasoftsec.com
+  - operator.khulnasoft.com
   resources:
   - khulnasoftservers
   verbs:
@@ -363,13 +363,13 @@ rules:
   - update
   - watch
 - apiGroups:
-  - operator.khulnasoftsec.com
+  - operator.khulnasoft.com
   resources:
   - khulnasoftservers/finalizers
   verbs:
   - update
 - apiGroups:
-  - operator.khulnasoftsec.com
+  - operator.khulnasoft.com
   resources:
   - khulnasoftservers/status
   verbs:

@@ -2,13 +2,13 @@
 # since it depends on service name and namespace that are out of this kustomize package.
 # It should be run by config/default
 resources:
-- bases/operator.khulnasoftsec.com_khulnasoftcsps.yaml
-- bases/operator.khulnasoftsec.com_khulnasoftdatabases.yaml
-- bases/operator.khulnasoftsec.com_khulnasoftenforcers.yaml
-- bases/operator.khulnasoftsec.com_khulnasoftgateways.yaml
-- bases/operator.khulnasoftsec.com_khulnasoftkubeenforcers.yaml
-- bases/operator.khulnasoftsec.com_khulnasoftscanners.yaml
-- bases/operator.khulnasoftsec.com_khulnasoftservers.yaml
+- bases/operator.khulnasoft.com_khulnasoftcsps.yaml
+- bases/operator.khulnasoft.com_khulnasoftdatabases.yaml
+- bases/operator.khulnasoft.com_khulnasoftenforcers.yaml
+- bases/operator.khulnasoft.com_khulnasoftgateways.yaml
+- bases/operator.khulnasoft.com_khulnasoftkubeenforcers.yaml
+- bases/operator.khulnasoft.com_khulnasoftscanners.yaml
+- bases/operator.khulnasoft.com_khulnasoftservers.yaml
 - bases/khulnasoft.github.io_khulnasoftstarboards.yaml
 #+kubebuilder:scaffold:crdkustomizeresource
 

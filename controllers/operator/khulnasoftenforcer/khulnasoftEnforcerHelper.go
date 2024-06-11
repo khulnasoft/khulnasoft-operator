@@ -36,9 +36,9 @@ func newKhulnasoftEnforcerHelper(cr *v1alpha1.KhulnasoftEnforcer) *KhulnasoftEnf
 // CreateTokenSecret : Create Enforcer Token Secret For The Enforcer connection to the khulnasoft csp environment
 func (enf *KhulnasoftEnforcerHelper) CreateTokenSecret(cr *v1alpha1.KhulnasoftEnforcer) *corev1.Secret {
 	labels := map[string]string{
-		"app":                cr.Name + "-requirments",
-		"deployedby":         "khulnasoft-operator",
-		"khulnasoftsecoperator_cr": cr.Name,
+		"app":                      cr.Name + "-requirments",
+		"deployedby":               "khulnasoft-operator",
+		"khulnasoftoperator_cr": cr.Name,
 	}
 	annotations := map[string]string{
 		"description": "Secret for khulnasoft database password",
@@ -66,9 +66,9 @@ func (enf *KhulnasoftEnforcerHelper) CreateTokenSecret(cr *v1alpha1.KhulnasoftEn
 func (enf *KhulnasoftEnforcerHelper) CreateConfigMap(cr *v1alpha1.KhulnasoftEnforcer) *corev1.ConfigMap {
 
 	labels := map[string]string{
-		"app":                "khulnasoft-csp-enforcer",
-		"deployedby":         "khulnasoft-operator",
-		"khulnasoftsecoperator_cr": cr.Name,
+		"app":                      "khulnasoft-csp-enforcer",
+		"deployedby":               "khulnasoft-operator",
+		"khulnasoftoperator_cr": cr.Name,
 	}
 
 	annotations := map[string]string{
@@ -77,10 +77,10 @@ func (enf *KhulnasoftEnforcerHelper) CreateConfigMap(cr *v1alpha1.KhulnasoftEnfo
 
 	data := map[string]string{
 		"KHULNASOFT_HEALTH_MONITOR_ENABLED": "true",
-		"KHULNASOFT_INSTALL_PATH":           "/var/lib/khulnasoftsec",
+		"KHULNASOFT_INSTALL_PATH":           "/var/lib/khulnasoft",
 		"KHULNASOFT_LOGICAL_NAME":           "",
 		"KHULNASOFT_SERVER":                 fmt.Sprintf("%s:%d", cr.Spec.Gateway.Host, cr.Spec.Gateway.Port),
-		"RESTART_CONTAINERS":          "no",
+		"RESTART_CONTAINERS":                "no",
 		"KHULNASOFT_EXPRESS_MODE":           "false",
 	}
 
@@ -118,9 +118,9 @@ func (enf *KhulnasoftEnforcerHelper) CreateDaemonSet(cr *v1alpha1.KhulnasoftEnfo
 	}
 
 	labels := map[string]string{
-		"app":                cr.Name + "-requirments",
-		"deployedby":         "khulnasoft-operator",
-		"khulnasoftsecoperator_cr": cr.Name,
+		"app":                      cr.Name + "-requirments",
+		"deployedby":               "khulnasoft-operator",
+		"khulnasoftoperator_cr": cr.Name,
 		"khulnasoft.component":     "enforcer",
 	}
 	annotations := map[string]string{
@@ -164,9 +164,9 @@ func (enf *KhulnasoftEnforcerHelper) CreateDaemonSet(cr *v1alpha1.KhulnasoftEnfo
 		Spec: appsv1.DaemonSetSpec{
 			Selector: &metav1.LabelSelector{
 				MatchLabels: map[string]string{
-					"app":                cr.Name + "-requirments",
-					"deployedby":         "khulnasoft-operator",
-					"khulnasoftsecoperator_cr": cr.Name,
+					"app":                      cr.Name + "-requirments",
+					"deployedby":               "khulnasoft-operator",
+					"khulnasoftoperator_cr": cr.Name,
 				},
 			},
 			Template: corev1.PodTemplateSpec{
@@ -211,20 +211,20 @@ func (enf *KhulnasoftEnforcerHelper) CreateDaemonSet(cr *v1alpha1.KhulnasoftEnfo
 									ReadOnly:  true,
 								},
 								{
-									Name:      "khulnasoftsec",
-									MountPath: "/host/opt/khulnasoftsec",
+									Name:      "khulnasoft",
+									MountPath: "/host/opt/khulnasoft",
 									ReadOnly:  true,
 								},
 								{
-									Name:      "khulnasoftsec-tmp",
-									MountPath: "/opt/khulnasoftsec/tmp",
+									Name:      "khulnasoft-tmp",
+									MountPath: "/opt/khulnasoft/tmp",
 								},
 								{
-									Name:      "khulnasoftsec-audit",
-									MountPath: "/opt/khulnasoftsec/audit",
+									Name:      "khulnasoft-audit",
+									MountPath: "/opt/khulnasoft/audit",
 								},
 								{
-									Name:      "khulnasoftsec-data",
+									Name:      "khulnasoft-data",
 									MountPath: "/data",
 								},
 							},
@@ -302,34 +302,34 @@ func (enf *KhulnasoftEnforcerHelper) CreateDaemonSet(cr *v1alpha1.KhulnasoftEnfo
 							},
 						},
 						{
-							Name: "khulnasoftsec",
+							Name: "khulnasoft",
 							VolumeSource: corev1.VolumeSource{
 								HostPath: &corev1.HostPathVolumeSource{
-									Path: "/var/lib/khulnasoftsec",
+									Path: "/var/lib/khulnasoft",
 								},
 							},
 						},
 						{
-							Name: "khulnasoftsec-tmp",
+							Name: "khulnasoft-tmp",
 							VolumeSource: corev1.VolumeSource{
 								HostPath: &corev1.HostPathVolumeSource{
-									Path: "/var/lib/khulnasoftsec/tmp",
+									Path: "/var/lib/khulnasoft/tmp",
 								},
 							},
 						},
 						{
-							Name: "khulnasoftsec-audit",
+							Name: "khulnasoft-audit",
 							VolumeSource: corev1.VolumeSource{
 								HostPath: &corev1.HostPathVolumeSource{
-									Path: "/var/lib/khulnasoftsec/audit",
+									Path: "/var/lib/khulnasoft/audit",
 								},
 							},
 						},
 						{
-							Name: "khulnasoftsec-data",
+							Name: "khulnasoft-data",
 							VolumeSource: corev1.VolumeSource{
 								HostPath: &corev1.HostPathVolumeSource{
-									Path: "/var/lib/khulnasoftsec/data",
+									Path: "/var/lib/khulnasoft/data",
 								},
 							},
 						},
@@ -424,7 +424,7 @@ func (enf *KhulnasoftEnforcerHelper) CreateDaemonSet(cr *v1alpha1.KhulnasoftEnfo
 		mtlsKhulnasoftEnforcerVolumeMount := []corev1.VolumeMount{
 			{
 				Name:      "khulnasoft-grpc-enforcer",
-				MountPath: "/opt/khulnasoftsec/ssl",
+				MountPath: "/opt/khulnasoft/ssl",
 			},
 		}
 
@@ -475,15 +475,15 @@ func (ebf *KhulnasoftEnforcerHelper) getEnvVars(cr *v1alpha1.KhulnasoftEnforcer)
 		mtlsEnforcerEnv := []corev1.EnvVar{
 			{
 				Name:  "KHULNASOFT_PRIVATE_KEY",
-				Value: "/opt/khulnasoftsec/ssl/khulnasoft_enforcer.key",
+				Value: "/opt/khulnasoft/ssl/khulnasoft_enforcer.key",
 			},
 			{
 				Name:  "KHULNASOFT_PUBLIC_KEY",
-				Value: "/opt/khulnasoftsec/ssl/khulnasoft_enforcer.crt",
+				Value: "/opt/khulnasoft/ssl/khulnasoft_enforcer.crt",
 			},
 			{
 				Name:  "KHULNASOFT_ROOT_CA",
-				Value: "/opt/khulnasoftsec/ssl/rootCA.crt",
+				Value: "/opt/khulnasoft/ssl/rootCA.crt",
 			},
 		}
 		result = append(result, mtlsEnforcerEnv...)

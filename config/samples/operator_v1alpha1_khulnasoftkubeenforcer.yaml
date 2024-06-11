@@ -1,4 +1,4 @@
-apiVersion: operator.khulnasoftsec.com/v1alpha1
+apiVersion: operator.khulnasoft.com/v1alpha1
 kind: KhulnasoftKubeEnforcer
 metadata:
   name: khulnasoftkubeenforcer-sample
@@ -15,7 +15,7 @@ spec:
   deploy:
     service: ClusterIP
     image:
-      registry: registry.khulnasoftsec.com
+      registry: registry.khulnasoft.com
       tag: "2022.4"
       repository: kube-enforcer
       pullPolicy: Always

@@ -20,12 +20,12 @@ import (
 	"context"
 	syserrors "errors"
 	"fmt"
+	"github.com/banzaicloud/k8s-objectmatcher/patch"
 	common2 "github.com/khulnasoft/khulnasoft-operator/controllers/common"
 	ocp "github.com/khulnasoft/khulnasoft-operator/controllers/ocp"
 	consts "github.com/khulnasoft/khulnasoft-operator/pkg/consts"
 	"github.com/khulnasoft/khulnasoft-operator/pkg/utils/k8s"
 	secrets2 "github.com/khulnasoft/khulnasoft-operator/pkg/utils/k8s/secrets"
-	"github.com/banzaicloud/k8s-objectmatcher/patch"
 	routev1 "github.com/openshift/api/route/v1"
 	appsv1 "k8s.io/api/apps/v1"
 	corev1 "k8s.io/api/core/v1"
@@ -55,9 +55,9 @@ type KhulnasoftGatewayReconciler struct {
 	Scheme *runtime.Scheme
 }
 
-//+kubebuilder:rbac:groups=operator.khulnasoftsec.com,resources=khulnasoftgateways,verbs=get;list;watch;create;update;patch;delete
-//+kubebuilder:rbac:groups=operator.khulnasoftsec.com,resources=khulnasoftgateways/status,verbs=get;update;patch
-//+kubebuilder:rbac:groups=operator.khulnasoftsec.com,resources=khulnasoftgateways/finalizers,verbs=update
+//+kubebuilder:rbac:groups=operator.khulnasoft.com,resources=khulnasoftgateways,verbs=get;list;watch;create;update;patch;delete
+//+kubebuilder:rbac:groups=operator.khulnasoft.com,resources=khulnasoftgateways/status,verbs=get;update;patch
+//+kubebuilder:rbac:groups=operator.khulnasoft.com,resources=khulnasoftgateways/finalizers,verbs=update
 //+kubebuilder:rbac:groups=apps,resources=deployments,verbs=get;list;watch;create;update;patch;delete
 //+kubebuilder:rbac:groups=core,resources=pods,verbs=get;list;
 //+kubebuilder:rbac:groups=core,resources=services,verbs=get;list;watch;create;update;patch;delete

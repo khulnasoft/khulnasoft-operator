@@ -1,4 +1,4 @@
-apiVersion: operator.khulnasoftsec.com/v1alpha1
+apiVersion: operator.khulnasoft.com/v1alpha1
 kind: KhulnasoftCsp
 metadata:
   name: khulnasoftcsp-sample
@@ -12,7 +12,7 @@ spec:
   common:
     activeActive: false                     # Optional: if to work with cluster mode if you have more then 1 server, default false
     storageclass: "default"                 # Optional: if not given then use storage class default
-    cybercenterAddress:                     # Optional: if not given then use default https://cybercenter.khulnasoftsec.com
+    cybercenterAddress:                     # Optional: if not given then use default https://cybercenter.khulnasoft.com
     imagePullSecret:                        # Optional: if already created image pull secret then mention in here
     adminPassword:                          # Optional: if already created admin password secret
       key:
@@ -40,7 +40,7 @@ spec:
       key:
       name:
   registry:                                 # Optional: if not given secret in common.imagePullSecret
-    url: "registry.khulnasoftsec.com"
+    url: "registry.khulnasoft.com"
     username: "example@company.com"
     password: ""
     email: "example@company.com"
@@ -49,7 +49,7 @@ spec:
     service: "ClusterIP"                    # Required: service type for khulnasoft server
     image:                                  # Optional: if not given take the default value and version from infra.version
       repository: "database"                # Optional: if not given take the default value - database
-      registry: "registry.khulnasoftsec.com"      # Optional: if not given take the default value - registry.khulnasoftsec.com
+      registry: "registry.khulnasoft.com"      # Optional: if not given take the default value - registry.khulnasoft.com
       tag: "2022.4"                         # Optional: if not given take the default value - 4.6 (latest tested version for this operator version)
       pullPolicy: "IfNotPresent"            # Optional: if not given take the default value - IfNotPresent
   gateway:                                  # Required: information about khulnasoft gateway deployment
@@ -57,7 +57,7 @@ spec:
     service: "ClusterIP"                    # Required: service type for khulnasoft server
     image:                                  # Optional: if not given take the default value and version from infra.version
       repository: "gateway"                 # Optional: if not given take the default value - gateway
-      registry: "registry.khulnasoftsec.com"      # Optional: if not given take the default value - registry.khulnasoftsec.com
+      registry: "registry.khulnasoft.com"      # Optional: if not given take the default value - registry.khulnasoft.com
       tag: "2022.4"                         # Optional: if not given take the default value - 4.6 (latest tested version for this operator version)
       pullPolicy: "IfNotPresent"            # Optional: if not given take the default value - IfNotPresent
   server:                                   # Required: information about khulnasoft server deployment
@@ -65,7 +65,7 @@ spec:
     service: "LoadBalancer"                 # Required: service type for khulnasoft server
     image:                                  # Optional: if not given take the default value and version from infra.version
       repository: "server"                  # Optional: if not given take the default value - server
-      registry: "registry.khulnasoftsec.com"      # Optional: if not given take the default value - registry.khulnasoftsec.com
+      registry: "registry.khulnasoft.com"      # Optional: if not given take the default value - registry.khulnasoft.com
       tag: "2022.4"                         # Optional: if not given take the default value - 4.6 (latest tested version for this operator version)
       pullPolicy: "IfNotPresent"            # Optional: if not given take the default value - IfNotPresent
   adminPassword:                            # Optional: Khulnasoft Admin Password String

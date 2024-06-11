@@ -51,7 +51,7 @@ var _ = Describe("Khulnasoft Controller", Serial, func() {
 					Common: &operatorv1alpha1.KhulnasoftCommon{
 						ImagePullSecret: testingconsts.ImagePullSecret,
 						DbDiskSize:      testingconsts.DbDiskSize,
-						DatabaseSecret: &operatorv1alpha1.KhulnasoftSecret{
+						DatabaseSecret: &operatorv1alpha1.Khulnasoftret{
 							Name: testingconsts.DatabaseSecretName,
 							Key:  testingconsts.DataBaseSecretKey,
 						},

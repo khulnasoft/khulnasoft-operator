@@ -19,6 +19,7 @@ package khulnasoftstarboard
 import (
 	"context"
 	"fmt"
+	"github.com/banzaicloud/k8s-objectmatcher/patch"
 	"github.com/khulnasoft/khulnasoft-operator/apis/operator/v1alpha1"
 	common2 "github.com/khulnasoft/khulnasoft-operator/controllers/common"
 	"github.com/khulnasoft/khulnasoft-operator/pkg/consts"
@@ -26,7 +27,6 @@ import (
 	"github.com/khulnasoft/khulnasoft-operator/pkg/utils/k8s"
 	"github.com/khulnasoft/khulnasoft-operator/pkg/utils/k8s/rbac"
 	"github.com/khulnasoft/khulnasoft-operator/pkg/utils/k8s/secrets"
-	"github.com/banzaicloud/k8s-objectmatcher/patch"
 	appsv1 "k8s.io/api/apps/v1"
 	corev1 "k8s.io/api/core/v1"
 	rbacv1 "k8s.io/api/rbac/v1"
@@ -56,9 +56,9 @@ type KhulnasoftStarboardReconciler struct {
 	Scheme *runtime.Scheme
 }
 
-//+kubebuilder:rbac:groups=khulnasoft.khulnasoftsec.com,resources=khulnasoftstarboards,verbs=get;list;watch;create;update;patch;delete
-//+kubebuilder:rbac:groups=khulnasoft.khulnasoftsec.com,resources=khulnasoftstarboards/status,verbs=get;update;patch
-//+kubebuilder:rbac:groups=khulnasoft.khulnasoftsec.com,resources=khulnasoftstarboards/finalizers,verbs=update
+//+kubebuilder:rbac:groups=khulnasoft.khulnasoft.com,resources=khulnasoftstarboards,verbs=get;list;watch;create;update;patch;delete
+//+kubebuilder:rbac:groups=khulnasoft.khulnasoft.com,resources=khulnasoftstarboards/status,verbs=get;update;patch
+//+kubebuilder:rbac:groups=khulnasoft.khulnasoft.com,resources=khulnasoftstarboards/finalizers,verbs=update
 //+kubebuilder:rbac:groups=core,resources=secrets,verbs=get;list;watch;create;update;patch;delete
 //+kubebuilder:rbac:groups=core,resources=serviceaccounts,verbs=get;list;watch;create;update;patch;delete
 //+kubebuilder:rbac:groups=apps,resources=deployments,verbs=get;list;watch;create;update;patch;delete

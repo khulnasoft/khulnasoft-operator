@@ -54,9 +54,9 @@ type KhulnasoftDatabaseReconciler struct {
 	Scheme *runtime.Scheme
 }
 
-//+kubebuilder:rbac:groups=operator.khulnasoftsec.com,resources=khulnasoftdatabases,verbs=get;list;watch;create;update;patch;delete
-//+kubebuilder:rbac:groups=operator.khulnasoftsec.com,resources=khulnasoftdatabases/status,verbs=get;update;patch
-//+kubebuilder:rbac:groups=operator.khulnasoftsec.com,resources=khulnasoftdatabases/finalizers,verbs=update
+//+kubebuilder:rbac:groups=operator.khulnasoft.com,resources=khulnasoftdatabases,verbs=get;list;watch;create;update;patch;delete
+//+kubebuilder:rbac:groups=operator.khulnasoft.com,resources=khulnasoftdatabases/status,verbs=get;update;patch
+//+kubebuilder:rbac:groups=operator.khulnasoft.com,resources=khulnasoftdatabases/finalizers,verbs=update
 //+kubebuilder:rbac:groups=core,resources=secrets,verbs=get;list;watch;create;update;patch;delete
 //+kubebuilder:rbac:groups=core,resources=serviceaccounts,verbs=get;list;watch;create;update;patch;delete
 //+kubebuilder:rbac:groups=apps,resources=deployments,verbs=get;list;watch;create;update;patch;delete
@@ -123,7 +123,7 @@ func (r *KhulnasoftDatabaseReconciler) Reconcile(ctx context.Context, req ctrl.R
 				return reconcile.Result{}, err
 			}
 
-			instance.Spec.Common.DatabaseSecret = &v1alpha1.KhulnasoftSecret{
+			instance.Spec.Common.DatabaseSecret = &v1alpha1.Khulnasoftret{
 				Name: fmt.Sprintf(consts.ScalockDbPasswordSecretName, instance.Name),
 				Key:  consts.ScalockDbPasswordSecretKey,
 			}
@@ -250,7 +250,7 @@ func (r *KhulnasoftDatabaseReconciler) updateDatabaseObject(cr *v1alpha1.Khulnas
 	return cr
 }
 
-func (r *KhulnasoftDatabaseReconciler) InstallDatabaseDeployment(cr *v1alpha1.KhulnasoftDatabase, dbSecret *v1alpha1.KhulnasoftSecret, deployName, pvcName, app string) (reconcile.Result, error) {
+func (r *KhulnasoftDatabaseReconciler) InstallDatabaseDeployment(cr *v1alpha1.KhulnasoftDatabase, dbSecret *v1alpha1.Khulnasoftret, deployName, pvcName, app string) (reconcile.Result, error) {
 	reqLogger := log.WithValues("Database deployment Phase", "Install Database Deployment")
 	reqLogger.Info("Start installing khulnasoft database deployment")
 

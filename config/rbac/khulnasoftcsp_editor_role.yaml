@@ -5,7 +5,7 @@ metadata:
   name: khulnasoftcsp-editor-role
 rules:
 - apiGroups:
-  - operator.khulnasoftsec.com
+  - operator.khulnasoft.com
   resources:
   - khulnasoftcsps
   verbs:
@@ -17,7 +17,7 @@ rules:
   - update
   - watch
 - apiGroups:
-  - operator.khulnasoftsec.com
+  - operator.khulnasoft.com
   resources:
   - khulnasoftcsps/status
   verbs:

@@ -5,9 +5,9 @@ metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.8.0
   creationTimestamp: null
-  name: khulnasoftservers.operator.khulnasoftsec.com
+  name: khulnasoftservers.operator.khulnasoft.com
 spec:
-  group: operator.khulnasoftsec.com
+  group: operator.khulnasoft.com
   names:
     kind: KhulnasoftServer
     listKind: KhulnasoftServerList
