@@ -1,0 +1,24 @@
+# permissions for end users to edit khulnasoftstarboards.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: khulnasoftstarboard-editor-role
+rules:
+- apiGroups:
+  - khulnasoft.github.io
+  resources:
+  - khulnasoftstarboards
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - khulnasoft.github.io
+  resources:
+  - khulnasoftstarboards/status
+  verbs:
+  - get

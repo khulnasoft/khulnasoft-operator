@@ -1,0 +1,24 @@
+# permissions for end users to edit khulnasoftscanners.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: khulnasoftscanner-editor-role
+rules:
+- apiGroups:
+  - operator.khulnasoftsec.com
+  resources:
+  - khulnasoftscanners
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - operator.khulnasoftsec.com
+  resources:
+  - khulnasoftscanners/status
+  verbs:
+  - get

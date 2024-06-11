@@ -1,0 +1,42 @@
+# This kustomization.yaml is not intended to be run by itself,
+# since it depends on service name and namespace that are out of this kustomize package.
+# It should be run by config/default
+resources:
+- bases/operator.khulnasoftsec.com_khulnasoftcsps.yaml
+- bases/operator.khulnasoftsec.com_khulnasoftdatabases.yaml
+- bases/operator.khulnasoftsec.com_khulnasoftenforcers.yaml
+- bases/operator.khulnasoftsec.com_khulnasoftgateways.yaml
+- bases/operator.khulnasoftsec.com_khulnasoftkubeenforcers.yaml
+- bases/operator.khulnasoftsec.com_khulnasoftscanners.yaml
+- bases/operator.khulnasoftsec.com_khulnasoftservers.yaml
+- bases/khulnasoft.github.io_khulnasoftstarboards.yaml
+#+kubebuilder:scaffold:crdkustomizeresource
+
+patchesStrategicMerge:
+# [WEBHOOK] To enable webhook, uncomment all the sections with [WEBHOOK] prefix.
+# patches here are for enabling the conversion webhook for each CRD
+#- patches/webhook_in_khulnasoftcsps.yaml
+#- patches/webhook_in_khulnasoftdatabases.yaml
+#- patches/webhook_in_khulnasoftenforcers.yaml
+#- patches/webhook_in_khulnasoftgateways.yaml
+#- patches/webhook_in_khulnasoftkubeenforcers.yaml
+#- patches/webhook_in_khulnasoftscanners.yaml
+#- patches/webhook_in_khulnasoftservers.yaml
+#- patches/webhook_in_khulnasoftstarboards.yaml
+#+kubebuilder:scaffold:crdkustomizewebhookpatch
+
+# [CERTMANAGER] To enable cert-manager, uncomment all the sections with [CERTMANAGER] prefix.
+# patches here are for enabling the CA injection for each CRD
+#- patches/cainjection_in_khulnasoftcsps.yaml
+#- patches/cainjection_in_khulnasoftdatabases.yaml
+#- patches/cainjection_in_khulnasoftenforcers.yaml
+#- patches/cainjection_in_khulnasoftgateways.yaml
+#- patches/cainjection_in_khulnasoftkubeenforcers.yaml
+#- patches/cainjection_in_khulnasoftscanners.yaml
+#- patches/cainjection_in_khulnasoftservers.yaml
+#- patches/cainjection_in_khulnasoftstarboards.yaml
+#+kubebuilder:scaffold:crdkustomizecainjectionpatch
+
+# the following config is for teaching kustomize how to do kustomization for CRDs.
+configurations:
+- kustomizeconfig.yaml

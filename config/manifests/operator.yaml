@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: khulnasoft-operator
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: khulnasoft-operator
+  template:
+    metadata:
+      labels:
+        name: khulnasoft-operator
+    spec:
+      serviceAccountName: khulnasoft-operator
+      containers:
+        - name: khulnasoft-operator
+          image: "khulnasoftsec/khulnasoft-operator:2022.4.1"
+          command:
+          - khulnasoft-operator
+          imagePullPolicy: Always
+          env:
+            - name: WATCH_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: OPERATOR_NAME
+              value: "khulnasoft-operator"
