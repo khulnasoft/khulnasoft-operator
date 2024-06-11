@@ -35,7 +35,7 @@ type KhulnasoftEnforcerSpec struct {
 	EnforcerService        *KhulnasoftService            `json:"deploy,required"`
 	Gateway                *KhulnasoftGatewayInformation `json:"gateway,required"`
 	Token                  string                        `json:"token,required"`
-	Secret                 *Khulnasoftret             `json:"secret,omitempty"`
+	Secret                 *Khulnasoftret                `json:"secret,omitempty"`
 	Envs                   []corev1.EnvVar               `json:"env,omitempty"`
 	RunAsNonRoot           bool                          `json:"runAsNonRoot,omitempty"`
 	EnforcerUpdateApproved *bool                         `json:"updateEnforcer,omitempty"`
