@@ -60,8 +60,8 @@ func (sr *KhulnasoftServerHelper) CreateConfigMap(cr *operatorv1alpha1.Khulnasof
 	}
 
 	labels := map[string]string{
-		"app":                      "khulnasoft-csp-server-config",
-		"deployedby":               "khulnasoft-operator",
+		"app":                   "khulnasoft-csp-server-config",
+		"deployedby":            "khulnasoft-operator",
 		"khulnasoftoperator_cr": cr.Name,
 	}
 	annotations := map[string]string{
@@ -151,11 +151,11 @@ func (sr *KhulnasoftServerHelper) newDeployment(cr *operatorv1alpha1.KhulnasoftS
 	}
 
 	labels := map[string]string{
-		"app":                      cr.Name + "-server",
-		"deployedby":               "khulnasoft-operator",
+		"app":                   cr.Name + "-server",
+		"deployedby":            "khulnasoft-operator",
 		"khulnasoftoperator_cr": cr.Name,
-		"type":                     "khulnasoft-server",
-		"khulnasoft.component":     "server",
+		"type":                  "khulnasoft-server",
+		"khulnasoft.component":  "server",
 	}
 	annotations := map[string]string{
 		"description":       "Deploy the khulnasoft console server",
@@ -194,10 +194,10 @@ func (sr *KhulnasoftServerHelper) newDeployment(cr *operatorv1alpha1.KhulnasoftS
 			Replicas: extra.Int32Ptr(int32(cr.Spec.ServerService.Replicas)),
 			Selector: &metav1.LabelSelector{
 				MatchLabels: map[string]string{
-					"app":                      cr.Name + "-server",
-					"deployedby":               "khulnasoft-operator",
+					"app":                   cr.Name + "-server",
+					"deployedby":            "khulnasoft-operator",
 					"khulnasoftoperator_cr": cr.Name,
-					"type":                     "khulnasoft-server",
+					"type":                  "khulnasoft-server",
 				},
 			},
 			Template: corev1.PodTemplateSpec{

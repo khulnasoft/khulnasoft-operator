@@ -13,16 +13,16 @@ type KhulnasoftInfrastructure struct {
 }
 
 type KhulnasoftCommon struct {
-	ActiveActive       bool              `json:"activeActive"`
-	StorageClass       string            `json:"storageclass,omitempty"`
-	CyberCenterAddress string            `json:"cybercenterAddress,omitempty"`
-	ImagePullSecret    string            `json:"imagePullSecret,omitempty"`
+	ActiveActive       bool           `json:"activeActive"`
+	StorageClass       string         `json:"storageclass,omitempty"`
+	CyberCenterAddress string         `json:"cybercenterAddress,omitempty"`
+	ImagePullSecret    string         `json:"imagePullSecret,omitempty"`
 	AdminPassword      *Khulnasoftret `json:"adminPassword,omitempty"`
 	KhulnasoftLicense  *Khulnasoftret `json:"license,omitempty"`
 	DatabaseSecret     *Khulnasoftret `json:"databaseSecret,omitempty"`
-	DbDiskSize         int               `json:"dbDiskSize,omitempty"`
-	SplitDB            bool              `json:"splitDB,omitempty"`
-	AllowAnyVersion    bool              `json:"allowAnyVersion,omitempty"`
+	DbDiskSize         int            `json:"dbDiskSize,omitempty"`
+	SplitDB            bool           `json:"splitDB,omitempty"`
+	AllowAnyVersion    bool           `json:"allowAnyVersion,omitempty"`
 }
 
 type KhulnasoftDockerRegistry struct {
@@ -156,6 +156,6 @@ type KhulnasoftStarboardDetails struct {
 }
 
 type AuditDBInformation struct {
-	AuditDBSecret *Khulnasoftret              `json:"secret,omitempty"`
+	AuditDBSecret *Khulnasoftret                 `json:"secret,omitempty"`
 	Data          *KhulnasoftDatabaseInformation `json:"information,omitempty"`
 }

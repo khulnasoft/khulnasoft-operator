@@ -27,8 +27,8 @@ func CheckIfClusterRoleBindingExists(k8sclient client.Client, name string) bool 
 // CreateClusterRoleBinding Creaye cluster role binding
 func CreateClusterRoleBinding(cr, namespace, name, app, description, sa, clusterrole string) *rbacv1.ClusterRoleBinding {
 	labels := map[string]string{
-		"app":                      app,
-		"deployedby":               "khulnasoft-operator",
+		"app":                   app,
+		"deployedby":            "khulnasoft-operator",
 		"khulnasoftoperator_cr": cr,
 	}
 	annotations := map[string]string{

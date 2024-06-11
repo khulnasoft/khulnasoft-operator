@@ -205,8 +205,8 @@ func (enf *KhulnasoftStarboardHelper) CreateStarboardClusterRole(name string, na
 // CreateServiceAccount Create new service account
 func (enf *KhulnasoftStarboardHelper) CreateStarboardServiceAccount(cr, namespace, app, name string) *corev1.ServiceAccount {
 	labels := map[string]string{
-		"app":                      app,
-		"deployedby":               "khulnasoft-operator",
+		"app":                   app,
+		"deployedby":            "khulnasoft-operator",
 		"khulnasoftoperator_cr": cr,
 	}
 	annotations := map[string]string{
@@ -235,8 +235,8 @@ func (enf *KhulnasoftStarboardHelper) CreateStarboardServiceAccount(cr, namespac
 
 func (enf *KhulnasoftStarboardHelper) CreateClusterRoleBinding(cr, namespace, name, app, sa, clusterrole string) *rbacv1.ClusterRoleBinding {
 	labels := map[string]string{
-		"app":                      app,
-		"deployedby":               "khulnasoft-operator",
+		"app":                   app,
+		"deployedby":            "khulnasoft-operator",
 		"khulnasoftoperator_cr": cr,
 	}
 	annotations := map[string]string{
@@ -272,8 +272,8 @@ func (enf *KhulnasoftStarboardHelper) CreateClusterRoleBinding(cr, namespace, na
 
 func (enf *KhulnasoftStarboardHelper) CreateStarboardSecret(cr, namespace, name, app string) *corev1.Secret {
 	labels := map[string]string{
-		"app":                      app,
-		"deployedby":               "khulnasoft-operator",
+		"app":                   app,
+		"deployedby":            "khulnasoft-operator",
 		"khulnasoftoperator_cr": cr,
 	}
 	annotations := map[string]string{
@@ -299,7 +299,7 @@ func (enf *KhulnasoftStarboardHelper) CreateStarboardConftestConfigMap(cr, names
 	labels := map[string]string{
 		"app":                        app,
 		"deployedby":                 "khulnasoft-operator",
-		"khulnasoftoperator_cr":   cr,
+		"khulnasoftoperator_cr":      cr,
 		"app.kubernetes.io/name":     "starboard-operator",
 		"app.kubernetes.io/instance": "starboard-operator",
 		"app.kubernetes.io/version":  consts.StarboardVersion,
@@ -325,8 +325,8 @@ func (enf *KhulnasoftStarboardHelper) CreateStarboardConftestConfigMap(cr, names
 
 func (enf *KhulnasoftStarboardHelper) CreateStarboardConfigMap(cr, namespace, name, app string) *corev1.ConfigMap {
 	labels := map[string]string{
-		"app":                      app,
-		"deployedby":               "khulnasoft-operator",
+		"app":                   app,
+		"deployedby":            "khulnasoft-operator",
 		"khulnasoftoperator_cr": cr,
 	}
 	annotations := map[string]string{
@@ -359,8 +359,8 @@ func (enf *KhulnasoftStarboardHelper) CreateStarboardDeployment(cr *khulnasoftv1
 	}
 
 	labels := map[string]string{
-		"app":                      app,
-		"deployedby":               "khulnasoft-operator",
+		"app":                   app,
+		"deployedby":            "khulnasoft-operator",
 		"khulnasoftoperator_cr": cr.Name,
 	}
 	annotations := map[string]string{

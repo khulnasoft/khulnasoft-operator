@@ -28,8 +28,8 @@ func CheckIfSecretExists(k8sclient client.Client, name, namespace string) bool {
 // CreateSecret Create new secret
 func CreateSecret(cr, namespace, app, description, name, key, value string) *corev1.Secret {
 	labels := map[string]string{
-		"app":                      app,
-		"deployedby":               "khulnasoft-operator",
+		"app":                   app,
+		"deployedby":            "khulnasoft-operator",
 		"khulnasoftoperator_cr": cr,
 	}
 	annotations := map[string]string{
@@ -58,8 +58,8 @@ func CreateSecret(cr, namespace, app, description, name, key, value string) *cor
 // createPullImageSecret Create pull image secret
 func CreatePullImageSecret(cr, namespace, app, name string, registry operatorv1alpha1.KhulnasoftDockerRegistry) *corev1.Secret {
 	labels := map[string]string{
-		"app":                      app,
-		"deployedby":               "khulnasoft-operator",
+		"app":                   app,
+		"deployedby":            "khulnasoft-operator",
 		"khulnasoftoperator_cr": cr,
 	}
 	annotations := map[string]string{
