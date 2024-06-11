@@ -7,6 +7,7 @@ import (
 	"time"
 
 	khulnasoftv1alpha1 "github.com/khulnasoft/khulnasoft-operator/apis/khulnasoft/v1alpha1"
+
 	operatorv1alpha1 "github.com/khulnasoft/khulnasoft-operator/apis/operator/v1alpha1"
 	testingconsts "github.com/khulnasoft/khulnasoft-operator/test/consts"
 	testutils "github.com/khulnasoft/khulnasoft-operator/test/utils"
@@ -19,12 +20,13 @@ import (
 )
 
 const (
-	timeout             = time.Minute * 6
-	interval            = time.Second * 30
-	enforcerTimeout     = time.Minute * 3
-	scannerTimeout      = time.Minute * 1
-	KubeEnforcerTimeout = time.Minute * 5
-	StarboardTimeout    = time.Minute * 2
+	timeout               = time.Minute * 8
+	interval              = time.Second * 30
+	enforcerTimeout       = time.Minute * 4
+	scannerTimeout        = time.Minute * 2
+	KubeEnforcerTimeout   = time.Minute * 6
+	StarboardTimeout      = time.Minute * 2
+	cloudConnectorTimeout = time.Minute * 1
 )
 
 var _ = Describe("Khulnasoft Controller", Serial, func() {
@@ -51,7 +53,7 @@ var _ = Describe("Khulnasoft Controller", Serial, func() {
 					Common: &operatorv1alpha1.KhulnasoftCommon{
 						ImagePullSecret: testingconsts.ImagePullSecret,
 						DbDiskSize:      testingconsts.DbDiskSize,
-						DatabaseSecret: &operatorv1alpha1.Khulnasoftret{
+						DatabaseSecret: &operatorv1alpha1.KhulnasoftSecret{
 							Name: testingconsts.DatabaseSecretName,
 							Key:  testingconsts.DataBaseSecretKey,
 						},
@@ -262,6 +264,7 @@ var _ = Describe("Khulnasoft Controller", Serial, func() {
 						GatewayAddress:  testingconsts.GatewayAddress,
 						ClusterName:     testingconsts.ClusterName,
 						ImagePullSecret: testingconsts.ImagePullSecret,
+						KubeBenchImage:  testingconsts.KubeBenchName,
 					},
 					KubeEnforcerService: &operatorv1alpha1.KhulnasoftService{
 						ServiceType: "ClusterIP",
@@ -323,8 +326,70 @@ var _ = Describe("Khulnasoft Controller", Serial, func() {
 			}, StarboardTimeout, interval).Should(BeTrue())
 		})
 
-		// Delete
+		It("It should create KhulnasoftCloudConnector Deployment", func() {
+			// todo: remove the if statement after we create and release ubi image of cc.
+			if ubi == "true" {
+				Skip("Skipping because there is no image of ubi for cloud connector", 1)
+			}
+			instance := &operatorv1alpha1.KhulnasoftCloudConnector{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      name,
+					Namespace: namespace,
+				},
+				Spec: operatorv1alpha1.KhulnasoftCloudConnectorSpec{
+					Infrastructure: &operatorv1alpha1.KhulnasoftInfrastructure{
+						ServiceAccount: testingconsts.CspServiceAccount,
+						Namespace:      testingconsts.NameSpace,
+						Version:        testingconsts.Version,
+					},
+					Common: &operatorv1alpha1.KhulnasoftCommon{
+						ImagePullSecret: testingconsts.ImagePullSecret,
+					},
+					CloudConnectorService: &operatorv1alpha1.KhulnasoftService{
+						ServiceType: "ClusterIP",
+						ImageData: &operatorv1alpha1.KhulnasoftImage{
+							Registry:   testingconsts.Registry,
+							Repository: testingconsts.CloudConnectorRepo,
+							PullPolicy: "Always",
+						},
+					},
+					Login: &operatorv1alpha1.KhulnasoftLogin{
+						Username: testingconsts.ServerAdminUser,
+						Password: testingconsts.ServerAdminPassword,
+						Host:     testingconsts.GatewayHost,
+					},
+					Tunnels: []*operatorv1alpha1.KhulnasoftCloudConnectorTunnels{
+						{
+							Host: "1.1.1.1",
+							Port: "443",
+						},
+					},
+				},
+			}
+			// Adding ubi tags:
+			if ubi == "true" {
+				instance.Spec.CloudConnectorService.ImageData.Tag = testingconsts.UbiImageTag
+			}
+			Expect(k8sClient.Create(context.Background(), instance)).Should(Succeed())
 
+			cloudConnectorLookupKey := types.NamespacedName{Name: name, Namespace: namespace}
+			cc := &operatorv1alpha1.KhulnasoftCloudConnector{}
+
+			Eventually(func() bool {
+				err := k8sClient.Get(context.Background(), cloudConnectorLookupKey, cc)
+				if err != nil {
+					fmt.Fprint(GinkgoWriter, err)
+					return false
+				}
+				if cc.Status.State != operatorv1alpha1.KhulnasoftDeploymentStateRunning {
+					localLog.Info(fmt.Sprintf("cc state: %s", cc.Status.State))
+					return false
+				}
+				return true
+			}, cloudConnectorTimeout, interval).Should(BeTrue())
+		})
+
+		//Delete
 		It("It should delete KhulnasoftKubeEnforcer Deployment", func() {
 
 			keLookupKey := types.NamespacedName{Name: name, Namespace: namespace}
@@ -359,6 +424,20 @@ var _ = Describe("Khulnasoft Controller", Serial, func() {
 			}
 		})
 
+		It("It should delete KhulnasoftCloudConnector Deployment", func() {
+			// todo: remove the if statement after we create and release ubi image of cc.
+			if ubi == "true" {
+				Skip("Skipping because there is no image of ubi for cloud connector", 1)
+			}
+			cloudConnectorLookupKey := types.NamespacedName{Name: name, Namespace: namespace}
+			cc := &operatorv1alpha1.KhulnasoftCloudConnector{}
+
+			err := k8sClient.Get(context.Background(), cloudConnectorLookupKey, cc)
+			if err == nil {
+				Expect(k8sClient.Delete(context.Background(), cc)).Should(Succeed())
+			}
+		})
+
 		It("It should delete KhulnasoftCsp Deployment", func() {
 
 			cspLookupKey := types.NamespacedName{Name: name, Namespace: namespace}
@@ -368,7 +447,6 @@ var _ = Describe("Khulnasoft Controller", Serial, func() {
 			if err == nil {
 				Expect(k8sClient.Delete(context.Background(), csp)).Should(Succeed())
 			}
-
 		})
 	})
 })

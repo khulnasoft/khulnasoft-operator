@@ -7,6 +7,7 @@ This guide explains how to deploy and use the Khulnasoft Security Operator to ma
 * Enforcer
 * Scanner
 * KubeEnforcer
+* LightningEnforcer
 
 Use the Khulnasoft Operator to: 
 * Easily deploy Khulnasoft Enterprise on OpenShift
@@ -105,7 +106,7 @@ The **[KhulnasoftServer CRD](../config/crd/bases/operator.khulnasoft.com_khulnas
 **[KhulnasoftScanner CRD](../config/crd/bases/operator.khulnasoft.com_khulnasoftscanners.yaml)** is used to deploy the Khulnasoft Scanner in any cluster. Please see the [example CR](../config/samples/operator_v1alpha1_khulnasoftscanner.yaml) for the listing of all fields and configurations.
 * You need to set the target Khulnasoft Server using the ```.spec.login.host```  property.
 * You need to provide the ```.spec.login.username``` and ```.spec.login.password``` to authenticate with the Khulnasoft Server.
-* You can choose to provide  ```.spec.login.token``` to enable token based authentication with the khulnasoft server, If  the ```.spec.login.token``` is defined in spec username and password are not considered. Token authentication takes higher precedence over a username and password authentication.
+* You can choose to provide ```.spec.login.token``` to enable token based authentication with the khulnasoft server, If the ```.spec.login.token``` is defined in spec username and password are not considered. Token authentication takes higher precedence over a username and password authentication.
 * You can set ``.spec.login.tlsNoVerify`` if you connect scanner to HTTPS server, and don't want to use mTLS verification.
 * You can choose to deploy a different version of the Khulnasoft Scanner by setting the ```.spec.image.tag``` property.
     If you choose to run old/custom Khulnasoft Scanner version, you must set ```.spec.common.allowAnyVersion``` .
@@ -271,6 +272,7 @@ spec:
 
    The khulnasoft-kube-enforcer-scc yaml defines the cluster’s security context constraints. We strongly recommend not changing anything in this yaml file.
     * Download [khulnasoft-kube-enforcer-scc](../config/rbac/khulnasoft-kube-enforcer-scc.yaml) yaml.
+    * In case of custom service account name, rename the value in line 33 from "khulnasoft-kube-enforcer-sa" to your service account.
     * Apply it by typing:
   ```shell
   oc apply -f khulnasoft-kube-enforcer-scc.yaml
@@ -631,7 +633,7 @@ spec:
       registry: "registry.khulnasoft.com"
       repository: "console"
       tag: "<<IMAGE TAG>>"
-      pullPolicy: Always  
+      pullPolicy: Always
   route: true                               # Optional: If defined and set to true, the Operator will create a Route to enable access to the console
   runAsNonRoot: false                       # Optional: If defined and set to true, the Operator will create the pods with unprivileged user.
 ```
@@ -683,9 +685,10 @@ spec:
     version: '2022.4'
     serviceAccount: khulnasoft-kube-enforcer-sa
   config:
-    gateway_address: 'khulnasoft-gateway:8443'          # Required: provide <<KHULNASOFT GW IP OR DNS: KHULNASOFT GW PORT>>
-    cluster_name: Default-cluster-name                     # Required: provide your cluster name
-    imagePullSecret: khulnasoft-registry                # Required: provide the imagePullSecret name
+    gateway_address: 'khulnasoft-gateway:8443'                      # Required: provide <<KHULNASOFT GW IP OR DNS: KHULNASOFT GW PORT>>
+    cluster_name: Default-cluster-name                        # Required: provide your cluster name
+    imagePullSecret: khulnasoft-registry                            # Required: provide the imagePullSecret name
+    kubebench_image: 'docker.io/khulnasoft/kube-bench:v0.7.1'   # Optional: KubeBench image name can be replace with custom registry
   deploy:
     service: ClusterIP
     image:
@@ -724,10 +727,80 @@ spec:
       registry: "registry.khulnasoft.com"
       repository: "scanner"
       tag: "<<IMAGE TAG>>"
-  runAsNonRoot: false                           # Optional: If defined and set to true, the Operator will create the pods with unprivileged user.
+  runAsNonRoot: false                  # Optional: If defined and set to true, the Operator will create the pods with unprivileged user.
   login:
     username: "<<YOUR KHULNASOFT USER NAME>>"
     password: "<<YOUR KHULNASOFT USER PASSWORD>>"
-    token: "<<YOUR KHULNASOFT SCANNER TOKEN>>"        # Optional: provide scanner token generated in KHULNASOFT UI, If empty username and password considered for authentication
-    host: 'http://khulnasoft-server:8080'             # Required: provide <<(http:// or https://)Khulnasoft Server IP or DNS: Khulnasoft Server port>>
+    token: "<<YOUR KHULNASOFT SCANNER TOKEN>>" # Optional: provide scanner token generated in KHULNASOFT UI, If empty username and password considered for authentication
+    host: 'http://khulnasoft-server:8080'    #Required: provide <<(http:// or https://)Khulnasoft Server IP or DNS: Khulnasoft Server port>>
+```
+
+#### Example: Deploy the Khulnasoft Lightning Enforcer
+
+You can deploy Khulnasoft Lightning Enforcer; here is an example:
+```yaml
+apiVersion: operator.khulnasoft.com/v1alpha1
+kind: KhulnasoftLightning
+metadata:
+  name: khulnasoft
+spec:
+  global:
+    gateway_address: khulnasoft-gateway:8443
+    cluster_name: Default-cluster-name
+  common:
+    imagePullSecret: khulnasoft-registry
+  kubeEnforcer:
+    infra:
+      version: '2022.4'
+      serviceAccount: khulnasoft-kube-enforcer-sa
+    token: "<<KUBE_ENFORCER_GROUP_TOKEN>>"    # Recommended: Provide Kube-Enforcer token
+    allowAnyVersion:                          # Optional: running all types of images
+    deploy:
+      service: ClusterIP
+      image:
+        registry: registry.khulnasoft.com
+        tag: "2022.4"
+        repository: kube-enforcer
+        pullPolicy: Always
+      resources:
+        limits:
+          cpu: 800m
+          memory: 500Mi
+        requests:
+          cpu: 200m
+          memory: 125Mi
+    starboard:
+      infra:
+        serviceAccount: starboard-operator
+      config:
+        imagePullSecret: starboard-registry
+      deploy:
+        replicas: 1
+    env:
+    - name: "SOME ENV"
+      value: "SOME ENV VALUE"
+  enforcer:
+    infra:                                    # Required: Infrastructure information
+      serviceAccount: khulnasoft-sa                 # Required:
+      version: "2022.4"                       # Optional: auto generate to latest version
+    deploy:                                   # Optional: information about khulnasoft enforcer deployment
+      resources:
+        limits:
+          cpu: 1000m
+          memory: 1500Mi
+        requests:
+          cpu: 300m
+          memory: 500Mi
+      image:                                  # Optional: if not given take the default value and version from infra.version
+        repository: "enforcer"                # Optional: if not given take the default value - enforcer
+        registry: "registry.khulnasoft.com"      # Optional: if not given take the default value - registry.khulnasoft.com
+        tag: "2022.4"                         # Optional: if not given take the default value - 4.5 (latest tested version for this operator version)
+        pullPolicy: IfNotPresent              # Optional: if not given take the default value - IfNotPresent
+    secret:                                  # Optional: secret for the enforcer token
+      name:
+      key:
+    token: "<<ENFORCER_GROUP_TOKEN>>"         # Recommended: Provide Enforcer token
+    runAsNonRoot:                             # Optional: true/false
+    khulnasoft_express_mode: false                  # Optional: Change to true, to enable express mode deployment of enforcer
+    rhcosVersion:                             # Optional: Set the RHCOS_VERSION with the exact OCP version to allow accurate vulnerability scanning.
 ```

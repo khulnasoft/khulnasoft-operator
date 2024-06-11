@@ -18,13 +18,13 @@ package controllers
 
 import (
 	"context"
-	"fmt"
 	"os"
 	"path/filepath"
 	"testing"
 
 	khulnasoftv1alpha1 "github.com/khulnasoft/khulnasoft-operator/apis/khulnasoft/v1alpha1"
 	"github.com/khulnasoft/khulnasoft-operator/controllers/khulnasoft/khulnasoftstarboard"
+	"github.com/khulnasoft/khulnasoft-operator/controllers/operator/khulnasoftcloudconnector"
 	"github.com/khulnasoft/khulnasoft-operator/controllers/operator/khulnasoftcsp"
 	"github.com/khulnasoft/khulnasoft-operator/controllers/operator/khulnasoftdatabase"
 	"github.com/khulnasoft/khulnasoft-operator/controllers/operator/khulnasoftenforcer"
@@ -81,7 +81,6 @@ var _ = BeforeSuite(func() {
 	}
 
 	log := logf.Log.WithName("BeforeSuite")
-	fmt.Fprintln(GinkgoWriter, "hello")
 
 	By("bootstrapping test environment")
 	createKind := os.Getenv("CREATE_KIND")
@@ -120,49 +119,56 @@ var _ = BeforeSuite(func() {
 
 	err = (&khulnasoftcsp.KhulnasoftCspReconciler{
 		Client: mgr.GetClient(),
-		Scheme: scheme.Scheme,
+		Scheme: mgr.GetScheme(),
 	}).SetupWithManager(mgr)
 	Expect(err).ToNot(HaveOccurred())
 
 	err = (&khulnasoftdatabase.KhulnasoftDatabaseReconciler{
 		Client: mgr.GetClient(),
-		Scheme: scheme.Scheme,
+		Scheme: mgr.GetScheme(),
 	}).SetupWithManager(mgr)
 	Expect(err).ToNot(HaveOccurred())
 
 	err = (&khulnasoftenforcer.KhulnasoftEnforcerReconciler{
 		Client: mgr.GetClient(),
-		Scheme: scheme.Scheme,
+		Scheme: mgr.GetScheme(),
 	}).SetupWithManager(mgr)
 	Expect(err).ToNot(HaveOccurred())
 
 	err = (&khulnasoftgateway.KhulnasoftGatewayReconciler{
 		Client: mgr.GetClient(),
-		Scheme: scheme.Scheme,
+		Scheme: mgr.GetScheme(),
 	}).SetupWithManager(mgr)
 	Expect(err).ToNot(HaveOccurred())
 
 	err = (&khulnasoftkubeenforcer.KhulnasoftKubeEnforcerReconciler{
 		Client: mgr.GetClient(),
-		Scheme: scheme.Scheme,
+		Scheme: mgr.GetScheme(),
 		Certs:  khulnasoftkubeenforcer.GetKECerts(),
 	}).SetupWithManager(mgr)
 	Expect(err).ToNot(HaveOccurred())
 
 	err = (&khulnasoftscanner.KhulnasoftScannerReconciler{
 		Client: mgr.GetClient(),
-		Scheme: scheme.Scheme,
+		Scheme: mgr.GetScheme(),
 	}).SetupWithManager(mgr)
 	Expect(err).ToNot(HaveOccurred())
+
 	err = (&khulnasoftserver.KhulnasoftServerReconciler{
 		Client: mgr.GetClient(),
-		Scheme: scheme.Scheme,
+		Scheme: mgr.GetScheme(),
 	}).SetupWithManager(mgr)
 	Expect(err).ToNot(HaveOccurred())
 
 	err = (&khulnasoftstarboard.KhulnasoftStarboardReconciler{
 		Client: mgr.GetClient(),
-		Scheme: scheme.Scheme,
+		Scheme: mgr.GetScheme(),
+	}).SetupWithManager(mgr)
+	Expect(err).ToNot(HaveOccurred())
+
+	err = (&khulnasoftcloudconnector.KhulnasoftCloudConnectorReconciler{
+		Client: mgr.GetClient(),
+		Scheme: mgr.GetScheme(),
 	}).SetupWithManager(mgr)
 	Expect(err).ToNot(HaveOccurred())
 

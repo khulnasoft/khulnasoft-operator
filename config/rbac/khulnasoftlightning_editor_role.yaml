@@ -1,0 +1,24 @@
+# permissions for end users to edit khulnasoftlightnings.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: khulnasoftlightning-editor-role
+rules:
+- apiGroups:
+  - operator.khulnasoft.com
+  resources:
+  - khulnasoftlightnings
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - operator.khulnasoft.com
+  resources:
+  - khulnasoftlightnings/status
+  verbs:
+  - get

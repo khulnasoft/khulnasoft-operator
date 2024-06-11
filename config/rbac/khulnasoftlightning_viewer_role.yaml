@@ -1,0 +1,20 @@
+# permissions for end users to view khulnasoftlightnings.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: khulnasoftlightning-viewer-role
+rules:
+- apiGroups:
+  - operator.khulnasoft.com
+  resources:
+  - khulnasoftlightnings
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - operator.khulnasoft.com
+  resources:
+  - khulnasoftlightnings/status
+  verbs:
+  - get

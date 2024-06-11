@@ -85,7 +85,7 @@ const (
 	LatestVersion = "2022.4"
 
 	// StarboardVersion Latest starboard version
-	StarboardVersion = "0.15.10"
+	StarboardVersion = "0.15.20"
 
 	// CyberCenterAddress Khulnasoft Cybercenter Address
 	CyberCenterAddress = "https://cybercenter5.khulnasoft.com"
@@ -111,6 +111,12 @@ const (
 	ScannerSecretName = "khulnasoft-scanner"
 
 	ScannerConfigMapName = "khulnasoft-scanner-config"
+
+	CloudConnectorDeployName = "%s-cloud-connector"
+
+	CloudConnectorConfigMapName = "khulnasoft-cloud-connector-conf"
+
+	CloudConnectorSecretName = "khulnasoft-cloud-connector-user-secret"
 
 	EmptyString = ""
 
@@ -154,7 +160,35 @@ const (
 
 	OperatorClusterComplianceEnabled = "false"
 
+	OperatorConfigAuditScannerScanOnlyCurrentRevisions = "true"
+
 	ServerConfigMapName = "khulnasoft-csp-server-config"
 
 	EnforcerConfigMapName = "khulnasoft-csp-enforcer"
+
+	KubeBenchImageName = "docker.io/khulnasoft/kube-bench:v0.7.1"
+
+	LightningEnforcerResources = `resources:
+        limits:
+          cpu: 1500m
+          memory: 1500Mi
+        requests:
+          cpu: 300m
+          memory: 500Mi`
+
+	LightningKubeEnforcerResources = `resources:
+        limits:
+          cpu: 1000m
+          memory: 750Mi
+        requests:
+          cpu: 300m
+          memory: 250Mi`
+
+	LightningStarboardResources = `resources:
+        limits:
+          cpu: 1000m
+          memory: 500Mi
+        requests:
+          cpu: 500m
+          memory: 125Mi`
 )

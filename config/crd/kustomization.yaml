@@ -9,6 +9,7 @@ resources:
 - bases/operator.khulnasoft.com_khulnasoftkubeenforcers.yaml
 - bases/operator.khulnasoft.com_khulnasoftscanners.yaml
 - bases/operator.khulnasoft.com_khulnasoftservers.yaml
+- bases/operator.khulnasoft.com_khulnasoftlightnings.yaml
 - bases/khulnasoft.github.io_khulnasoftstarboards.yaml
 #+kubebuilder:scaffold:crdkustomizeresource
 

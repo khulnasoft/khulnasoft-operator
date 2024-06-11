@@ -34,7 +34,6 @@ import (
 	"k8s.io/apimachinery/pkg/labels"
 	"k8s.io/apimachinery/pkg/types"
 	"reflect"
-	"sigs.k8s.io/controller-runtime/pkg/controller"
 	"sigs.k8s.io/controller-runtime/pkg/controller/controllerutil"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 
@@ -123,7 +122,7 @@ func (r *KhulnasoftDatabaseReconciler) Reconcile(ctx context.Context, req ctrl.R
 				return reconcile.Result{}, err
 			}
 
-			instance.Spec.Common.DatabaseSecret = &v1alpha1.Khulnasoftret{
+			instance.Spec.Common.DatabaseSecret = &v1alpha1.KhulnasoftSecret{
 				Name: fmt.Sprintf(consts.ScalockDbPasswordSecretName, instance.Name),
 				Key:  consts.ScalockDbPasswordSecretKey,
 			}
@@ -225,7 +224,6 @@ func (r *KhulnasoftDatabaseReconciler) Reconcile(ctx context.Context, req ctrl.R
 func (r *KhulnasoftDatabaseReconciler) SetupWithManager(mgr ctrl.Manager) error {
 	return ctrl.NewControllerManagedBy(mgr).
 		Named("khulnasoftdatabase-controller").
-		WithOptions(controller.Options{Reconciler: r}).
 		For(&operatorv1alpha1.KhulnasoftDatabase{}).
 		Owns(&corev1.Secret{}).
 		Owns(&corev1.ServiceAccount{}).
@@ -250,7 +248,7 @@ func (r *KhulnasoftDatabaseReconciler) updateDatabaseObject(cr *v1alpha1.Khulnas
 	return cr
 }
 
-func (r *KhulnasoftDatabaseReconciler) InstallDatabaseDeployment(cr *v1alpha1.KhulnasoftDatabase, dbSecret *v1alpha1.Khulnasoftret, deployName, pvcName, app string) (reconcile.Result, error) {
+func (r *KhulnasoftDatabaseReconciler) InstallDatabaseDeployment(cr *v1alpha1.KhulnasoftDatabase, dbSecret *v1alpha1.KhulnasoftSecret, deployName, pvcName, app string) (reconcile.Result, error) {
 	reqLogger := log.WithValues("Database deployment Phase", "Install Database Deployment")
 	reqLogger.Info("Start installing khulnasoft database deployment")
 
