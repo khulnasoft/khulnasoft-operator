@@ -1,0 +1,20 @@
+# permissions for end users to view khulnasoftkubeenforcers.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: khulnasoftkubeenforcer-viewer-role
+rules:
+- apiGroups:
+  - operator.khulnasoftsec.com
+  resources:
+  - khulnasoftkubeenforcers
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - operator.khulnasoftsec.com
+  resources:
+  - khulnasoftkubeenforcers/status
+  verbs:
+  - get

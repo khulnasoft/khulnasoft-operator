@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: khulnasoft-operator
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: khulnasoft-operator
+  template:
+    metadata:
+      labels:
+        name: khulnasoft-operator
+    spec:
+      serviceAccountName: khulnasoft-operator
+      containers:
+        # Set the operator image with digest
+        - name: khulnasoft-operator
+          image: "registry.connect.redhat.com/khulnasoftsec/operator@<digest>"
+          command:
+          - khulnasoft-operator
+          imagePullPolicy: Always
+          env:
+            - name: WATCH_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: OPERATOR_NAME
+              value: "khulnasoft-operator"
+              # Set if for certificate marketplace or not
+              # when value true operator don't create image pull secret
+            - name: CERTIFIED_MARKETPLACE
+              value: "true"
+              # Set the related images name with digest
+            - name: RELATED_IMAGE_DATABASE
+              value: "registry.connect.redhat.com/khulnasoftsec/database@<digest>"
+            - name: RELATED_IMAGE_GATEWAY
+              value: "registry.connect.redhat.com/khulnasoftsec/gateway@<digest>"
+            - name: RELATED_IMAGE_SERVER
+              value: "registry.connect.redhat.com/khulnasoftsec/console@<digest>"
+            - name: RELATED_IMAGE_SCANNER
+              value: "registry.connect.redhat.com/khulnasoftsec/scanner@<digest>"
+            - name: RELATED_IMAGE_ENFORCER
+              value: "registry.connect.redhat.com/khulnasoftsec/enforcer@<digest>"

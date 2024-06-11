@@ -1,0 +1,83 @@
+domain: khulnasoftsec.com
+layout:
+- go.kubebuilder.io/v3
+multigroup: true
+plugins:
+  manifests.sdk.operatorframework.io/v2: {}
+  scorecard.sdk.operatorframework.io/v2: {}
+projectName: khulnasoft-oprator
+repo: github.com/khulnasoft/khulnasoft-operator
+resources:
+- api:
+    crdVersion: v1
+    namespaced: true
+  controller: true
+  domain: khulnasoftsec.com
+  group: operator
+  kind: KhulnasoftCsp
+  path: github.com/khulnasoft/khulnasoft-operator/apis/operator/v1alpha1
+  version: v1alpha1
+- api:
+    crdVersion: v1
+    namespaced: true
+  controller: true
+  domain: khulnasoftsec.com
+  group: operator
+  kind: KhulnasoftDatabase
+  path: github.com/khulnasoft/khulnasoft-operator/apis/operator/v1alpha1
+  version: v1alpha1
+- api:
+    crdVersion: v1
+    namespaced: true
+  controller: true
+  domain: khulnasoftsec.com
+  group: operator
+  kind: KhulnasoftEnforcer
+  path: github.com/khulnasoft/khulnasoft-operator/apis/operator/v1alpha1
+  version: v1alpha1
+- api:
+    crdVersion: v1
+    namespaced: true
+  controller: true
+  domain: khulnasoftsec.com
+  group: operator
+  kind: KhulnasoftGateway
+  path: github.com/khulnasoft/khulnasoft-operator/apis/operator/v1alpha1
+  version: v1alpha1
+- api:
+    crdVersion: v1
+    namespaced: true
+  controller: true
+  domain: khulnasoftsec.com
+  group: operator
+  kind: KhulnasoftKubeEnforcer
+  path: github.com/khulnasoft/khulnasoft-operator/apis/operator/v1alpha1
+  version: v1alpha1
+- api:
+    crdVersion: v1
+    namespaced: true
+  controller: true
+  domain: khulnasoftsec.com
+  group: operator
+  kind: KhulnasoftScanner
+  path: github.com/khulnasoft/khulnasoft-operator/apis/operator/v1alpha1
+  version: v1alpha1
+- api:
+    crdVersion: v1
+    namespaced: true
+  controller: true
+  domain: khulnasoftsec.com
+  group: operator
+  kind: KhulnasoftServer
+  path: github.com/khulnasoft/khulnasoft-operator/apis/operator/v1alpha1
+  version: v1alpha1
+- api:
+    crdVersion: v1
+    namespaced: true
+  controller: true
+  domain: khulnasoftsec.com
+  group: khulnasoft
+  kind: KhulnasoftStarboard
+  path: github.com/khulnasoft/khulnasoft-operator/apis/khulnasoft/v1alpha1
+  version: v1alpha1
+version: "3"

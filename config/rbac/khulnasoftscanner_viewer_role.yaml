@@ -1,0 +1,20 @@
+# permissions for end users to view khulnasoftscanners.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: khulnasoftscanner-viewer-role
+rules:
+- apiGroups:
+  - operator.khulnasoftsec.com
+  resources:
+  - khulnasoftscanners
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - operator.khulnasoftsec.com
+  resources:
+  - khulnasoftscanners/status
+  verbs:
+  - get

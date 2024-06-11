@@ -1,0 +1,24 @@
+# permissions for end users to edit khulnasoftkubeenforcers.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: khulnasoftkubeenforcer-editor-role
+rules:
+- apiGroups:
+  - operator.khulnasoftsec.com
+  resources:
+  - khulnasoftkubeenforcers
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - operator.khulnasoftsec.com
+  resources:
+  - khulnasoftkubeenforcers/status
+  verbs:
+  - get

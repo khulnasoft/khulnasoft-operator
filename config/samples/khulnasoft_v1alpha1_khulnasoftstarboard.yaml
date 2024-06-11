@@ -1,0 +1,6 @@
+apiVersion: khulnasoft.github.io/v1alpha1
+kind: KhulnasoftStarboard
+metadata:
+  name: khulnasoftstarboard-sample
+spec:
+  # TODO(user): Add fields here
