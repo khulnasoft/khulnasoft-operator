@@ -104,6 +104,7 @@ fmt: ## Run go fmt against code.
 vet: ## Run go vet against code.
 	go vet ./...
 
+.PHONY: test
 test: fmt vet
     KUBEBUILDER_ASSETS=$$(setup-envtest use latest --bin-dir /path/to/bin) \
     go test -coverpkg=./controllers/... -coverprofile=coverage.out ./... --ginkgo.progress --ginkgo.junit-report test.xml
