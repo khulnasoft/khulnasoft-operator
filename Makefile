@@ -105,7 +105,7 @@ vet: ## Run go vet against code.
 	go vet ./...
 
 .PHONY: test
-.PHONY: test
+KUBEBUILDER_ASSETS=$$(setup-envtest use latest --bin-dir /path/to/bin) \
 test: fmt vet
     KUBEBUILDER_ASSETS=$$(setup-envtest use latest --bin-dir /path/to/bin) \
     go test -coverpkg=./controllers/... -coverprofile=coverage.out ./... --ginkgo.progress --ginkgo.junit-report test.xml
