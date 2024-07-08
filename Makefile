@@ -104,10 +104,9 @@ fmt: ## Run go fmt against code.
 vet: ## Run go vet against code.
 	go vet ./...
 
-.PHONY: test
-test: manifests generate fmt vet envtest ## Run tests.
-	KUBEBUILDER_ASSETS="$(shell $(ENVTEST) use $(ENVTEST_K8S_VERSION) -p path)" go test -coverpkg=./controllers/... -coverprofile=coverage.out ./... --ginkgo.progress --ginkgo.junit-report test.xml
-
+test: fmt vet
+    KUBEBUILDER_ASSETS=$$(setup-envtest use latest --bin-dir /path/to/bin) \
+    go test -coverpkg=./controllers/... -coverprofile=coverage.out ./... --ginkgo.progress --ginkgo.junit-report test.xml
 
 ##@ Build
 
