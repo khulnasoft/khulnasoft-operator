@@ -55,7 +55,7 @@ jobs:
           fi
           make test
       - name: Publish Test Results
-        uses: EnricoMi/publish-unit-test-result-action@v1.39
+        uses: EnricoMi/publish-unit-test-result-action@v2.7
         if: hashFiles('./controllers/test.xml') != ''
         with:
           files: "./controllers/test.xml"
