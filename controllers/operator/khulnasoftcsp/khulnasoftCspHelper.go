@@ -2,6 +2,7 @@ package khulnasoftcsp
 
 import (
 	"fmt"
+
 	"github.com/khulnasoft/khulnasoft-operator/apis/operator/v1alpha1"
 	"github.com/khulnasoft/khulnasoft-operator/pkg/consts"
 
@@ -171,7 +172,7 @@ func (csp *KhulnasoftCspHelper) newKhulnasoftEnforcer(cr *v1alpha1.KhulnasoftCsp
 				Host: fmt.Sprintf("%s-gateway", cr.Name),
 				Port: 8443,
 			},
-			Secret: &v1alpha1.Khulnasoftret{
+			Secret: &v1alpha1.KhulnasoftSecret{
 				Name: fmt.Sprintf("%s-enforcer-token", cr.Name),
 				Key:  "token",
 			},

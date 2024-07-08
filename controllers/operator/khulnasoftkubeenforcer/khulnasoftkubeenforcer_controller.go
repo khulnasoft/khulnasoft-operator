@@ -26,6 +26,10 @@ import (
 	"encoding/pem"
 	syserrors "errors"
 	"fmt"
+	"math/big"
+	"reflect"
+	"time"
+
 	"github.com/banzaicloud/k8s-objectmatcher/patch"
 	"github.com/khulnasoft/khulnasoft-operator/apis/khulnasoft/v1alpha1"
 	"github.com/khulnasoft/khulnasoft-operator/controllers/common"
@@ -41,13 +45,8 @@ import (
 	"k8s.io/apimachinery/pkg/api/equality"
 	"k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/types"
-	"math/big"
-	"reflect"
-	"sigs.k8s.io/controller-runtime/pkg/controller"
 	"sigs.k8s.io/controller-runtime/pkg/controller/controllerutil"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
-	"strings"
-	"time"
 
 	"k8s.io/apimachinery/pkg/runtime"
 	ctrl "sigs.k8s.io/controller-runtime"
@@ -98,6 +97,7 @@ type KubeEnforcerCertificates struct {
 // For more details, check Reconcile and its Result here:
 // - https://pkg.go.dev/sigs.k8s.io/controller-runtime@v0.11.0/pkg/reconcile
 func (r *KhulnasoftKubeEnforcerReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
+	req.NamespacedName.Namespace = extra.GetCurrentNameSpace()
 	reqLogger := log.WithValues("Request.Namespace", req.Namespace, "Request.Name", req.Name)
 	reqLogger.Info("Reconciling KhulnasoftKubeEnforcer")
 
@@ -185,14 +185,14 @@ func (r *KhulnasoftKubeEnforcerReconciler) Reconcile(ctx context.Context, req ct
 		return reconcile.Result{}, err
 	}
 
-	if strings.ToLower(instance.Spec.Infrastructure.Platform) == consts.OpenShiftPlatform &&
-		rbac.CheckIfClusterRoleExists(r.Client, consts.ClusterReaderRole) &&
-		!rbac.CheckIfClusterRoleBindingExists(r.Client, consts.KhulnasoftKubeEnforcerSAClusterReaderRoleBind) {
-		_, err = r.CreateClusterReaderRoleBinding(instance)
-		if err != nil {
-			return reconcile.Result{}, err
-		}
-	}
+	//if strings.ToLower(instance.Spec.Infrastructure.Platform) == consts.OpenShiftPlatform &&
+	//	rbac.CheckIfClusterRoleExists(r.Client, consts.ClusterReaderRole) &&
+	//	!rbac.CheckIfClusterRoleBindingExists(r.Client, consts.KhulnasoftKubeEnforcerSAClusterReaderRoleBind) {
+	//	_, err = r.CreateClusterReaderRoleBinding(instance)
+	//	if err != nil {
+	//		return reconcile.Result{}, err
+	//	}
+	//}
 
 	instance.Spec.KubeEnforcerService = r.updateKubeEnforcerServerObject(instance.Spec.KubeEnforcerService, instance.Spec.ImageData)
 
@@ -257,7 +257,6 @@ func (r *KhulnasoftKubeEnforcerReconciler) Reconcile(ctx context.Context, req ct
 func (r *KhulnasoftKubeEnforcerReconciler) SetupWithManager(mgr ctrl.Manager) error {
 	return ctrl.NewControllerManagedBy(mgr).
 		Named("khulnasoftkubeenforcer-controller").
-		WithOptions(controller.Options{Reconciler: r}).
 		Owns(&corev1.Secret{}).
 		Owns(&corev1.ServiceAccount{}).
 		Owns(&rbacv1.Role{}).
@@ -856,6 +855,7 @@ func (r *KhulnasoftKubeEnforcerReconciler) addKEConfigMap(cr *operatorv1alpha1.K
 		"khulnasoft-csp-kube-enforcer",
 		"ke-configmap",
 		cr.Spec.Config.GatewayAddress,
+		cr.Spec.Config.KubeBenchImage,
 		cr.Spec.Config.ClusterName,
 		deployStarboard)
 	// Adding configmap to the hashed data, for restart pods if token is changed
@@ -1134,97 +1134,105 @@ func (r *KhulnasoftKubeEnforcerReconciler) installKhulnasoftStarboard(cr *operat
 
 func (r *KhulnasoftKubeEnforcerReconciler) KubeEnforcerFinalizer(cr *operatorv1alpha1.KhulnasoftKubeEnforcer) error {
 	reqLogger := log.WithValues("KubeEnforcer Finalizer Phase", "Remove KE-Webhooks")
-	reqLogger.Info("Start removing ValidatingWebhookConfiguration")
 
 	// Check if this ValidatingWebhookConfiguration exists
+	reqLogger.Info("Start removing ValidatingWebhookConfiguration")
 	validatingWebhookConfiguration := &admissionv1.ValidatingWebhookConfiguration{}
 	err := r.Client.Get(context.TODO(), types.NamespacedName{Name: consts.KhulnasoftKubeEnforcerValidatingWebhookConfigurationName, Namespace: cr.Namespace}, validatingWebhookConfiguration)
 
 	if err != nil && errors.IsNotFound(err) {
 		reqLogger.Info("Khulnasoft KubeEnforcer: ValidatingWebhookConfiguration is not found")
-	} else if err != nil {
+	} else if err != nil && !errors.IsNotFound(err) {
+		reqLogger.Info("Khulnasoft KubeEnforcer: Getting ValidatingWebhookConfiguration status encountered error")
 		return err
-	}
-
-	if validatingWebhookConfiguration != nil {
+	} else {
+		reqLogger.Info("Khulnasoft KubeEnforcer: ValidatingWebhookConfiguration is found, attempting to delete...")
 		err = r.Client.Delete(context.TODO(), validatingWebhookConfiguration)
 		if err != nil {
+			reqLogger.Info("Khulnasoft KubeEnforcer: Failed to delete ValidatingWebhookConfiguration")
 			return err
 		}
 		reqLogger.Info("Successfully removed ValidatingWebhookConfiguration")
 	}
 
-	// Check if this ValidatingWebhookConfiguration exists
+	// Check if this mutatingWebhookConfiguration exists
 	reqLogger.Info("Start removing MutatingWebhookConfiguration")
 	mutatingWebhookConfiguration := &admissionv1.MutatingWebhookConfiguration{}
 	err = r.Client.Get(context.TODO(), types.NamespacedName{Name: consts.KhulnasoftKubeEnforcerMutantingWebhookConfigurationName, Namespace: cr.Namespace}, mutatingWebhookConfiguration)
 
 	if err != nil && errors.IsNotFound(err) {
-		reqLogger.Info("Khulnasoft KubeEnforcer: MutatingWebhookConfiguration is not found")
-	} else if err != nil {
+		reqLogger.Info("Khulnasoft KubeEnforcer: mutatingWebhookConfiguration is not found")
+	} else if err != nil && !errors.IsNotFound(err) {
+		reqLogger.Info("Khulnasoft KubeEnforcer: Getting mutatingWebhookConfiguration status encountered error")
 		return err
-	}
-
-	if mutatingWebhookConfiguration != nil {
+	} else {
+		reqLogger.Info("Khulnasoft KubeEnforcer: mutatingWebhookConfiguration is found, attempting to delete...")
 		err = r.Client.Delete(context.TODO(), mutatingWebhookConfiguration)
 		if err != nil {
+			reqLogger.Info("Khulnasoft KubeEnforcer: Failed to delete mutatingWebhookConfiguration")
 			return err
 		}
-		reqLogger.Info("Successfully removed MutatingWebhookConfiguration")
+		reqLogger.Info("Successfully removed mutatingWebhookConfiguration")
 	}
 
 	// Check if this ClusterRoleBinding exists
+	reqLogger.Info("Start removing ClusterRoleBinding")
 	cRoleBinding := &rbacv1.ClusterRoleBinding{}
 	err = r.Client.Get(context.TODO(), types.NamespacedName{Name: consts.KhulnasoftKubeEnforcerClusterRoleBidingName, Namespace: cr.Namespace}, cRoleBinding)
 
 	if err != nil && errors.IsNotFound(err) {
-		reqLogger.Info("Khulnasoft KubeEnforcer: ClusterRoleBinding is not found")
-	} else if err != nil {
+		reqLogger.Info("Khulnasoft KubeEnforcer: cRoleBinding is not found")
+	} else if err != nil && !errors.IsNotFound(err) {
+		reqLogger.Info("Khulnasoft KubeEnforcer: Getting cRoleBinding status encountered error")
 		return err
-	}
-
-	if validatingWebhookConfiguration != nil {
+	} else {
+		reqLogger.Info("Khulnasoft KubeEnforcer: cRoleBinding is found, attempting to delete...")
 		err = r.Client.Delete(context.TODO(), cRoleBinding)
 		if err != nil {
+			reqLogger.Info("Khulnasoft KubeEnforcer: Failed to delete cRoleBinding")
 			return err
 		}
-		reqLogger.Info("Successfully removed clusterRoleBinding")
+		reqLogger.Info("Successfully removed cRoleBinding")
 	}
 
 	// Check if this ClusterReaderRoleBinding exists
+	reqLogger.Info("Start removing cRoleReaderRoleBinding")
 	cRoleReaderRoleBinding := &rbacv1.ClusterRoleBinding{}
 	err = r.Client.Get(context.TODO(), types.NamespacedName{Name: consts.KhulnasoftKubeEnforcerSAClusterReaderRoleBind, Namespace: cr.Namespace}, cRoleReaderRoleBinding)
 
 	if err != nil && errors.IsNotFound(err) {
-		reqLogger.Info("Khulnasoft KubeEnforcer: ClusterReaderRoleBinding is not found")
-	} else if err != nil {
+		reqLogger.Info("Khulnasoft KubeEnforcer: cRoleReaderRoleBinding is not found")
+	} else if err != nil && !errors.IsNotFound(err) {
+		reqLogger.Info("Khulnasoft KubeEnforcer: Getting cRoleReaderRoleBinding status encountered error")
 		return err
-	}
-
-	if validatingWebhookConfiguration != nil {
-		err = r.Client.Delete(context.TODO(), cRoleReaderRoleBinding)
+	} else {
+		reqLogger.Info("Khulnasoft KubeEnforcer: cRoleReaderRoleBinding is found, attempting to delete...")
+		err = r.Client.Delete(context.TODO(), cRoleBinding)
 		if err != nil {
+			reqLogger.Info("Khulnasoft KubeEnforcer: Failed to delete cRoleReaderRoleBinding")
 			return err
 		}
-		reqLogger.Info("Successfully removed ClusterReaderRoleBinding")
+		reqLogger.Info("Successfully removed cRoleReaderRoleBinding")
 	}
 
 	// Check if this ClusterRole exists
+	reqLogger.Info("Start removing cRole")
 	cRole := &rbacv1.ClusterRole{}
 	err = r.Client.Get(context.TODO(), types.NamespacedName{Name: consts.KhulnasoftKubeEnforcerClusterRoleName}, cRole)
 
 	if err != nil && errors.IsNotFound(err) {
-		reqLogger.Info("Khulnasoft KubeEnforcer: ClusterRole is not found")
-	} else if err != nil {
+		reqLogger.Info("Khulnasoft KubeEnforcer: cRole is not found")
+	} else if err != nil && !errors.IsNotFound(err) {
+		reqLogger.Info("Khulnasoft KubeEnforcer: Getting cRole status encountered error")
 		return err
-	}
-
-	if cRole != nil {
+	} else {
+		reqLogger.Info("Khulnasoft KubeEnforcer: cRole is found, attempting to delete...")
 		err = r.Client.Delete(context.TODO(), cRole)
 		if err != nil {
+			reqLogger.Info("Khulnasoft KubeEnforcer: Failed to delete cRole")
 			return err
 		}
-		reqLogger.Info("Successfully removed ClusterRole")
+		reqLogger.Info("Successfully removed cRole")
 	}
 
 	reqLogger.Info("Successfully Finalized")

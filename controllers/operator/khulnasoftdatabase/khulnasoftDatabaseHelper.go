@@ -32,7 +32,7 @@ func newKhulnasoftDatabaseHelper(cr *v1alpha1.KhulnasoftDatabase) *KhulnasoftDat
 	}
 }
 
-func (db *KhulnasoftDatabaseHelper) newDeployment(cr *v1alpha1.KhulnasoftDatabase, dbSecret *v1alpha1.Khulnasoftret, deployName, pvcName, app string) *appsv1.Deployment {
+func (db *KhulnasoftDatabaseHelper) newDeployment(cr *v1alpha1.KhulnasoftDatabase, dbSecret *v1alpha1.KhulnasoftSecret, deployName, pvcName, app string) *appsv1.Deployment {
 	pullPolicy, registry, repository, tag := extra.GetImageData("database", cr.Spec.Infrastructure.Version, cr.Spec.DbService.ImageData, cr.Spec.Common.AllowAnyVersion)
 
 	image := os.Getenv("RELATED_IMAGE_DATABASE")

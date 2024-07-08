@@ -25,6 +25,7 @@ const (
 	KeEnforcerRepo             = "kube-enforcer"
 	ScannerRepo                = "scanner"
 	StarboardRepo              = "starboard-operator"
+	CloudConnectorRepo         = "khulnasoft-cloud-connector"
 	GatewayPort                = 8443
 	DbPvcStorageClassName      = "khulnasoft-storage"
 	DbPvcStorageSize           = "50Gi"
@@ -37,7 +38,9 @@ const (
 	ServerAdminUser            = "administrator"
 	ServerAdminPassword        = "@Password1"
 	ServerHost                 = "http://khulnasoft-server:8080"
+	GatewayHost                = "https://khulnasoft-gateway:443"
 	ScannerToken               = ""
 	GatewayAddress             = "khulnasoft-gateway:8443"
 	ClusterName                = "Default-cluster-name"
+	KubeBenchName              = "docker.io/khulnasoft/kube-bench:v0.7.1"
 )

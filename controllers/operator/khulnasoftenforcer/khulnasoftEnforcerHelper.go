@@ -389,6 +389,7 @@ func (enf *KhulnasoftEnforcerHelper) CreateDaemonSet(cr *v1alpha1.KhulnasoftEnfo
 					"SYS_CHROOT",
 					"SYS_RESOURCE",
 					"IPC_LOCK",
+					"LINUX_IMMUTABLE",
 				},
 			},
 		}

@@ -5,6 +5,7 @@ resources:
 - operator_v1alpha1_khulnasoftenforcer.yaml
 - operator_v1alpha1_khulnasoftgateway.yaml
 - operator_v1alpha1_khulnasoftkubeenforcer.yaml
+- operator_v1alpha1_khulnasoftlightning.yaml
 - operator_v1alpha1_khulnasoftscanner.yaml
 - operator_v1alpha1_khulnasoftserver.yaml
 - khulnasoft_v1alpha1_khulnasoftstarboard.yaml

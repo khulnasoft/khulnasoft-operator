@@ -54,32 +54,6 @@ rules:
   - update
   - watch
 - apiGroups:
-  - khulnasoft.khulnasoft.com
-  resources:
-  - khulnasoftstarboards
-  verbs:
-  - create
-  - delete
-  - get
-  - list
-  - patch
-  - update
-  - watch
-- apiGroups:
-  - khulnasoft.khulnasoft.com
-  resources:
-  - khulnasoftstarboards/finalizers
-  verbs:
-  - update
-- apiGroups:
-  - khulnasoft.khulnasoft.com
-  resources:
-  - khulnasoftstarboards/status
-  verbs:
-  - get
-  - patch
-  - update
-- apiGroups:
   - authorization.k8s.io
   resources:
   - clusterrolebindings
@@ -194,6 +168,32 @@ rules:
   - patch
   - update
   - watch
+- apiGroups:
+  - operator.khulnasoft.com
+  resources:
+  - cloudconnectors
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - operator.khulnasoft.com
+  resources:
+  - cloudconnectors/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - operator.khulnasoft.com
+  resources:
+  - cloudconnectors/status
+  verbs:
+  - get
+  - patch
+  - update
 - apiGroups:
   - operator.khulnasoft.com
   resources:
