@@ -26,6 +26,11 @@ import (
 	"encoding/pem"
 	syserrors "errors"
 	"fmt"
+	"math/big"
+	"reflect"
+	"strings"
+	"time"
+
 	"github.com/banzaicloud/k8s-objectmatcher/patch"
 	"github.com/khulnasoft/khulnasoft-operator/apis/khulnasoft/v1alpha1"
 	"github.com/khulnasoft/khulnasoft-operator/controllers/common"
@@ -41,13 +46,9 @@ import (
 	"k8s.io/apimachinery/pkg/api/equality"
 	"k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/types"
-	"math/big"
-	"reflect"
 	"sigs.k8s.io/controller-runtime/pkg/controller"
 	"sigs.k8s.io/controller-runtime/pkg/controller/controllerutil"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
-	"strings"
-	"time"
 
 	"k8s.io/apimachinery/pkg/runtime"
 	ctrl "sigs.k8s.io/controller-runtime"
@@ -493,7 +494,7 @@ func (r *KhulnasoftKubeEnforcerReconciler) addKEDeployment(cr *operatorv1alpha1.
 			_ = r.Client.Status().Update(context.Background(), cr)
 		} else {
 			currentState := cr.Status.State
-			if !k8s.IsDeploymentReady(found, 1) {
+			if !k8s.IsDeploymentReady(found, int(cr.Spec.KubeEnforcerService.Replicas)) {
 				if !reflect.DeepEqual(operatorv1alpha1.KhulnasoftEnforcerUpdateInProgress, currentState) &&
 					!reflect.DeepEqual(operatorv1alpha1.KhulnasoftDeploymentStatePending, currentState) {
 					cr.Status.State = operatorv1alpha1.KhulnasoftEnforcerUpdateInProgress
@@ -768,14 +769,19 @@ func (r *KhulnasoftKubeEnforcerReconciler) addKEValidatingWebhook(cr *operatorv1
 	reqLogger := log.WithValues("KubeEnforcer Requirements Phase", "Create ValidatingWebhookConfiguration")
 	reqLogger.Info("Start creating ValidatingWebhookConfiguration")
 
-	// Define a new ClusterRoleBinding object
+	// Log the validatingWebhookTimeout value from the CRD before passing it to the helper function
+	reqLogger.Info("ValidatingWebhookTimeout from CRD", "validatingWebhookTimeout", cr.Spec.ValidatingWebhookTimeout)
+
 	enforcerHelper := newKhulnasoftKubeEnforcerHelper(cr)
-	validWebhook := enforcerHelper.CreateValidatingWebhook(cr.Name,
+	validWebhook := enforcerHelper.CreateValidatingWebhook(
+		cr.Name,
 		cr.Namespace,
 		consts.KhulnasoftKubeEnforcerValidatingWebhookConfigurationName,
 		"ke-validatingwebhook",
 		consts.KhulnasoftKubeEnforcerClusterRoleBidingName,
-		r.Certs.CACert)
+		r.Certs.CACert,
+		cr.Spec.MutatingWebhookTimeout,
+	)
 
 	// Set KhulnasoftKubeEnforcer instance as the owner and controller
 	if err := controllerutil.SetControllerReference(cr, validWebhook, r.Scheme); err != nil {
@@ -791,7 +797,6 @@ func (r *KhulnasoftKubeEnforcerReconciler) addKEValidatingWebhook(cr *operatorv1
 		if err != nil {
 			return reconcile.Result{Requeue: true}, nil
 		}
-
 		return reconcile.Result{}, nil
 	} else if err != nil {
 		return reconcile.Result{}, err
@@ -806,30 +811,35 @@ func (r *KhulnasoftKubeEnforcerReconciler) addKEMutatingWebhook(cr *operatorv1al
 	reqLogger := log.WithValues("KubeEnforcer Requirements Phase", "Create MutatingWebhookConfiguration")
 	reqLogger.Info("Start creating MutatingWebhookConfiguration")
 
-	// Define a new ClusterRoleBinding object
+	// Log the MutatingWebhookTimeout value from the CRD before passing it to the helper function
+	reqLogger.Info("MutatingWebhookTimeout from CRD", "mutatingWebhookTimeout", cr.Spec.MutatingWebhookTimeout)
+
+	// Define a new MutatingWebhookConfiguration object
 	enforcerHelper := newKhulnasoftKubeEnforcerHelper(cr)
-	mutateWebhook := enforcerHelper.CreateMutatingWebhook(cr.Name,
+	mutateWebhook := enforcerHelper.CreateMutatingWebhook(
+		cr.Name,
 		cr.Namespace,
 		consts.KhulnasoftKubeEnforcerMutantingWebhookConfigurationName,
 		"ke-mutatingwebhook",
 		consts.KhulnasoftKubeEnforcerClusterRoleBidingName,
-		r.Certs.CACert)
+		r.Certs.CACert,
+		cr.Spec.MutatingWebhookTimeout,
+	)
 
 	// Set KhulnasoftKubeEnforcer instance as the owner and controller
 	if err := controllerutil.SetControllerReference(cr, mutateWebhook, r.Scheme); err != nil {
 		return reconcile.Result{}, err
 	}
 
-	// Check if this ClusterRoleBinding already exists
+	// Check if this MutatingWebhookConfiguration already exists
 	found := &admissionv1.MutatingWebhookConfiguration{}
 	err := r.Client.Get(context.TODO(), types.NamespacedName{Name: mutateWebhook.Name, Namespace: mutateWebhook.Namespace}, found)
 	if err != nil && errors.IsNotFound(err) {
-		reqLogger.Info("Khulnasoft KubeEnforcer: Creating a New MutatingWebhookConfiguration", "MutatingWebhook.Namespace", mutateWebhook.Namespace, "ClusterRoleBinding.Name", mutateWebhook.Name)
+		reqLogger.Info("Khulnasoft KubeEnforcer: Creating a New MutatingWebhookConfiguration", "MutatingWebhook.Namespace", mutateWebhook.Namespace, "MutatingWebhook.Name", mutateWebhook.Name, "MutatingWebhook.Timeout")
 		err = r.Client.Create(context.TODO(), mutateWebhook)
 		if err != nil {
 			return reconcile.Result{Requeue: true}, nil
 		}
-
 		return reconcile.Result{}, nil
 	} else if err != nil {
 		return reconcile.Result{}, err

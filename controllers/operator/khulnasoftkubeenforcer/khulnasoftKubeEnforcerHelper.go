@@ -2,11 +2,12 @@ package khulnasoftkubeenforcer
 
 import (
 	"fmt"
+	"os"
+
 	"github.com/khulnasoft/khulnasoft-operator/apis/khulnasoft/v1alpha1"
 	operatorv1alpha1 "github.com/khulnasoft/khulnasoft-operator/apis/operator/v1alpha1"
 	"github.com/khulnasoft/khulnasoft-operator/pkg/utils/extra"
 	rbac2 "github.com/khulnasoft/khulnasoft-operator/pkg/utils/k8s/rbac"
-	"os"
 
 	admissionv1 "k8s.io/api/admissionregistration/v1"
 	appsv1 "k8s.io/api/apps/v1"
@@ -305,7 +306,7 @@ func (enf *KhulnasoftKubeEnforcerHelper) CreateRoleBinding(cr, namespace, name, 
 	return rb
 }
 
-func (enf *KhulnasoftKubeEnforcerHelper) CreateValidatingWebhook(cr, namespace, name, app, keService string, caBundle []byte) *admissionv1.ValidatingWebhookConfiguration {
+func (enf *KhulnasoftKubeEnforcerHelper) CreateValidatingWebhook(cr, namespace, name, app, keService string, caBundle []byte, validatingWebhookTimeout int) *admissionv1.ValidatingWebhookConfiguration {
 	labels := map[string]string{
 		"app":                   app,
 		"deployedby":            "khulnasoft-operator",
@@ -373,7 +374,7 @@ func (enf *KhulnasoftKubeEnforcerHelper) CreateValidatingWebhook(cr, namespace, 
 						Port:      &servicePort,
 					},
 				},
-				TimeoutSeconds:          extra.Int32Ptr(WebhookTimeout),
+				TimeoutSeconds:          extra.Int32Ptr(int32(validatingWebhookTimeout)),
 				SideEffects:             &sideEffect,
 				AdmissionReviewVersions: []string{"v1beta1"},
 				FailurePolicy:           &failurePolicy,
@@ -384,7 +385,7 @@ func (enf *KhulnasoftKubeEnforcerHelper) CreateValidatingWebhook(cr, namespace, 
 	return validWebhook
 }
 
-func (enf *KhulnasoftKubeEnforcerHelper) CreateMutatingWebhook(cr, namespace, name, app, keService string, caBundle []byte) *admissionv1.MutatingWebhookConfiguration {
+func (enf *KhulnasoftKubeEnforcerHelper) CreateMutatingWebhook(cr, namespace, name, app, keService string, caBundle []byte, mutatingWebhookTimeout int) *admissionv1.MutatingWebhookConfiguration {
 	labels := map[string]string{
 		"app":                   app,
 		"deployedby":            "khulnasoft-operator",
@@ -440,7 +441,7 @@ func (enf *KhulnasoftKubeEnforcerHelper) CreateMutatingWebhook(cr, namespace, na
 						Port:      &servicePort,
 					},
 				},
-				TimeoutSeconds:          extra.Int32Ptr(WebhookTimeout),
+				TimeoutSeconds:          extra.Int32Ptr(int32(mutatingWebhookTimeout)),
 				SideEffects:             &sideEffect,
 				AdmissionReviewVersions: []string{"v1beta1"},
 				FailurePolicy:           &failurePolicy,

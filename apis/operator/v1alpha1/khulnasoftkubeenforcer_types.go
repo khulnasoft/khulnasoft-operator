@@ -25,10 +25,9 @@ import (
 // NOTE: json tags are required.  Any new fields you add must have json tags for the fields to be serialized.
 
 // KhulnasoftKubeEnforcerSpec defines the desired state of KhulnasoftKubeEnforcer
+// KhulnasoftKubeEnforcerSpec defines the desired state of KhulnasoftKubeEnforcer
 type KhulnasoftKubeEnforcerSpec struct {
-	// INSERT ADDITIONAL SPEC FIELDS - desired state of cluster
-	// Important: Run "make" to regenerate code after modifying this file
-
+	// Other fields
 	Infrastructure         *KhulnasoftInfrastructure    `json:"infra,omitempty"`
 	Config                 KhulnasoftKubeEnforcerConfig `json:"config"`
 	Token                  string                       `json:"token,omitempty"`
@@ -41,6 +40,10 @@ type KhulnasoftKubeEnforcerSpec struct {
 	Mtls                   bool                         `json:"mtls,omitempty"`
 	DeployStarboard        *KhulnasoftStarboardDetails  `json:"starboard,omitempty"`
 	ConfigMapChecksum      string                       `json:"config_map_checksum,omitempty"`
+
+	// Add the new fields here
+	ValidatingWebhookTimeout int `json:"validatingWebhookTimeout,omitempty"`
+	MutatingWebhookTimeout   int `json:"mutatingWebhookTimeout,omitempty"`
 }
 
 // KhulnasoftKubeEnforcerStatus defines the observed state of KhulnasoftKubeEnforcer
