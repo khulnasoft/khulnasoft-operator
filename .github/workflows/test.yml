@@ -35,7 +35,7 @@ jobs:
       - name: Check out code into the Go module directory
         # if you are using act to test it locally please set it to v1 because of a bug
         #uses: actions/checkout@v1
-        uses: actions/checkout@v4.2.1
+        uses: actions/checkout@v4.2.2
         with:
           ref: ${{ github.event.pull_request.head.sha }}
       - name: Run test
