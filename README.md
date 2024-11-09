@@ -1,8 +1,6 @@
 <p align="center">
   <a href="https://khulnasoft.com">
-    <picture>
       <img src="images/logo.png" height="128">
-    </picture>
     <h1 align="center">KhulnaSoft Operator</h1>
   </a>
 </p>
