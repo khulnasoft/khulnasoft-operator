@@ -2,7 +2,7 @@
   <img width="150px" height="150px" src="images/logo.png"/>
 </p>
 
-# Khulnasoft Security Operator
+<h2 align="center">Khulnasoft Security Operator</h1>
 
 The **khulnasoft-operator** is a group of controllers that runs within a Kubernetes or OpenShift cluster. It provides a means to deploy and manage an Khulnasoft Security cluster and components:
 * Server (Console)
