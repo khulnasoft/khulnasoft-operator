@@ -7,7 +7,7 @@ on:
       - '**.go'
       - '**.mod'
     branches:
-      - master
+      - DEVOPS
 
 jobs:
   analyze:
