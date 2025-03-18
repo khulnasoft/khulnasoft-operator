@@ -28,7 +28,8 @@ ENV OPERATOR=/usr/local/bin/khulnasoft-operator \
     USER_NAME=khulnasoft-operator
 
 LABEL name="Khulnasoft Operator" \
-      vendor="Khulnasoft Security Software Ltd." \
+      vendor="Khulnasoft Security Software Production" \
+      maintainer="KhulnaSoft Ltd." \
       version="v1.0.2" \
       release="1" \
       summary="Khulnasoft Security Operator." \
