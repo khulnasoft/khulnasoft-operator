@@ -21,7 +21,7 @@ RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -o manager main.go
 # Use distroless as minimal base image to package the manager binary
 # Refer to https://github.com/GoogleContainerTools/distroless for more details
 #FROM gcr.io/distroless/static:nonroot
-FROM registry.access.redhat.com/ubi8/ubi-minimal:latest
+FROM http://registry.redhat.io/ubi8/ubi@sha256:e4b9bc5173fe3c1d471fad7b01e7545ae549a3d7f73e125a3f47c05b634ab4a1
 
 ENV OPERATOR=/usr/local/bin/khulnasoft-operator \
     USER_UID=1001 \
